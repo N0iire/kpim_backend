@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SimpananWajibController;
+use App\Http\Controllers\SimpananSukarelaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,8 @@ Route::resource('user', UserController::class);
  * Route for Simpanan Wajib
  */
 Route::resource('simpanan-wajib', SimpananWajibController::class);
+
+/**
+ * Route for Simpanan Sukarela
+ */
+Route::resource('simpanan-sukarela', SimpananSukarelaController::class);
