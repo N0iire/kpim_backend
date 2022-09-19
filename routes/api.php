@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SimpananWajibController;
 use App\Http\Controllers\SimpananSukarelaController;
 use App\Http\Controllers\SimpananPokokController;
+use App\Http\Controllers\PemodalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,8 @@ Route::resource('simpanan-sukarela', SimpananSukarelaController::class);
  * Route for Simpanan Pokok
  */
 Route::resource('simpanan-pokok', SimpananPokokController::class);
+
+/**
+ * Route for Pemodal
+ */
+Route::resource('pemodal', PemodalController::class);

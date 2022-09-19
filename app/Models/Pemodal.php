@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SimpananWajib extends Model
+class Pemodal extends Model
 {
     use HasFactory;
 
@@ -18,14 +18,13 @@ class SimpananWajib extends Model
      */
     protected $fillable = [
         'id_user',
+        'nama_pemodal',
         'tgl_bayar',
-        'nominal_wajib',
-        'status_simp',
-        'ket'
+        'nominal_modal'
     ];
 
     /**
-     * Get the user that owns the simpanan wajib.
+     * Get the user that owns the pemodal
      */
     public function user()
     {

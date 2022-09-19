@@ -24,8 +24,8 @@ class SimpananSukarela extends Model
     ];
 
     /**
-    * Get the user that owns the simpanan sukarela.
-    */
+     * Get the user that owns the simpanan sukarela.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
