@@ -32,9 +32,10 @@ class SimpananWajibController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreSimpananWajibRequest  $request
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSimpananWajibRequest $request)
+    public function store(StoreSimpananWajibRequest $request, $id)
     {
         //
     }
@@ -66,9 +67,10 @@ class SimpananWajibController extends Controller
      *
      * @param  \App\Http\Requests\UpdateSimpananWajibRequest  $request
      * @param  \App\Models\SimpananWajib  $simpananWajib
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib)
+    public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib, $id)
     {
         //
     }
