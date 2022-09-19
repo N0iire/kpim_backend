@@ -7,6 +7,7 @@ use App\Http\Controllers\SimpananWajibController;
 use App\Http\Controllers\SimpananSukarelaController;
 use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
+use App\Http\Controllers\PinjamanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,8 @@ Route::resource('simpanan-pokok', SimpananPokokController::class);
  * Route for Pemodal
  */
 Route::resource('pemodal', PemodalController::class);
+
+/**
+ * Route for Pinjaman
+ */
+Route::resource('pinjaman', PinjamanController::class);
