@@ -15,10 +15,17 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username')->unique();
             $table->string('password');
+            $table->string('avatar');
+            $table->string('nik')->unique();
+            $table->string('nama_anggota');
+            $table->text('alamat');
+            $table->text('ttl');
+            $table->string('pekerjaan');
+            $table->date('tgl_daftar');
+            $table->boolean('status');
+            $table->enum('jabatan', ['anggota', 'ketua','sekretaris', 'bendahara', 'pegawai-sekretariat', 'pegawai-keuangan', 'pegawai-barangjasa']);
             $table->rememberToken();
             $table->timestamps();
         });
