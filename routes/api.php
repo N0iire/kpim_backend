@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SimpananWajibController;
 use App\Http\Controllers\SimpananSukarelaController;
+use App\Http\Controllers\SimpananPokokController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,8 @@ Route::resource('simpanan-wajib', SimpananWajibController::class);
  * Route for Simpanan Sukarela
  */
 Route::resource('simpanan-sukarela', SimpananSukarelaController::class);
+
+/**
+ * Route for Simpanan Pokok
+ */
+Route::resource('simpanan-pokok', SimpananPokokController::class);

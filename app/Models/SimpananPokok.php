@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SimpananSukarela extends Model
+class SimpananPokok extends Model
 {
     use HasFactory;
 
@@ -19,12 +19,12 @@ class SimpananSukarela extends Model
     protected $fillable = [
         'id_user',
         'tgl_bayar',
-        'nominal_sukarela',
+        'nominal_pokok',
         'ket'
     ];
 
     /**
-    * Get the user that owns the simpanan sukarela.
+    * Get the user that owns the simpanan pokok
     */
     public function user()
     {
