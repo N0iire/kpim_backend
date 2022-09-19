@@ -24,8 +24,8 @@ class SimpananPokok extends Model
     ];
 
     /**
-    * Get the user that owns the simpanan pokok
-    */
+     * Get the user that owns the simpanan pokok
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
