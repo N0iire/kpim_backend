@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Enums\UserJabatan;
 
 class UserController extends Controller
@@ -22,10 +24,10 @@ class UserController extends Controller
     /**
      * Show specified user
      *
-     * @param $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
 
     }
@@ -43,10 +45,10 @@ class UserController extends Controller
     /**
      * Store a newly created user
      *
-     * @param \Illuminate\Http\Request;
+     * @param \App\Http\Requests\;
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
 
     }
@@ -54,9 +56,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the user
      *
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(User $user)
     {
 
     }
@@ -64,10 +67,11 @@ class UserController extends Controller
     /**
      * Update the specified user
      *
-     * @param \Illuminate\Http\Request, $id
+     * @param  \App\Http\Requests\UpdateUserRequest  $request
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
 
     }
@@ -75,10 +79,10 @@ class UserController extends Controller
     /**
      * Delete the specified user
      *
-     * @param $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
 
     }
