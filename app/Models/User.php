@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Enums\UserJabatan;
 
 class User extends Authenticatable
 {
@@ -18,9 +19,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'avatar',
+        'nik',
+        'nama_anggota',
+        'alamat',
+        'ttl',
+        'pekerjaan',
+        'tgl_daftar',
+        'status',
+        'jabatan'
     ];
 
     /**
@@ -39,6 +48,77 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'jabatan' => UserJabatan::class
     ];
+
+    /**
+     * Relation to model SimpananWajib
+     *
+     * One to Many
+     */
+    public function simpanan_wajib()
+    {
+        return $this->hasMany(SimpananWajib::class);
+    }
+
+    /**
+     * Relation to model SimpananPokok
+     *
+     * One to One
+     */
+    public function simpanan_pokok()
+    {
+        return $this->hasOne(SimpananPokok::class);
+    }
+
+    /**
+     * Relation to model SimpananSukarela
+     *
+     * One to One
+     */
+    public function simpanan_sukarela()
+    {
+        return $this->hasOne(SimpananSukarela::class);
+    }
+
+    /**
+     * Relation to model Pemodal
+     *
+     * One to Many
+     */
+    public function pemodal()
+    {
+        return $this->hasOne(Pemodal::class);
+    }
+
+    /**
+     * Relation to model Pinjaman
+     *
+     * One to Many
+     */
+    public function pinjaman()
+    {
+        return $this->hasOne(Pinjaman::class);
+    }
+
+    /**
+     * Relation to model CatatanJual
+     *
+     * One to Many
+     */
+    public function catatan_jual()
+    {
+        return $this->hasOne(CatatanJual::class);
+    }
+
+    /**
+     * Relation to model CatatanBeli
+     *
+     * One to Many
+     */
+    public function catatan_beli()
+    {
+        return $this->hasOne(CatatanBeli::class);
+    }
+
 }
