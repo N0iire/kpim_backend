@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DetailPinjamanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -53,3 +54,8 @@ Route::resource('pemodal', PemodalController::class);
  * Route for Pinjaman
  */
 Route::resource('pinjaman', PinjamanController::class);
+
+/**
+ * Route for Detail Pinjaman
+ */
+Route::resource('detail-pinjaman', DetailPinjamanController::class);
