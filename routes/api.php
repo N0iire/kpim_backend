@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CicilanController;
+use App\Http\Controllers\DetailNonPembelianController;
 use App\Http\Controllers\DetailPinjamanController;
 use App\Http\Controllers\PemasukanController;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PinjamanController;
+use App\Models\DetailNonPembelian;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,3 +79,8 @@ Route::resource('pemasukan', PemasukanController::class);
  * Route for Pengeluaran
  */
 Route::resource('pengeluaran', PengeluaranController::class);
+
+/**
+ * Route for Detail Non Pembelian
+ */
+Route::resource('detail-non-pembelian', DetailNonPembelianController::class);
