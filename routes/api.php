@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\CicilanController;
+use App\Http\Controllers\DetailNonPembelianController;
+use App\Http\Controllers\DetailPinjamanController;
+use App\Http\Controllers\PemasukanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -7,6 +11,9 @@ use App\Http\Controllers\SimpananWajibController;
 use App\Http\Controllers\SimpananSukarelaController;
 use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
+use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\PinjamanController;
+use App\Models\DetailNonPembelian;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +54,33 @@ Route::resource('simpanan-pokok', SimpananPokokController::class);
  * Route for Pemodal
  */
 Route::resource('pemodal', PemodalController::class);
+
+/**
+ * Route for Pinjaman
+ */
+Route::resource('pinjaman', PinjamanController::class);
+
+/**
+ * Route for Detail Pinjaman
+ */
+Route::resource('detail-pinjaman', DetailPinjamanController::class);
+
+/**
+ * Route for Cicilan
+ */
+Route::resource('cicilan', CicilanController::class);
+
+/**
+ * Route for Pemasukan
+ */
+Route::resource('pemasukan', PemasukanController::class);
+
+/**
+ * Route for Pengeluaran
+ */
+Route::resource('pengeluaran', PengeluaranController::class);
+
+/**
+ * Route for Detail Non Pembelian
+ */
+Route::resource('detail-non-pembelian', DetailNonPembelianController::class);
