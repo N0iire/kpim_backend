@@ -10,6 +10,7 @@ use App\Http\Controllers\SimpananWajibController;
 use App\Http\Controllers\SimpananSukarelaController;
 use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PinjamanController;
 
 /*
@@ -71,3 +72,8 @@ Route::resource('cicilan', CicilanController::class);
  * Route for Pemasukan
  */
 Route::resource('pemasukan', PemasukanController::class);
+
+/**
+ * Route for Pengeluaran
+ */
+Route::resource('pengeluaran', PengeluaranController::class);
