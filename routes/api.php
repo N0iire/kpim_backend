@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CicilanController;
 use App\Http\Controllers\DetailPinjamanController;
+use App\Http\Controllers\PemasukanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -65,3 +66,8 @@ Route::resource('detail-pinjaman', DetailPinjamanController::class);
  * Route for Cicilan
  */
 Route::resource('cicilan', CicilanController::class);
+
+/**
+ * Route for Pemasukan
+ */
+Route::resource('pemasukan', PemasukanController::class);
