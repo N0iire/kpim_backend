@@ -13,7 +13,7 @@ class CreateDetailPinjamenTable extends Migration
      */
     public function up()
     {
-        Schema::create('detail_pinjaman', function (Blueprint $table) {
+        Schema::create('detail_pinjamen', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_pinjaman');
             $table->foreignId('id_barang');
@@ -30,6 +30,6 @@ class CreateDetailPinjamenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detail_pinjaman');
+        Schema::dropIfExists('detail_pinjamen');
     }
 }
