@@ -16,9 +16,9 @@ class CreateSimpananSukarelasTable extends Migration
         Schema::create('simpanan_sukarelas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user');
-            $table->date('date');
+            $table->date('tgl_bayar');
             $table->double('nominal_sukarela');
-            $table->text('ket');
+            $table->text('ket')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Penjualan;
 use Illuminate\Database\Seeder;
 
 class PenjualanSeeder extends Seeder
@@ -13,6 +14,6 @@ class PenjualanSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Penjualan::factory(100)->create();
     }
 }

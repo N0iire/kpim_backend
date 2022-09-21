@@ -19,7 +19,7 @@ class CreateDetailNonPembeliansTable extends Migration
             $table->string('nama_transaksi');
             $table->date('tgl_transaksi');
             $table->double('nominal_transaksi');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

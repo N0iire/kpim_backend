@@ -14,7 +14,11 @@ class PemasukanFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'tgl_buat' => $this->faker->date(),
+            'total_simpanan' => $this->faker->randomNumber(8),
+            'total_penjualan' => $this->faker->randomNumber(8),
+            'total_pinjaman' => $this->faker->randomNumber(8),
+            'total_pemodal' => $this->faker->randomNumber(8)
         ];
     }
 }

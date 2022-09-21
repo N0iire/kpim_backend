@@ -18,8 +18,8 @@ class CreateSimpananWajibsTable extends Migration
             $table->foreignId('id_user');
             $table->date('tgl_bayar');
             $table->double('nominal_bayar');
-            $table->boolean('status_simp_wajib');
-            $table->text('ket');
+            $table->boolean('status');
+            $table->text('ket')->nullable();
             $table->timestamps();
         });
     }

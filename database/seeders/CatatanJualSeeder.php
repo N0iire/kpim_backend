@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CatatanJual;
 use Illuminate\Database\Seeder;
 
 class CatatanJualSeeder extends Seeder
@@ -13,6 +14,6 @@ class CatatanJualSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CatatanJual::factory(50)->create();
     }
 }
