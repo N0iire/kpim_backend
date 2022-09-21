@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CicilanController;
 use App\Http\Controllers\DetailNonPembelianController;
 use App\Http\Controllers\DetailPinjamanController;
@@ -84,3 +85,6 @@ Route::resource('pengeluaran', PengeluaranController::class);
  * Route for Detail Non Pembelian
  */
 Route::resource('detail-non-pembelian', DetailNonPembelianController::class);
+
+// Route for Barang
+Route::apiResource('barang', BarangController::class);
