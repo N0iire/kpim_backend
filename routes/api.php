@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CatatanBeliController;
