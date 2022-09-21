@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Auth\ApiAuthController;
-use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CatatanBeliController;
 use App\Http\Controllers\CatatanJualController;
 use App\Http\Controllers\CicilanController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\DetailNonPembelianController;
 use App\Http\Controllers\DetailPinjamanController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PembelianController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SimpananWajibController;
@@ -20,7 +18,6 @@ use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PinjamanController;
-use App\Models\DetailNonPembelian;
 
 /*
 |--------------------------------------------------------------------------
