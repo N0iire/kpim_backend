@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pemodal;
 use Illuminate\Database\Seeder;
 
 class PemodalSeeder extends Seeder
@@ -13,6 +14,6 @@ class PemodalSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Pemodal::factory(10)->create();
     }
 }

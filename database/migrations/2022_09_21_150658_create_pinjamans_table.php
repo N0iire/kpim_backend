@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePinjamenTable extends Migration
+class CreatePinjamansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePinjamenTable extends Migration
      */
     public function up()
     {
-        Schema::create('pinjamen', function (Blueprint $table) {
+        Schema::create('pinjamans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user');
             $table->date('tgl_pinjaman');
@@ -33,6 +33,6 @@ class CreatePinjamenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pinjamen');
+        Schema::dropIfExists('pinjamans');
     }
 }

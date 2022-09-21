@@ -14,7 +14,10 @@ class PemodalFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_user' => mt_rand(1, 50),
+            'nama_pemodal' => $this->faker->unique()->name(),
+            'tgl_bayar' => $this->faker->date(),
+            'nominal_modal' => $this->faker->randomNumber(7)
         ];
     }
 }

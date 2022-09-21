@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SimpananPokok;
 use Illuminate\Database\Seeder;
 
 class SimpananPokokSeeder extends Seeder
@@ -13,6 +14,6 @@ class SimpananPokokSeeder extends Seeder
      */
     public function run()
     {
-        //
+        SimpananPokok::factory(50)->create();
     }
 }
