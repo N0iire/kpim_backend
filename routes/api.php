@@ -15,7 +15,6 @@ use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PinjamanController;
-use App\Models\DetailNonPembelian;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,57 +37,57 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 /**
  * Route for User
  */
-Route::resource('user', UserController::class);
+Route::apiResource('user', UserController::class);
 
 /**
  * Route for Simpanan Wajib
  */
-Route::resource('simpanan-wajib', SimpananWajibController::class);
+Route::apiResource('simpanan-wajib', SimpananWajibController::class);
 
 /**
  * Route for Simpanan Sukarela
  */
-Route::resource('simpanan-sukarela', SimpananSukarelaController::class);
+Route::apiResource('simpanan-sukarela', SimpananSukarelaController::class);
 
 /**
  * Route for Simpanan Pokok
  */
-Route::resource('simpanan-pokok', SimpananPokokController::class);
+Route::apiResource('simpanan-pokok', SimpananPokokController::class);
 
 /**
  * Route for Pemodal
  */
-Route::resource('pemodal', PemodalController::class);
+Route::apiResource('pemodal', PemodalController::class);
 
 /**
  * Route for Pinjaman
  */
-Route::resource('pinjaman', PinjamanController::class);
+Route::apiResource('pinjaman', PinjamanController::class);
 
 /**
  * Route for Detail Pinjaman
  */
-Route::resource('detail-pinjaman', DetailPinjamanController::class);
+Route::apiResource('detail-pinjaman', DetailPinjamanController::class);
 
 /**
  * Route for Cicilan
  */
-Route::resource('cicilan', CicilanController::class);
+Route::apiResource('cicilan', CicilanController::class);
 
 /**
  * Route for Pemasukan
  */
-Route::resource('pemasukan', PemasukanController::class);
+Route::apiResource('pemasukan', PemasukanController::class);
 
 /**
  * Route for Pengeluaran
  */
-Route::resource('pengeluaran', PengeluaranController::class);
+Route::apiResource('pengeluaran', PengeluaranController::class);
 
 /**
  * Route for Detail Non Pembelian
  */
-Route::resource('detail-non-pembelian', DetailNonPembelianController::class);
+Route::apiResource('detail-non-pembelian', DetailNonPembelianController::class);
 
 // Route for Barang
 Route::apiResource('barang', BarangController::class);
