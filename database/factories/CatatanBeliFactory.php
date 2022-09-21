@@ -14,7 +14,10 @@ class CatatanBeliFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_user' => mt_rand(1, 50),
+            'supplier' => $this->faker->name(),
+            'tgl_pembelian' => $this->faker->date(),
+            'total_pembelian' => $this->faker->randomNumber(6)
         ];
     }
 }

@@ -10,6 +10,7 @@ class DetailPinjaman extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    public $table = 'detail_pinjamans';
 
     /**
      * The attributes that are mass assignable.

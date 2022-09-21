@@ -15,10 +15,10 @@ class CreateSimpananPokoksTable extends Migration
     {
         Schema::create('simpanan_pokoks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user');
+            $table->foreignId('id_user')->unique();
             $table->date('tgl_bayar');
             $table->double('nominal_pokok');
-            $table->text('ket');
+            $table->text('ket')->nullable();
             $table->timestamps();
         });
     }

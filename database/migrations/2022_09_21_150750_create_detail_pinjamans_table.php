@@ -4,21 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDetailPinjamenTable extends Migration
+class CreateDetailPinjamansTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('detail_pinjamen', function (Blueprint $table) {
+        Schema::create('detail_pinjamans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_pinjaman');
             $table->foreignId('id_barang');
             $table->integer('jumlah');
-            $table->double('subtotal');
+            $table->double('sub_total');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateDetailPinjamenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detail_pinjamen');
+        Schema::dropIfExists('detail_pinjamans');
     }
 }

@@ -14,7 +14,10 @@ class PembelianFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_catatanBeli' => mt_rand(1, 50),
+            'id_barang' => mt_rand(1, 50),
+            'jumlah' => $this->faker->randomNumber(2),
+            'sub_total' => $this->faker->randomNumber(6)
         ];
     }
 }
