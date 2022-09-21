@@ -13,7 +13,7 @@ class CreatePinjamenTable extends Migration
      */
     public function up()
     {
-        Schema::create('pinjaman', function (Blueprint $table) {
+        Schema::create('pinjamen', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user');
             $table->date('tgl_pinjaman');
@@ -33,6 +33,6 @@ class CreatePinjamenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pinjaman');
+        Schema::dropIfExists('pinjamen');
     }
 }

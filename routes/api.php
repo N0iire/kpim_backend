@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\CicilanController;
 use App\Http\Controllers\DetailNonPembelianController;
 use App\Http\Controllers\DetailPinjamanController;
@@ -26,9 +27,12 @@ use App\Models\DetailNonPembelian;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['cors', 'json.response']], function () {
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
+    Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
+    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
 });
+
 
 /**
  * Route for User

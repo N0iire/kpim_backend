@@ -8,8 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserJabatan;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -54,6 +55,23 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims() {
+        return [];
+    }
+
+    /**
      * Relation to model SimpananWajib
      *
      * One to Many
@@ -80,7 +98,7 @@ class User extends Authenticatable
      */
     public function simpanan_sukarela()
     {
-        return $this->hasOne(SimpananSukarela::class);
+        return $this->hasMany(SimpananSukarela::class);
     }
 
     /**
@@ -90,7 +108,7 @@ class User extends Authenticatable
      */
     public function pemodal()
     {
-        return $this->hasOne(Pemodal::class);
+        return $this->hasMany(Pemodal::class);
     }
 
     /**
@@ -100,7 +118,7 @@ class User extends Authenticatable
      */
     public function pinjaman()
     {
-        return $this->hasOne(Pinjaman::class);
+        return $this->hasMany(Pinjaman::class);
     }
 
     /**
@@ -110,7 +128,7 @@ class User extends Authenticatable
      */
     public function catatan_jual()
     {
-        return $this->hasOne(CatatanJual::class);
+        return $this->hasMany(CatatanJual::class);
     }
 
     /**
@@ -120,7 +138,7 @@ class User extends Authenticatable
      */
     public function catatan_beli()
     {
-        return $this->hasOne(CatatanBeli::class);
+        return $this->hasMany(CatatanBeli::class);
     }
 
 }
