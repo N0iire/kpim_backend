@@ -14,7 +14,10 @@ class CatatanJualFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_user' => mt_rand(1, 50),
+            'nama_pembeli' => $this->faker->name(),
+            'tgl_penjualan' => $this->faker->date(),
+            'total_penjualan' => $this->faker->randomNumber(7)
         ];
     }
 }

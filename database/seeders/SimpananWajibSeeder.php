@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SimpananWajib;
 use Illuminate\Database\Seeder;
 
 class SimpananWajibSeeder extends Seeder
@@ -13,6 +14,6 @@ class SimpananWajibSeeder extends Seeder
      */
     public function run()
     {
-        //
+        SimpananWajib::factory(50)->create();
     }
 }

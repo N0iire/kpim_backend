@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DetailNonPembelian;
 use Illuminate\Database\Seeder;
 
 class DetailNonPembelianSeeder extends Seeder
@@ -13,6 +14,6 @@ class DetailNonPembelianSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DetailNonPembelian::factory(30)->create();
     }
 }

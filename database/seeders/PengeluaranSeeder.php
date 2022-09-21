@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pengeluaran;
 use Illuminate\Database\Seeder;
 
 class PengeluaranSeeder extends Seeder
@@ -13,6 +14,6 @@ class PengeluaranSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Pengeluaran::factory(10)->create();
     }
 }

@@ -14,7 +14,9 @@ class SimpananPokokFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_user' => $this->faker->unique()->numberBetween(1, 50),
+            'tgl_bayar' => $this->faker->date(),
+            'nominal_pokok' => 50000,
         ];
     }
 }
