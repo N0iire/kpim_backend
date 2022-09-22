@@ -18,7 +18,7 @@ class CreateSimpananPokoksTable extends Migration
             $table->foreignId('id_user');
             $table->date('tgl_bayar');
             $table->double('nominal_pokok');
-            $table->text('ket');
+            $table->text('ket')->nullable();
             $table->timestamps();
         });
     }
