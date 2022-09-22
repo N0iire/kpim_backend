@@ -23,6 +23,6 @@ class Barang extends Model
 
     public function detailPinjam()
     {
-        return $this->hasMany(DetailPinjaman::class);
+        return $this->hasMany(DetailPinjaman::class, );
     }
 }

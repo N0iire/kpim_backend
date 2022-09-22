@@ -13,7 +13,7 @@ class UpdateSimpananWajibRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,22 @@ class UpdateSimpananWajibRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id_user' => 'required',
+            'nominal_bayar' => 'required|numeric',
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'id_user.required' => 'ID Anggota diperlukan',
+            'nominal_bayar.required' => 'Nominal tidak boleh kosong!',
+            'nominal_bayar.numeric' => 'Nominal hanya diisi dengan angka!'
         ];
     }
 }

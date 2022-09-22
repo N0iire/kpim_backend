@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pemodal;
 use App\Http\Requests\StorePemodalRequest;
 use App\Http\Requests\UpdatePemodalRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class PemodalController extends Controller
 {
@@ -15,7 +17,11 @@ class PemodalController extends Controller
      */
     public function index()
     {
-        //
+        $pemodal = Pemodal::all();
+
+        return response([
+            'pemodal' => KPIMResource::collection($pemodal),
+        ], MyConstant::OK);
     }
 
     /**
@@ -36,7 +42,12 @@ class PemodalController extends Controller
      */
     public function store(StorePemodalRequest $request)
     {
-        //
+        $pemodal = Pemodal::create($request->toArray());
+
+        return response([
+            'pemodal' => new KPIMResource($pemodal),
+            'message' => 'Data berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -47,7 +58,10 @@ class PemodalController extends Controller
      */
     public function show(Pemodal $pemodal)
     {
-        //
+        return response([
+            'pemodal' => new KPIMResource($pemodal->toArray()),
+            'message' => 'Data berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -70,7 +84,12 @@ class PemodalController extends Controller
      */
     public function update(UpdatePemodalRequest $request, Pemodal $pemodal)
     {
-        //
+        $pemodal->update($request->toArray());
+
+        return response([
+            'pemodal' => new KPIMResource($pemodal),
+            'message' => 'Data berhasil diperbaharui'
+        ], MyConstant::OK);
     }
 
     /**
@@ -81,6 +100,10 @@ class PemodalController extends Controller
      */
     public function destroy(Pemodal $pemodal)
     {
-        //
+        $pemodal->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus'
+        ], MyConstant::OK);
     }
 }

@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\SimpananWajib;
 use App\Http\Requests\StoreSimpananWajibRequest;
 use App\Http\Requests\UpdateSimpananWajibRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class SimpananWajibController extends Controller
 {
+
+    /**
+     * Create a new ApiAuthController instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +27,11 @@ class SimpananWajibController extends Controller
      */
     public function index()
     {
-        //
+        $simpananWajib = SimpananWajib::all();
+
+        return response([
+            'simpanan_wajib' => KPIMResource::collection($simpananWajib),
+        ], MyConstant::OK);
     }
 
     /**
@@ -35,9 +51,14 @@ class SimpananWajibController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSimpananWajibRequest $request, $id)
+    public function store(StoreSimpananWajibRequest $request)
     {
-        //
+        $simpananWajib = SimpananWajib::create($request->toArray());
+
+        return response([
+            'simpanan_wajib' => new KPIMResource($simpananWajib),
+            'message' => 'Data berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -48,7 +69,10 @@ class SimpananWajibController extends Controller
      */
     public function show(SimpananWajib $simpananWajib)
     {
-        //
+        return response([
+            'simpanan_wajib' => new KPIMResource($simpananWajib),
+            'message' => 'Data berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -67,12 +91,16 @@ class SimpananWajibController extends Controller
      *
      * @param  \App\Http\Requests\UpdateSimpananWajibRequest  $request
      * @param  \App\Models\SimpananWajib  $simpananWajib
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib, $id)
+    public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib)
     {
-        //
+        $simpananWajib->update($request->toArray());
+
+        return response([
+            'simpanan_wajib' => new KPIMResource($simpananWajib),
+            'message' => 'Data berhasil diperbaharui!'
+        ]);
     }
 
     /**
@@ -83,6 +111,10 @@ class SimpananWajibController extends Controller
      */
     public function destroy(SimpananWajib $simpananWajib)
     {
-        //
+        $simpananWajib->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus!'
+        ]);
     }
 }

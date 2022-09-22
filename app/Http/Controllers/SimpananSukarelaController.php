@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SimpananSukarela;
 use App\Http\Requests\StoreSimpananSukarelaRequest;
 use App\Http\Requests\UpdateSimpananSukarelaRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class SimpananSukarelaController extends Controller
 {
@@ -15,7 +17,11 @@ class SimpananSukarelaController extends Controller
      */
     public function index()
     {
-        //
+        $simpananSukarela = SimpananSukarela::all();
+
+        return response([
+            'simpanan_sukarela' => KPIMResource::collection($simpananSukarela)
+        ], MyConstant::OK);
     }
 
     /**
@@ -32,12 +38,16 @@ class SimpananSukarelaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreSimpananSukarelaRequest  $request
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSimpananSukarelaRequest $request, $id)
+    public function store(StoreSimpananSukarelaRequest $request)
     {
-        //
+        $simpananSukarela = SimpananSukarela::create($request->toArray());
+
+        return response([
+            'simpanan_sukarela' => new KPIMResource($simpananSukarela),
+            'message' => 'Data berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -48,7 +58,10 @@ class SimpananSukarelaController extends Controller
      */
     public function show(SimpananSukarela $simpananSukarela)
     {
-        //
+        return response([
+            'simpanan_sukarela' => new KPIMResource($simpananSukarela),
+            'message' => 'Data berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -67,12 +80,16 @@ class SimpananSukarelaController extends Controller
      *
      * @param  \App\Http\Requests\UpdateSimpananSukarelaRequest  $request
      * @param  \App\Models\SimpananSukarela  $simpananSukarela
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSimpananSukarelaRequest $request, SimpananSukarela $simpananSukarela, $id)
+    public function update(UpdateSimpananSukarelaRequest $request, SimpananSukarela $simpananSukarela)
     {
-        //
+        $simpananSukarela->update($request->toArray());
+
+        return response([
+            'simpanan_sukarela' => new KPIMResource($simpananSukarela),
+            'message' => 'Data berhasil diperbaharui'
+        ], MyConstant::OK);
     }
 
     /**
@@ -83,6 +100,10 @@ class SimpananSukarelaController extends Controller
      */
     public function destroy(SimpananSukarela $simpananSukarela)
     {
-        //
+        $simpananSukarela->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 }
