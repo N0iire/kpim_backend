@@ -55,4 +55,6 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     ]);
 
     Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
+
+    Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
 });
