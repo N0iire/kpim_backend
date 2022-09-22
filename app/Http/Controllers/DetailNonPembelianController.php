@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetailNonPembelian;
 use App\Http\Requests\StoreDetailNonPembelianRequest;
 use App\Http\Requests\UpdateDetailNonPembelianRequest;
+use App\MyConstant;
 
 class DetailNonPembelianController extends Controller
 {
@@ -15,7 +16,11 @@ class DetailNonPembelianController extends Controller
      */
     public function index()
     {
-        //
+        $nonPembelian = DetailNonPembelian::all();
+
+        return response([
+            'detail_non_pembelian' => $nonPembelian,
+        ], MyConstant::OK);
     }
 
     /**
@@ -36,7 +41,12 @@ class DetailNonPembelianController extends Controller
      */
     public function store(StoreDetailNonPembelianRequest $request)
     {
-        //
+        $nonPembelian = DetailNonPembelian::create($request->toArray());
+
+        return response([
+            'detail_non_pembelian' => $nonPembelian,
+            'message' => 'Data berhasil ditambahkan'
+        ]);
     }
 
     /**
@@ -47,7 +57,10 @@ class DetailNonPembelianController extends Controller
      */
     public function show(DetailNonPembelian $detailNonPembelian)
     {
-        //
+        return response([
+            'detail_non_pembelian' => $detailNonPembelian,
+            'message' => 'Data berhasil ditemukan!'
+        ]);
     }
 
     /**
@@ -70,7 +83,12 @@ class DetailNonPembelianController extends Controller
      */
     public function update(UpdateDetailNonPembelianRequest $request, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        $detailNonPembelian->update($request->toArray());
+
+        return response([
+            'detail_non_pembelian' => $detailNonPembelian,
+            'message' => 'Data berhasil diperbaharui'
+        ]);
     }
 
     /**
@@ -81,6 +99,10 @@ class DetailNonPembelianController extends Controller
      */
     public function destroy(DetailNonPembelian $detailNonPembelian)
     {
-        //
+        $detailNonPembelian->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 }
