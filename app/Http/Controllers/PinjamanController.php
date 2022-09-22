@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pinjaman;
 use App\Http\Requests\StorePinjamanRequest;
 use App\Http\Requests\UpdatePinjamanRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class PinjamanController extends Controller
 {
@@ -15,7 +17,11 @@ class PinjamanController extends Controller
      */
     public function index()
     {
-        //
+        $pinjaman = Pinjaman::all();
+
+        return response([
+            'pinjaman' => KPIMResource::collection($pinjaman),
+        ], MyConstant::OK);
     }
 
     /**
@@ -36,7 +42,12 @@ class PinjamanController extends Controller
      */
     public function store(StorePinjamanRequest $request)
     {
-        //
+        $pinjaman = Pinjaman::create($request->toArray());
+
+        return response([
+            'pinjaman' => new KPIMResource($pinjaman),
+            'message' => 'Data berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -47,7 +58,10 @@ class PinjamanController extends Controller
      */
     public function show(Pinjaman $pinjaman)
     {
-        //
+        return response([
+            'pinjaman' => new KPIMResource($pinjaman),
+            'message' => 'Data berhasil ditemukan'
+        ]);
     }
 
     /**
@@ -70,7 +84,12 @@ class PinjamanController extends Controller
      */
     public function update(UpdatePinjamanRequest $request, Pinjaman $pinjaman)
     {
-        //
+        $pinjaman->update($request->toArray());
+
+        return response([
+            'pinjaman' => new KPIMResource($pinjaman),
+            'message' => 'Data berhasil diperbaharui'
+        ]);
     }
 
     /**
@@ -81,6 +100,10 @@ class PinjamanController extends Controller
      */
     public function destroy(Pinjaman $pinjaman)
     {
-        //
+        $pinjaman->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 }
