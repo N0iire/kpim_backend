@@ -29,7 +29,7 @@ class DetailPinjaman extends Model
      */
     public function barang()
     {
-        return $this->belongsToMany(Barang::class);
+        return $this->belongsTo(Barang::class, 'id_barang');
     }
 
     /**
@@ -37,7 +37,7 @@ class DetailPinjaman extends Model
      */
     public function pinjaman()
     {
-        return $this->belongsToMany(Pinjaman::class);
+        return $this->belongsTo(Pinjaman::class, 'id_pinjaman');
     }
 
 
