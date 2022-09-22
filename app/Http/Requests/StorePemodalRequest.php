@@ -13,7 +13,7 @@ class StorePemodalRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,25 @@ class StorePemodalRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id_user' => 'required',
+            'nama_pemodal' => 'required|string',
+            'nominal_modal' => 'required|numeric',
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'id_user.required' => 'ID anggota harus diisi!',
+            'nama_pemodal.required' => 'Nama pemodal harus diisi!',
+            'nama_pemodal.string' => 'Nama pemodal harus diisi dengan text!',
+            'nominal_modal.required' => 'Nominal harus diisi!',
+            'nominal_modal.numeric' => 'Nominal harus diisi dengan angka!'
         ];
     }
 }
