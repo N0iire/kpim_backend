@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pembelian;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class PembelianSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class PembelianSeeder extends Seeder
      */
     public function run()
     {
-        Pembelian::factory(100)->create();
+        User::factory(30)->create();
     }
 }

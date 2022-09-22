@@ -24,7 +24,7 @@ class StoreBarangRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'namaBarang' => ''
         ];
     }
 }

@@ -14,7 +14,10 @@ class PengeluaranFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'tgl_buat' => $this->faker->date(),
+            'total_pembelian' => $this->faker->randomNumber(8),
+            'total_pinjaman' => $this->faker->randomNumber(8),
+            'total_non_pembelian' => $this->faker->randomNumber(8)
         ];
     }
 }

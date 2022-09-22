@@ -14,7 +14,9 @@ class CicilanFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_pinjaman' => mt_rand(1, 50),
+            'tgl_bayar' => $this->faker->date(),
+            'nominal_bayar' => $this->faker->randomNumber(mt_rand(1, 5)),
         ];
     }
 }

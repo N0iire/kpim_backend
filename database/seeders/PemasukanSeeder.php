@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pemasukan;
 use Illuminate\Database\Seeder;
 
 class PemasukanSeeder extends Seeder
@@ -13,6 +14,6 @@ class PemasukanSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Pemasukan::factory(10)->create();
     }
 }

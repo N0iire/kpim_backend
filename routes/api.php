@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Auth\ApiAuthController;
+use App\Http\Controllers\CatatanBeliController;
+use App\Http\Controllers\CatatanJualController;
 use App\Http\Controllers\CicilanController;
 use App\Http\Controllers\DetailNonPembelianController;
 use App\Http\Controllers\DetailPinjamanController;
 use App\Http\Controllers\PemasukanController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PembelianController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SimpananWajibController;
@@ -13,8 +16,8 @@ use App\Http\Controllers\SimpananSukarelaController;
 use App\Http\Controllers\SimpananPokokController;
 use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PinjamanController;
-use App\Models\DetailNonPembelian;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,60 +34,23 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
     Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
     Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
+
+    Route::apiResources([
+        'barang' => BarangController::class,
+        'cicilan' => CicilanController::class,
+        'catatan-beli' => CatatanBeliController::class,
+        'catatan-jual' => CatatanJualController::class,
+        'detail-pinjaman' => DetailPinjamanController::class,
+        'detail-non-pembelian' => DetailNonPembelianController::class,
+        'simpanan-pokok' => SimpananPokokController::class,
+        'simpanan-sukarela' => SimpananSukarelaController::class,
+        'simpanan-wajib' => SimpananWajibController::class,
+        'pengeluaran' => PengeluaranController::class,
+        'penjualan' => PenjualanController::class,
+        'pemasukan' => PemasukanController::class,
+        'pembelian' => PembelianController::class,
+        'pemodal' => PemodalController::class,
+        'pinjaman' => PinjamanController::class,
+        'user' => UserController::class,
+    ]);
 });
-
-
-/**
- * Route for User
- */
-Route::resource('user', UserController::class);
-
-/**
- * Route for Simpanan Wajib
- */
-Route::resource('simpanan-wajib', SimpananWajibController::class);
-
-/**
- * Route for Simpanan Sukarela
- */
-Route::resource('simpanan-sukarela', SimpananSukarelaController::class);
-
-/**
- * Route for Simpanan Pokok
- */
-Route::resource('simpanan-pokok', SimpananPokokController::class);
-
-/**
- * Route for Pemodal
- */
-Route::resource('pemodal', PemodalController::class);
-
-/**
- * Route for Pinjaman
- */
-Route::resource('pinjaman', PinjamanController::class);
-
-/**
- * Route for Detail Pinjaman
- */
-Route::resource('detail-pinjaman', DetailPinjamanController::class);
-
-/**
- * Route for Cicilan
- */
-Route::resource('cicilan', CicilanController::class);
-
-/**
- * Route for Pemasukan
- */
-Route::resource('pemasukan', PemasukanController::class);
-
-/**
- * Route for Pengeluaran
- */
-Route::resource('pengeluaran', PengeluaranController::class);
-
-/**
- * Route for Detail Non Pembelian
- */
-Route::resource('detail-non-pembelian', DetailNonPembelianController::class);

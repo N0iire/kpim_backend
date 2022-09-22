@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('pekerjaan');
             $table->date('tgl_daftar');
             $table->boolean('status')->default(0);
-            $table->enum('jabatan', ['anggota', 'ketua','sekretaris', 'bendahara', 'pegawai-sekretariat', 'pegawai-keuangan', 'pegawai-barangjasa']);
+            $table->string('jabatan');
             $table->rememberToken();
             $table->timestamps();
         });
