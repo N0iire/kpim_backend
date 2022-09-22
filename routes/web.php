@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DetailPinjamanController;
 use App\Http\Controllers\UserController;
+use App\Models\DetailPinjaman;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +21,5 @@ Route::get('/', function () {
 });
 
 Route::get('/users', [UserController::class, 'index']);
+
+Route::resource('/detail-pinjaman', DetailPinjamanController::class);

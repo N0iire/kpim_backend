@@ -13,7 +13,7 @@ class UpdateDetailPinjamanRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class UpdateDetailPinjamanRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'jumlah' => 'required|numeric'
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'jumlah.required' => 'Jumlah barang harus diisi!',
+            'jumlah.numeric' => 'Jumlah barang harus diisi dengan angka!'
         ];
     }
 }
