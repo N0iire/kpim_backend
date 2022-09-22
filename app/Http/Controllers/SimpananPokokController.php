@@ -27,11 +27,9 @@ class SimpananPokokController extends Controller
     {
         $simpanan_pokok = SimpananPokok::all();
 
-        $response = [
-            'simpanan_pokok' => KPIMResource::collection($simpanan_pokok),
-        ];
-
-        return response($response, MyConstant::OK);
+        return response([
+            'simpanan_wajib' => KPIMResource::collection($simpanan_pokok)
+        ], MyConstant::OK);
     }
 
     /**

@@ -19,8 +19,8 @@ class SimpananWajib extends Model
     protected $fillable = [
         'id_user',
         'tgl_bayar',
-        'nominal_wajib',
-        'status_simp',
+        'nominal_bayar',
+        'status_simp_wajib',
         'ket'
     ];
 
