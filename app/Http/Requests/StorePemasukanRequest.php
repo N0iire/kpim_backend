@@ -13,7 +13,7 @@ class StorePemasukanRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class StorePemasukanRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+
         ];
     }
 }
