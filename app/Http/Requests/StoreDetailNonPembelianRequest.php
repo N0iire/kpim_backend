@@ -13,7 +13,7 @@ class StoreDetailNonPembelianRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,22 @@ class StoreDetailNonPembelianRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_transaksi' => 'required',
+            'nominal_transaksi' => 'required|numeric'
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nama_transaksi.required' => 'Nama transaksi harus diisi!',
+            'nominal_transaksi.required' => 'Nominal transaksi harus diisi!',
+            'nominal_transaksi.numeric' => 'Nominal transaksi harus diisi angka!'
         ];
     }
 }
