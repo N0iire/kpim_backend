@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cicilan;
 use App\Http\Requests\StoreCicilanRequest;
 use App\Http\Requests\UpdateCicilanRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class CicilanController extends Controller
 {
@@ -15,7 +17,11 @@ class CicilanController extends Controller
      */
     public function index()
     {
-        //
+        $cicilan = Cicilan::all();
+
+        return response([
+            'cicilan' => KPIMResource::collection($cicilan),
+        ], MyConstant::OK);
     }
 
     /**
@@ -32,12 +38,16 @@ class CicilanController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCicilanRequest  $request
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCicilanRequest $request, $id)
+    public function store(StoreCicilanRequest $request)
     {
-        //
+        $cicilan = Cicilan::create($request->toArray());
+
+        return response([
+            'cicilan' => new KPIMResource($cicilan),
+            'message' => 'Data berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -48,7 +58,10 @@ class CicilanController extends Controller
      */
     public function show(Cicilan $cicilan)
     {
-        //
+        return response([
+            'cicilan' => new KPIMResource($cicilan),
+            'message' => 'Data berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -67,12 +80,16 @@ class CicilanController extends Controller
      *
      * @param  \App\Http\Requests\UpdateCicilanRequest  $request
      * @param  \App\Models\Cicilan  $cicilan
-     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCicilanRequest $request, Cicilan $cicilan, $id)
+    public function update(UpdateCicilanRequest $request, Cicilan $cicilan)
     {
-        //
+        $cicilan->update($request->toArray());
+
+        return response([
+            'cicilan' => new KPIMResource($cicilan),
+            'message' => 'Data berhasil diperbaharui!'
+        ]);
     }
 
     /**
@@ -83,6 +100,10 @@ class CicilanController extends Controller
      */
     public function destroy(Cicilan $cicilan)
     {
-        //
+        $cicilan->delete();
+
+        return response([
+            'message' => 'Data berhasil dihapus!'
+        ]);
     }
 }

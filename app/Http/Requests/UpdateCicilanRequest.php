@@ -13,7 +13,7 @@ class UpdateCicilanRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class UpdateCicilanRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nominal_bayar' => 'required|numeric'
+        ];
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nominal_bayar.required' => 'Nominal harus diisi!',
+            'nominal_bayar.numeric' => 'Nominal harus diisi dengan angka!'
         ];
     }
 }
