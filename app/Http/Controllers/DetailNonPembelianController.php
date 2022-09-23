@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetailNonPembelian;
 use App\Http\Requests\StoreDetailNonPembelianRequest;
 use App\Http\Requests\UpdateDetailNonPembelianRequest;
+use App\Http\Resources\KPIMResource;
 use App\MyConstant;
 
 class DetailNonPembelianController extends Controller
@@ -58,20 +59,10 @@ class DetailNonPembelianController extends Controller
     public function show(DetailNonPembelian $detailNonPembelian)
     {
         return response([
-            'detail_non_pembelian' => $detailNonPembelian,
+            'detail_non_pembelian' => new KPIMResource($detailNonPembelian),
+            'pengeluaran' => new KPIMResource($detailNonPembelian->pengeluaran),
             'message' => 'Data berhasil ditemukan!'
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DetailNonPembelian  $detailNonPembelian
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailNonPembelian $detailNonPembelian)
-    {
-        //
     }
 
     /**
