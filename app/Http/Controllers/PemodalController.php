@@ -65,17 +65,6 @@ class PemodalController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pemodal  $pemodal
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pemodal $pemodal)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatePemodalRequest  $request
