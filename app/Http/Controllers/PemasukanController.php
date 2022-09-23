@@ -37,16 +37,6 @@ class PemasukanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePemasukanRequest  $request
@@ -91,40 +81,6 @@ public function store(StorePemasukanRequest $request)
         $detail_pemasukan->put('simpanan_sukarela', $simpanan_sukarela);
 
         return response($detail_pemasukan, MyConstant::OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pemasukan  $pemasukan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pemasukan $pemasukan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePemasukanRequest  $request
-     * @param  \App\Models\Pemasukan  $pemasukan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePemasukanRequest $request, Pemasukan $pemasukan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Pemasukan  $pemasukan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pemasukan $pemasukan)
-    {
-
     }
 
     /**
