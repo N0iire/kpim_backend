@@ -24,15 +24,6 @@ class SimpananSukarelaController extends Controller
         ], MyConstant::OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -60,19 +51,9 @@ class SimpananSukarelaController extends Controller
     {
         return response([
             'simpanan_sukarela' => new KPIMResource($simpananSukarela),
+            'user' => new KPIMResource($simpananSukarela->user),
             'message' => 'Data berhasil ditemukan!'
         ], MyConstant::OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SimpananSukarela  $simpananSukarela
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SimpananSukarela $simpananSukarela)
-    {
-        //
     }
 
     /**
