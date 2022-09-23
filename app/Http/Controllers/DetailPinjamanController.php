@@ -7,7 +7,6 @@ use App\Http\Requests\StoreDetailPinjamanRequest;
 use App\Http\Requests\UpdateDetailPinjamanRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
-use mysqli;
 
 class DetailPinjamanController extends Controller
 {
@@ -26,15 +25,6 @@ class DetailPinjamanController extends Controller
         ], MyConstant::OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -68,16 +58,6 @@ class DetailPinjamanController extends Controller
         ], MyConstant::OK);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DetailPinjaman  $detailPinjaman
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailPinjaman $detailPinjaman)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

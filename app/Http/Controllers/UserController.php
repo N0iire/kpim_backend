@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Enums\UserJabatan;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
 
 class UserController extends Controller
 {
@@ -18,7 +20,11 @@ class UserController extends Controller
     */
     public function index()
     {
+        $users = User::all();
 
+        return response([
+            'users' => KPIMResource::collection($users),
+        ], MyConstant::OK);
     }
 
     /**
@@ -29,17 +35,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-
-    }
-
-    /**
-     * Show the form for registering user
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
+        return response([
+            'user' => new KPIMResource($user),
+            'message' => 'Data berhasil ditemukan!'
+        ]);
     }
 
     /**
@@ -50,18 +49,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $user = User::create($request);
 
-    }
-
-    /**
-     * Show the form for editing the user
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-
+        return response([
+            'user' => new KPIMResource($user),
+            'message' => 'Data berhasil ditambah!'
+        ]);
     }
 
     /**
@@ -73,7 +66,12 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $user->update($request->toArray());
 
+        return response([
+            'user' => new KPIMResource($user),
+            'message' => 'Data berhasil diperbaharui!'
+        ]);
     }
 
     /**
@@ -84,6 +82,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->delete();
 
+        return response([
+            'message' => 'Data berhasil dihapus!'
+        ]);
     }
 }

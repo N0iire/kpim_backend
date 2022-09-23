@@ -25,16 +25,6 @@ class CicilanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCicilanRequest  $request
@@ -60,19 +50,9 @@ class CicilanController extends Controller
     {
         return response([
             'cicilan' => new KPIMResource($cicilan),
+            'pinjaman' => new KPIMResource($cicilan->pinjaman),
             'message' => 'Data berhasil ditemukan!'
         ], MyConstant::OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cicilan  $cicilan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cicilan $cicilan)
-    {
-        //
     }
 
     /**

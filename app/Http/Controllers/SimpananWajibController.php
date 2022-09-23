@@ -34,15 +34,6 @@ class SimpananWajibController extends Controller
         ], MyConstant::OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -71,19 +62,9 @@ class SimpananWajibController extends Controller
     {
         return response([
             'simpanan_wajib' => new KPIMResource($simpananWajib),
+            'user' => new KPIMResource($simpananWajib->user),
             'message' => 'Data berhasil ditemukan!'
         ], MyConstant::OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SimpananWajib  $simpananWajib
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SimpananWajib $simpananWajib)
-    {
-        //
     }
 
     /**
