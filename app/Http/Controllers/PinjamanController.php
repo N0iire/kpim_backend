@@ -25,16 +25,6 @@ class PinjamanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePinjamanRequest  $request
@@ -64,16 +54,6 @@ class PinjamanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pinjaman  $pinjaman
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pinjaman $pinjaman)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

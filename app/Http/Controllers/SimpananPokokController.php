@@ -32,15 +32,6 @@ class SimpananPokokController extends Controller
         ], MyConstant::OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -70,19 +61,9 @@ class SimpananPokokController extends Controller
     {
         return response([
             'simpanan_pokok' => new KPIMResource($simpananPokok),
+            'user' => new KPIMResource($simpananPokok->user),
             'message' => 'Berhasil mendapatkan data!'
         ], MyConstant::OK);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SimpananPokok  $simpananPokok
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SimpananPokok $simpananPokok)
-    {
-        //
     }
 
     /**
