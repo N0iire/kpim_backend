@@ -13,7 +13,7 @@ class UpdatePembelianRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdatePembelianRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id_catatanBeli' => 'required|integer|exists:catatan_belis,id',
+            'id_barang' => 'required|integer|exists:barangs,id',
+            'jumlah' => 'required|integer',
+            'sub_total' => 'required'
         ];
     }
 }

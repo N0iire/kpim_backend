@@ -22,7 +22,7 @@ class CreateBarangsTable extends Migration
             $table->boolean('status')->default(false);
             $table->double('berat');
             $table->double('harga_beli');
-            $table->double('harga_jual');
+            $table->double('harga_jual')->nullable();
             $table->timestamps();
         });
     }

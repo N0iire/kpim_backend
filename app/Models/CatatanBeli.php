@@ -9,6 +9,8 @@ class CatatanBeli extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function anggota()
     {
         return $this->belongsTo(User::class);

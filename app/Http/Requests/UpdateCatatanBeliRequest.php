@@ -13,7 +13,7 @@ class UpdateCatatanBeliRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateCatatanBeliRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id_user' => 'required|integer|exists:users,id',
+            'supplier' => 'required|string|min:3',
+            'tgl_pembelian' => 'required|date',
+            'total_pembelian' => 'required'
         ];
     }
 }

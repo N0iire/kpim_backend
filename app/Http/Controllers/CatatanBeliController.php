@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatatanBeli;
-use App\Http\Requests\StoreCatatanBeliRequest;
 use App\Http\Requests\UpdateCatatanBeliRequest;
+use App\Http\Resources\KPIMResource;
+use App\Models\Pembelian;
+use App\MyConstant;
+use Illuminate\Support\Facades\Validator;
 
 class CatatanBeliController extends Controller
 {
@@ -15,17 +18,13 @@ class CatatanBeliController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $catatanBeli = CatatanBeli::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response([
+            'status' => true,
+            'catatanBeli' => KPIMResource::collection($catatanBeli),
+            'message' => 'Data catatan beli berhasil diambil!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -34,9 +33,34 @@ class CatatanBeliController extends Controller
      * @param  \App\Http\Requests\StoreCatatanBeliRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCatatanBeliRequest $request)
+    public function store(Array $request)
     {
-        //
+        $validator = Validator::make($request, [
+            'id_user' => 'required|integer|exists:users,id',
+            'supplier' => 'required|string|min:3',
+            'tgl_pembelian' => 'required|date',
+            'total_pembelian' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ], MyConstant::BAD_REQUEST);
+        }
+
+        $validated = $validator->validated();
+
+        CatatanBeli::create($validated);
+
+        $catatanBeli = CatatanBeli::orderBy('id', 'desc')->first();
+
+        return response([
+            'status' => true,
+            'id_catatanBeli' => $catatanBeli->id,
+            'message' => 'Data catatan beli berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -47,18 +71,11 @@ class CatatanBeliController extends Controller
      */
     public function show(CatatanBeli $catatanBeli)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CatatanBeli  $catatanBeli
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CatatanBeli $catatanBeli)
-    {
-        //
+        return response([
+            'status' => true,
+            'catatanBeli' => $catatanBeli,
+            'message' => 'Data catatan beli berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -70,7 +87,14 @@ class CatatanBeliController extends Controller
      */
     public function update(UpdateCatatanBeliRequest $request, CatatanBeli $catatanBeli)
     {
-        //
+        $validated = $request->validated();
+
+        $catatanBeli->update($validated);
+
+        return response([
+            'status' => true,
+            'message' => 'Data catatan beli berhasil diubah!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -81,6 +105,11 @@ class CatatanBeliController extends Controller
      */
     public function destroy(CatatanBeli $catatanBeli)
     {
-        //
+        $catatanBeli->delete();
+
+        return response([
+            'status' => true,
+            'message' => 'Data catatan beli berhasil dihapus!'
+        ], MyConstant::OK);
     }
 }
