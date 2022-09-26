@@ -21,6 +21,7 @@ class PembelianController extends Controller
         $pembelian = Pembelian::all();
 
         return response([
+            'status' => true,
             'pembelian' => KPIMResource::collection($pembelian),
             'message' => 'Data pembelian berhasil diambil!'
         ], MyConstant::OK);
