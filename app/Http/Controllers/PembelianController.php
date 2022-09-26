@@ -129,7 +129,7 @@ class PembelianController extends Controller
     {
         $validated = $request->validated();
 
-        Pembelian::where('id', $pembelian->id)->update($validated);
+        $pembelian->update($validated);
 
         return response([
             'status' => true,

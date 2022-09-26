@@ -35,14 +35,7 @@ class CatatanBeliController extends Controller
      */
     public function store(Array $request)
     {
-        $catatanBeli = [
-            'id_user' => $request['id_user'],
-            'supplier' => $request['supplier'],
-            'tgl_pembelian' => $request['tgl_pembelian'],
-            'total_pembelian' => $request['total_pembelian']
-        ];
-
-        $validator = Validator::make($catatanBeli, [
+        $validator = Validator::make($request, [
             'id_user' => 'required|integer|exists:users,id',
             'supplier' => 'required|string|min:3',
             'tgl_pembelian' => 'required|date',
@@ -66,7 +59,7 @@ class CatatanBeliController extends Controller
         return response([
             'status' => true,
             'id_catatanBeli' => $catatanBeli->id,
-            'message' => 'Data catatan beli berhasil dibuat!'
+            'message' => 'Data catatan beli berhasil ditambahkan!'
         ], MyConstant::OK);
     }
 
@@ -96,7 +89,7 @@ class CatatanBeliController extends Controller
     {
         $validated = $request->validated();
 
-        CatatanBeli::where('id', $catatanBeli->id)->update($validated);
+        $catatanBeli->update($validated);
 
         return response([
             'status' => true,
@@ -113,7 +106,6 @@ class CatatanBeliController extends Controller
     public function destroy(CatatanBeli $catatanBeli)
     {
         $catatanBeli->delete();
-        Pembelian::where('id_catatanBeli', $catatanBeli->id)->destroy();
 
         return response([
             'status' => true,

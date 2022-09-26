@@ -98,7 +98,7 @@ class BarangController extends Controller
             $validated['harga_jual'] = 0;
         }
 
-        Barang::where('id', $barang->id)->update($validated);
+        $barang->update($validated);
 
         return response([
             'status' => true,

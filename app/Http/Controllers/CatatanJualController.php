@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatatanJual;
-use App\Http\Requests\StoreCatatanJualRequest;
 use App\Http\Requests\UpdateCatatanJualRequest;
+use App\Http\Resources\KPIMResource;
+use App\MyConstant;
+use Illuminate\Support\Facades\Validator;
 
 class CatatanJualController extends Controller
 {
@@ -15,17 +17,13 @@ class CatatanJualController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $catatanJual = CatatanJual::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response([
+            'status' => true,
+            'catatanJual' => KPIMResource::collection($catatanJual),
+            'message' => 'Data catatan jual berhasil diambil!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -34,9 +32,34 @@ class CatatanJualController extends Controller
      * @param  \App\Http\Requests\StoreCatatanJualRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCatatanJualRequest $request)
+    public function store(Array $request)
     {
-        //
+        $validator = Validator::make($request, [
+            'id_user' => 'required|integer|exists:users,id',
+            'nama_pembeli' => 'required|string|min:3',
+            'tgl_penjualan' => 'required|date',
+            'total_penjualan' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ], MyConstant::BAD_REQUEST);
+        }
+
+        $validated = $validator->validated();
+
+        CatatanJual::create($validated);
+
+        $catatanJual = CatatanJual::orderBy('id', 'desc')->first();
+
+        return response([
+            'status' => true,
+            'id_catatanJual' => $catatanJual->id,
+            'message' => 'Data catatan jual berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -47,18 +70,11 @@ class CatatanJualController extends Controller
      */
     public function show(CatatanJual $catatanJual)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CatatanJual  $catatanJual
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CatatanJual $catatanJual)
-    {
-        //
+        return response([
+            'status' => true,
+            'catatanJual' => $catatanJual,
+            'message' => 'Data catatan jual berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -70,7 +86,14 @@ class CatatanJualController extends Controller
      */
     public function update(UpdateCatatanJualRequest $request, CatatanJual $catatanJual)
     {
-        //
+        $validated = $request->validated();
+
+        $catatanJual->update($validated);
+
+        return response([
+            'status' => true,
+            'message' => 'Data catatan jual berhasil diubah!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -81,6 +104,11 @@ class CatatanJualController extends Controller
      */
     public function destroy(CatatanJual $catatanJual)
     {
-        //
+        $catatanJual->delete();
+
+        return response([
+            'status' => true,
+            'message' => 'Data catatan jual berhasil dihapus!'
+        ], MyConstant::OK);
     }
 }

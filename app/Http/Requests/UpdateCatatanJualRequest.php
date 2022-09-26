@@ -13,7 +13,7 @@ class UpdateCatatanJualRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateCatatanJualRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id_user' => 'required|integer|exists:users,id',
+            'nama_pembeli' => 'required|string|min:3',
+            'tgl_penjualan' => 'required|date',
+            'total_penjualan' => 'required'
         ];
     }
 }
