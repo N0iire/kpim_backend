@@ -13,7 +13,7 @@ class UpdateBarangRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateBarangRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_barang' => 'required|string|min:3',
+            'jenis_barang' => 'required|string|min:3',
+            'satuan' => 'nullable|string|min:2',
+            'stok' => 'required|integer',
+            'status' => 'required|boolean',
+            'berat' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+            'harga_beli' => 'required',
+            'harga_jual' => 'nullable',
         ];
     }
 }
