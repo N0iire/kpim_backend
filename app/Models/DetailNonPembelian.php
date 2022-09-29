@@ -29,6 +29,6 @@ class DetailNonPembelian extends Model
      */
     public function pengeluaran()
     {
-        return $this->belongsTo(Pengeluaran::class);
+        return $this->belongsTo(Pengeluaran::class, 'id_pengeluaran');
     }
 }

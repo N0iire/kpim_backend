@@ -28,6 +28,6 @@ class Pengeluaran extends Model
      */
     public function pembelian()
     {
-        return $this->hasMany(DetailNonPembelian::class);
+        return $this->hasMany(DetailNonPembelian::class, 'id_pengeluaran');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Penjualan;
 use App\Http\Requests\StorePenjualanRequest;
 use App\Http\Requests\UpdatePenjualanRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\User;
 use App\MyConstant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +38,9 @@ class PenjualanController extends Controller
     public function store(Request $request)
     {
         $all = $request->all();
+
+        $user = User::where('username', $all['username'])->first();
+        $all['id_user'] = $user->id;
 
         $catatanJual = (new CatatanJualController)->store($all)->getOriginalContent();
 

@@ -14,10 +14,11 @@ class PinjamanFactory extends Factory
     public function definition()
     {
         return [
-            'id_user' => mt_rand(1, 50),
+            'id_user' => mt_rand(1, 30),
             'tgl_pinjaman' => $this->faker->date(),
             'total_pinjaman' => $this->faker->randomNumber(6),
             'nominal_cicilan' => $this->faker->randomNumber(4),
+            'durasi_cicilan' => mt_rand(1, 12),
             'jatuh_tempo' => $this->faker->date(),
             'sisa_cicilan' => $this->faker->randomNumber(5),
             'status' => $this->faker->boolean(),

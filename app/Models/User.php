@@ -78,7 +78,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function simpanan_wajib()
     {
-        return $this->hasMany(SimpananWajib::class);
+        return $this->hasMany(SimpananWajib::class, 'id_user');
     }
 
     /**
@@ -88,7 +88,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function simpanan_pokok()
     {
-        return $this->hasOne(SimpananPokok::class);
+        return $this->hasOne(SimpananPokok::class, 'id_user');
     }
 
     /**
@@ -98,7 +98,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function simpanan_sukarela()
     {
-        return $this->hasMany(SimpananSukarela::class);
+        return $this->hasMany(SimpananSukarela::class, 'id_user');
     }
 
     /**
@@ -108,7 +108,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function pemodal()
     {
-        return $this->hasMany(Pemodal::class);
+        return $this->hasMany(Pemodal::class, 'id_user');
     }
 
     /**
@@ -118,7 +118,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function pinjaman()
     {
-        return $this->hasMany(Pinjaman::class);
+        return $this->hasMany(Pinjaman::class, 'id_user');
     }
 
     /**
@@ -128,7 +128,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function catatan_jual()
     {
-        return $this->hasMany(CatatanJual::class);
+        return $this->hasMany(CatatanJual::class, 'id_user');
     }
 
     /**
@@ -138,7 +138,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function catatan_beli()
     {
-        return $this->hasMany(CatatanBeli::class);
+        return $this->hasMany(CatatanBeli::class, 'id_user');
     }
 
 }

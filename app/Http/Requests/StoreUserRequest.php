@@ -24,7 +24,19 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            ''
+            'username' => 'required|string|min:3|unique:users',
+            'api_token' => 'nullable|string',
+            'password' => 'required|string|min:5',
+            'avatar' => 'nullable|string',
+            'nik' => 'required|string|min:5',
+            'nama_anggota' => 'required|string|min:3',
+            'alamat' => 'required|string',
+            'ttl' => 'required|string',
+            'pekerjaan' => 'required|string',
+            'tgl_daftar' => 'required|date',
+            'jabatan' => 'required|string',
+            'nominal_pokok' => 'required',
+            'ket' => 'nullable|string'
         ];
     }
 }

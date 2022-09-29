@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSimpananPokokRequest;
 use App\Http\Requests\UpdateSimpananPokokRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Support\Facades\Validator;
 
 class SimpananPokokController extends Controller
 {
@@ -28,6 +29,7 @@ class SimpananPokokController extends Controller
         $simpanan_pokok = SimpananPokok::all();
 
         return response([
+            'status' => true,
             'simpanan_wajib' => KPIMResource::collection($simpanan_pokok)
         ], MyConstant::OK);
     }
@@ -39,16 +41,31 @@ class SimpananPokokController extends Controller
      * @param  \App\Http\Requests\StoreSimpananPokokRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSimpananPokokRequest $request)
+    public function store(Array $request)
     {
-        $simpanan_pokok = SimpananPokok::create($request->toArray());
+        $validator = Validator::make($request, [
+            'id_user' => 'required|integer|exists:users,id',
+            'tgl_bayar' => 'required|date',
+            'nominal_pokok' => 'required',
+            'ket' => 'nullable|string'
+        ]);
 
-        return response(
-            [
-                'simpanan_pokok' => new KPIMResource($simpanan_pokok),
-                'message' => 'Simpanan Pokok berhasil ditambahkan!'
-            ]
-        , MyConstant::OK);
+        if($validator->fails())
+        {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ], MyConstant::BAD_REQUEST);
+        }
+
+        $validated = $validator->validated();
+        
+        SimpananPokok::create($validated);
+
+        return response([
+            'status' => true,
+            'message' => 'Data simpanan pokok berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -60,6 +77,7 @@ class SimpananPokokController extends Controller
     public function show(SimpananPokok $simpananPokok)
     {
         return response([
+            'status' => true,
             'simpanan_pokok' => new KPIMResource($simpananPokok),
             'user' => new KPIMResource($simpananPokok->user),
             'message' => 'Berhasil mendapatkan data!'
@@ -78,6 +96,7 @@ class SimpananPokokController extends Controller
         $simpananPokok->update($request->toArray());
 
         return response([
+            'status' => true,
             'simpanan_pokok' => new KPIMResource($simpananPokok),
             'message' => 'Berhasil mengupdate data!'
         ], MyConstant::OK);
@@ -93,6 +112,9 @@ class SimpananPokokController extends Controller
     {
         $simpananPokok->delete();
 
-        return response(['message' => 'Deleted']);
+        return response([
+            'status' => true,
+            'message' => 'Data simpanan pokok berhasil dihapus!'
+        ], MyConstant::OK);
     }
 }
