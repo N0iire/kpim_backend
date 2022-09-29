@@ -7,6 +7,8 @@ use App\Http\Requests\StoreDetailPinjamanRequest;
 use App\Http\Requests\UpdateDetailPinjamanRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class DetailPinjamanController extends Controller
 {
@@ -20,8 +22,9 @@ class DetailPinjamanController extends Controller
         $detailPinjaman = DetailPinjaman::all();
 
         return response([
+            'status' => true,
             'detail_pinjaman' => KPIMResource::collection($detailPinjaman),
-            'pinjaman' => KPIMResource::collection($detailPinjaman)
+            'message' => 'Data detail pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
 
@@ -32,13 +35,40 @@ class DetailPinjamanController extends Controller
      * @param  \App\Http\Requests\StoreDetailPinjamanRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDetailPinjamanRequest $request)
-    {
-        $detailPinjaman = DetailPinjaman::create($request->toArray());
+    public function store(Array $request)
+    {   
+        for($i = 0; $i < count($request['barang']); $i++)
+        {
+            $detailPinjaman[] = [
+                'id_barang' => $request['barang'][$i]['id'],
+                'id_pinjaman' => $request['barang'][$i]['id_pinjaman'],
+                'jumlah' => $request['barang'][$i]['jumlah'],
+                'sub_total' => $request['barang'][$i]['sub_total'],
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString()
+            ];
+
+            $validator = Validator::make($detailPinjaman[$i], [
+                'id_pinjaman' => 'required|integer|exists:pinjamans,id',
+                'id_barang' => 'required|integer|exists:barangs,id',
+                'jumlah' => 'required|integer',
+                'sub_total' => 'required'
+            ]);
+    
+            if($validator->fails())
+            {
+                return response([
+                    'status' => false,
+                    'message' => $validator->errors()
+                ], MyConstant::BAD_REQUEST);
+            }
+        }
+        
+        DetailPinjaman::insert($detailPinjaman);
 
         return response([
-            'detail_pinjaman' => new KPIMResource($detailPinjaman),
-            'message' => 'Data berhasil disimpan!'
+            'status' => true,
+            'message' => 'Data detail pinjaman berhasil ditambahkan!'
         ], MyConstant::OK);
     }
 

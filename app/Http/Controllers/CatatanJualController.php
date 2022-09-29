@@ -111,4 +111,13 @@ class CatatanJualController extends Controller
             'message' => 'Data catatan jual berhasil dihapus!'
         ], MyConstant::OK);
     }
+
+    public function detailPenjualan(CatatanJual $catatanJual)
+    {
+        return response([
+            'status' => true,
+            'detailPenjualan' => new KPIMResource($catatanJual->penjualan),
+            'message' => 'Data detail penjualan berhasil diambil!'
+        ], MyConstant::OK);
+    }
 }

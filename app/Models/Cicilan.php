@@ -28,6 +28,6 @@ class Cicilan extends Model
      */
     public function pinjaman()
     {
-        return $this->belongsTo(PinjamanController::class);
+        return $this->belongsTo(PinjamanController::class, 'id_pinjaman');
     }
 }

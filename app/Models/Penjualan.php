@@ -13,11 +13,11 @@ class Penjualan extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class, 'id_barang');
     }
 
     public function catatanJual()
     {
-        return $this->belongsTo(CatatanJual::class);
+        return $this->belongsTo(CatatanJual::class, 'id_catatanJual');
     }
 }

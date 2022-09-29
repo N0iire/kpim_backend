@@ -31,10 +31,26 @@ use App\Http\Controllers\PinjamanController;
 */
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
+
+    // POST
     Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
     Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
     Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
+    Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
+    Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
+    Route::post('/simpanan-wajib/me', [UserController::class, 'simpananWajib']);
+    Route::post('/simpanan-pokok/me', [UserController::class, 'simpananPokok']);
+    Route::post('/simpanan-sukarela/me', [UserController::class, 'simpananSukarela']);
+    Route::post('/pinjaman/me', [UserController::class, 'pinjaman']);
+    
+    // GET
+    Route::get('/pinjaman/details/{pinjaman}', [PinjamanController::class, 'detailPinjaman']);
+    Route::get('/cicilan/{pinjaman}', [PinjamanController::class, 'cicilan']);
+    Route::get('/pembelian/details/{catatanBeli}', [CatatanBeliController::class, 'detailPembelian']);
+    Route::get('/penjualan/details/{catatanJual}', [CatatanJualController::class, 'detailPenjualan']);
+    Route::get('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminderCicilan']);
 
+    // RESOURCES
     Route::apiResources([
         'barang' => BarangController::class,
         'cicilan' => CicilanController::class,
@@ -53,8 +69,4 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         'pinjaman' => PinjamanController::class,
         'user' => UserController::class,
     ]);
-
-    Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
-
-    Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
 });

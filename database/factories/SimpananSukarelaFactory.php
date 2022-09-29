@@ -14,7 +14,7 @@ class SimpananSukarelaFactory extends Factory
     public function definition()
     {
         return [
-            'id_user' => mt_rand(1, 50),
+            'id_user' => mt_rand(1, 30),
             'tgl_bayar' => $this->faker->date(),
             'nominal_sukarela' => $this->faker->randomNumber(5),
         ];

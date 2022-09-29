@@ -14,6 +14,6 @@ class SimpananPokokSeeder extends Seeder
      */
     public function run()
     {
-        SimpananPokok::factory(50)->create();
+        SimpananPokok::factory(30)->create();
     }
 }

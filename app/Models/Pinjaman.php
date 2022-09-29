@@ -21,6 +21,7 @@ class Pinjaman extends Model
         'id_user',
         'tgl_pinjaman',
         'total_pinjaman',
+        'durasi_cicilan',
         'nominal_cicilan',
         'jatuh_tempo',
         'sisa_cicilan',
@@ -32,7 +33,7 @@ class Pinjaman extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     /**
@@ -40,7 +41,7 @@ class Pinjaman extends Model
      */
     public function cicilan()
     {
-        return $this->hasMany(Cicilan::class);
+        return $this->hasMany(Cicilan::class, 'id_pinjaman');
     }
 
     /**
@@ -48,6 +49,6 @@ class Pinjaman extends Model
      */
     public function detail_pinjaman()
     {
-        return $this->hasMany(DetailPinjaman::class);
+        return $this->hasMany(DetailPinjaman::class, 'id_pinjaman');
     }
 }

@@ -73,7 +73,7 @@ class CatatanBeliController extends Controller
     {
         return response([
             'status' => true,
-            'catatanBeli' => $catatanBeli,
+            'catatanBeli' => new KPIMResource($catatanBeli),
             'message' => 'Data catatan beli berhasil ditemukan!'
         ], MyConstant::OK);
     }
@@ -110,6 +110,15 @@ class CatatanBeliController extends Controller
         return response([
             'status' => true,
             'message' => 'Data catatan beli berhasil dihapus!'
+        ], MyConstant::OK);
+    }
+    
+    public function detailPembelian(CatatanBeli $catatanBeli)
+    {
+        return response([
+            'status' => true,
+            'detailPembelian' => new KPIMResource($catatanBeli->pembelian),
+            'message' => 'Data detail pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
 }

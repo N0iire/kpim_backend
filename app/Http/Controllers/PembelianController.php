@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pembelian;
 use App\Http\Requests\UpdatePembelianRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\User;
 use App\MyConstant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,9 @@ class PembelianController extends Controller
     public function store(Request $request)
     {
         $all = $request->all();
+
+        $user = User::where('username', $all['username'])->first();
+        $all['id_user'] = $user->id;
 
         $catatanBeli = (new CatatanBeliController)->store($all)->getOriginalContent();
         

@@ -19,6 +19,7 @@ class CreatePinjamansTable extends Migration
             $table->date('tgl_pinjaman');
             $table->double('total_pinjaman');
             $table->double('nominal_cicilan');
+            $table->integer('durasi_cicilan');
             $table->date('jatuh_tempo');
             $table->double('sisa_cicilan');
             $table->boolean('status');

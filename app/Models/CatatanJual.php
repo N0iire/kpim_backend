@@ -13,11 +13,11 @@ class CatatanJual extends Model
 
     public function anggota()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function penjualan()
     {
-        return $this->hasMany(Penjualan::class);
+        return $this->hasMany(Penjualan::class, 'id_catatanJual');
     }
 }

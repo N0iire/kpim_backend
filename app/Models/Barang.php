@@ -13,16 +13,16 @@ class Barang extends Model
 
     public function pembelian()
     {
-        return $this->hasMany(Pembelian::class);
+        return $this->hasMany(Pembelian::class, 'id_barang');
     }
 
     public function penjualan()
     {
-        return $this->hasMany(Penjualan::class);
+        return $this->hasMany(Penjualan::class, 'id_barang');
     }
 
     public function detailPinjam()
     {
-        return $this->hasMany(DetailPinjaman::class, );
+        return $this->hasMany(DetailPinjaman::class, 'id_barang');
     }
 }

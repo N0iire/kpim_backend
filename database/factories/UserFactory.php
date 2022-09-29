@@ -28,6 +28,7 @@ class UserFactory extends Factory
             'status' => $this->faker->boolean(),
             'jabatan' => collect(['anggota', 'ketua', 'sekretaris', 'bendahara', 'pegawai-sekretariat', 'pegawai-keuangan',
             'pegawai-barangjasa'])->random(),
+            'keanggotaan' => $this->faker->boolean(),
         ];
     }
 

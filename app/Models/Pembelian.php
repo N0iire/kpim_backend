@@ -13,11 +13,11 @@ class Pembelian extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class, 'id_barang');
     }
 
     public function catatanBeli()
     {
-        return $this->belongsTo(CatatanBeli::class);
+        return $this->belongsTo(CatatanBeli::class, 'id_catatanBeli');
     }
 }

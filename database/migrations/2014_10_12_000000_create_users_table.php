@@ -25,8 +25,9 @@ class CreateUsersTable extends Migration
             $table->text('ttl');
             $table->string('pekerjaan');
             $table->date('tgl_daftar');
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(1);
             $table->string('jabatan');
+            $table->boolean('keanggotaan')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
