@@ -17,6 +17,7 @@ class SimpananSukarelaController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-simpanan');
         $simpananSukarela = SimpananSukarela::all();
 
         return response([
@@ -33,6 +34,7 @@ class SimpananSukarelaController extends Controller
      */
     public function store(StoreSimpananSukarelaRequest $request)
     {
+        $this->authorize('can-create-simpanan');
         $simpananSukarela = SimpananSukarela::create($request->toArray());
 
         return response([
@@ -49,6 +51,7 @@ class SimpananSukarelaController extends Controller
      */
     public function show(SimpananSukarela $simpananSukarela)
     {
+        $this->authorize('can-view-simpanan');
         return response([
             'simpanan_sukarela' => new KPIMResource($simpananSukarela),
             'user' => new KPIMResource($simpananSukarela->user),
@@ -65,6 +68,8 @@ class SimpananSukarelaController extends Controller
      */
     public function update(UpdateSimpananSukarelaRequest $request, SimpananSukarela $simpananSukarela)
     {
+        $this->authorize('can-update-simpanan');
+
         $simpananSukarela->update($request->toArray());
 
         return response([
@@ -81,6 +86,8 @@ class SimpananSukarelaController extends Controller
      */
     public function destroy(SimpananSukarela $simpananSukarela)
     {
+        $this->authorize('can-delete-simpanan');
+
         $simpananSukarela->delete();
 
         return response([

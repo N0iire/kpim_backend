@@ -29,6 +29,8 @@ class PemasukanController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-laporan');
+
         $pemasukan = Pemasukan::all();
 
         return response([
@@ -44,6 +46,8 @@ class PemasukanController extends Controller
      */
 public function store(StorePemasukanRequest $request)
     {
+        $this->authorize('can-create-laporan');
+
         $pemasukan = Pemasukan::create($request->toArray());
 
         return response([
@@ -59,6 +63,8 @@ public function store(StorePemasukanRequest $request)
      */
     public function show($string)
     {
+        $this->authorize('can-view-laporan');
+
         $tanggal = explode('-', $string);
         $bulan = array_pop($tanggal);
         $tahun = implode(' ', $tanggal);
@@ -91,6 +97,8 @@ public function store(StorePemasukanRequest $request)
      */
     public function find(Request $request)
     {
+        $this->authorize('can-find-laporan');
+
         $tahun = $request->tgl_awal; // Tahun dari input
         $pemasukan_perbulan = new SupportCollection(); // Array
 

@@ -22,6 +22,7 @@ class PengeluaranController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-laporan');
         $pengeluaran = Pengeluaran::all();
 
         return response([
@@ -38,6 +39,8 @@ class PengeluaranController extends Controller
      */
     public function store(StorePengeluaranRequest $request)
     {
+        $this->authorize('can-create-laporan');
+
         $pengeluaran = Pengeluaran::create($request->toArray());
 
         return response([
@@ -54,6 +57,8 @@ class PengeluaranController extends Controller
      */
     public function find(Request $request)
     {
+        $this->authorize('can-find-laporan');
+
         $tahun = $request->tgl_awal; // Tahun dari input
         $pengeluaran_perbulan = new Collection();
 
