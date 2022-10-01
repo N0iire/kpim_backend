@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\SimpananWajib;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class SimpananWajibPolicy
 {
@@ -18,7 +19,8 @@ class SimpananWajibPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
+
     }
 
     /**
@@ -30,7 +32,8 @@ class SimpananWajibPolicy
      */
     public function view(User $user, SimpananWajib $simpananWajib)
     {
-        //
+        $jabatan = $user->jabatan->value;
+        return true;
     }
 
     /**
@@ -41,7 +44,14 @@ class SimpananWajibPolicy
      */
     public function create(User $user)
     {
-        //
+        $jabatan = $user->jabatan->value;
+        if($jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -53,7 +63,14 @@ class SimpananWajibPolicy
      */
     public function update(User $user, SimpananWajib $simpananWajib)
     {
-        //
+        $jabatan = $user->jabatan->value;
+        if($user->id = $simpananWajib->user->id || $jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -65,7 +82,14 @@ class SimpananWajibPolicy
      */
     public function delete(User $user, SimpananWajib $simpananWajib)
     {
-        //
+        $jabatan = $user->jabatan->value;
+        if($jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**

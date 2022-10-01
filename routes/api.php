@@ -42,7 +42,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/simpanan-pokok/me', [UserController::class, 'simpananPokok']);
     Route::post('/simpanan-sukarela/me', [UserController::class, 'simpananSukarela']);
     Route::post('/pinjaman/me', [UserController::class, 'pinjaman']);
-    
+
     // GET
     Route::get('/pinjaman/details/{pinjaman}', [PinjamanController::class, 'detailPinjaman']);
     Route::get('/cicilan/{pinjaman}', [PinjamanController::class, 'cicilan']);
