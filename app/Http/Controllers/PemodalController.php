@@ -17,21 +17,12 @@ class PemodalController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-pemodal');
         $pemodal = Pemodal::all();
 
         return response([
             'pemodal' => KPIMResource::collection($pemodal),
         ], MyConstant::OK);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -42,6 +33,8 @@ class PemodalController extends Controller
      */
     public function store(StorePemodalRequest $request)
     {
+        $this->authorize('can-create-pemodal');
+
         $pemodal = Pemodal::create($request->toArray());
 
         return response([
@@ -58,6 +51,8 @@ class PemodalController extends Controller
      */
     public function show(Pemodal $pemodal)
     {
+        $this->authorize('can-view-pemodal');
+
         return response([
             'pemodal' => new KPIMResource($pemodal->toArray()),
             'message' => 'Data berhasil ditemukan!'
@@ -73,6 +68,8 @@ class PemodalController extends Controller
      */
     public function update(UpdatePemodalRequest $request, Pemodal $pemodal)
     {
+        $this->authorize('can-update-pemodal');
+
         $pemodal->update($request->toArray());
 
         return response([
@@ -89,6 +86,8 @@ class PemodalController extends Controller
      */
     public function destroy(Pemodal $pemodal)
     {
+        $this->authorize('can-delete-pemodal');
+
         $pemodal->delete();
 
         return response([

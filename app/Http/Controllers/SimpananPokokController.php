@@ -26,6 +26,8 @@ class SimpananPokokController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-simpanan');
+
         $simpanan_pokok = SimpananPokok::all();
 
         return response([
@@ -43,6 +45,8 @@ class SimpananPokokController extends Controller
      */
     public function store(Array $request)
     {
+        $this->authorize('can-create-simpanan');
+
         $validator = Validator::make($request, [
             'id_user' => 'required|integer|exists:users,id',
             'tgl_bayar' => 'required|date',
@@ -59,7 +63,7 @@ class SimpananPokokController extends Controller
         }
 
         $validated = $validator->validated();
-        
+
         SimpananPokok::create($validated);
 
         return response([
@@ -76,6 +80,8 @@ class SimpananPokokController extends Controller
      */
     public function show(SimpananPokok $simpananPokok)
     {
+        $this->authorize('can-view-simpanan');
+
         return response([
             'status' => true,
             'simpanan_pokok' => new KPIMResource($simpananPokok),
@@ -93,6 +99,8 @@ class SimpananPokokController extends Controller
      */
     public function update(UpdateSimpananPokokRequest $request, SimpananPokok $simpananPokok)
     {
+        $this->authorize('can-update-simpanan');
+
         $simpananPokok->update($request->toArray());
 
         return response([
@@ -110,6 +118,8 @@ class SimpananPokokController extends Controller
      */
     public function destroy(SimpananPokok $simpananPokok)
     {
+        $this->authorize('can-delete-simpanan');
+
         $simpananPokok->delete();
 
         return response([

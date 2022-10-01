@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
@@ -17,7 +18,14 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //
+
+        $jabatan = $user->jabatan->value;
+        if($jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretriat')
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -28,7 +36,13 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        //
+        $jabatan = $user->jabatan->value;
+        if(Auth::user()->id = $user->id || $jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretriatan')
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -50,7 +64,7 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        //
+        return Auth::user()->id = $user->id;
     }
 
     /**
@@ -61,7 +75,13 @@ class UserPolicy
      */
     public function delete(User $user)
     {
-        //
+        $jabatan = $user->jabatan->value;
+
+        if($jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretariat' || $jabatan == 'ketua')
+        {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSimpananWajibRequest;
 use App\Http\Requests\UpdateSimpananWajibRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Support\Facades\Auth;
 
 class SimpananWajibController extends Controller
 {
@@ -27,6 +28,7 @@ class SimpananWajibController extends Controller
      */
     public function index()
     {
+        $this->authorize('can-viewAny-simpanan');
         $simpananWajib = SimpananWajib::all();
 
         return response([
@@ -44,6 +46,7 @@ class SimpananWajibController extends Controller
      */
     public function store(StoreSimpananWajibRequest $request)
     {
+        $this->authorize('can-created-simpanan');
         $simpananWajib = SimpananWajib::create($request->toArray());
 
         return response([
@@ -60,6 +63,7 @@ class SimpananWajibController extends Controller
      */
     public function show(SimpananWajib $simpananWajib)
     {
+        $this->authorize('can-view-simpanan');
         return response([
             'simpanan_wajib' => new KPIMResource($simpananWajib),
             'user' => new KPIMResource($simpananWajib->user),
@@ -76,6 +80,7 @@ class SimpananWajibController extends Controller
      */
     public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib)
     {
+        $this->authorize('can-update-simpanan');
         $simpananWajib->update($request->toArray());
 
         return response([
@@ -92,6 +97,7 @@ class SimpananWajibController extends Controller
      */
     public function destroy(SimpananWajib $simpananWajib)
     {
+        $this->authorize('can-delete-simpanan');
         $simpananWajib->delete();
 
         return response([
