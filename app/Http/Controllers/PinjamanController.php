@@ -142,22 +142,56 @@ class PinjamanController extends Controller
         ], MyConstant::OK);
     }
 
+    public function bayarCicilan(Pinjaman $pinjaman)
+    {
+        $update['sisa_cicilan'] = $pinjaman->sisa_cicilan - $pinjaman->nominal_cicilan;
+        $cicilan = 
+
+        if($update['sisa_cicilan'] == 0)
+        {
+            $update['status'] == true;
+        }
+        if(!$update['sisa_cicilan'] == 0 && )
+        {
+            $jatuhTempo = Carbon::createFromTimestamp($pinjaman->jatuh_tempo);
+            $update['jatuh_tempo'] = $jatuhTempo->addDays(30);
+        }
+
+        $pinjaman->update($update);
+
+
+
+        return response([
+            'status' => true,
+            'message' => 'Cicilan berhasil dibayar!'
+        ], MyConstant::OK);
+    }
+
     public function reminderCicilan(Pinjaman $pinjaman)
     {
         $jatuhTempo = Carbon::createFromTimestamp($pinjaman->jatuh_tempo);
         $now = Carbon::createFromTimestamp(Carbon::now()->toDateTimeString());
 
-        $result = $now->eq($jatuhTempo);
+        if($now->gt($jatuhTempo))
+        {
+            return response([
+                'status' => true,
+                'jatuhTempo' => $jatuhTempo,
+                'message' => 'Jatuh tempo sudah terlewat!'
+            ], MyConstant::OK);
+        }
 
         return response([
             'status' => true,
             'jatuhTempo' => $jatuhTempo,
-            'message' => 'Data jatuh tempo berhasil dibuat!'
+            'message' => 'Jatuh tempo belum terlewat!'
         ], MyConstant::OK);
     }
 
-    public function bayarCicilan()
+    public function totalPinjamanFalse(User $user)
     {
-        
+        $pinjaman = Pinjaman::where('id_user', $user->id)->get();
+
+        return $pinjaman;
     }
 }

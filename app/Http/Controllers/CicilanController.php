@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCicilanRequest;
 use App\Http\Requests\UpdateCicilanRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Support\Facades\Validator;
 
 class CicilanController extends Controller
 {
@@ -30,12 +31,14 @@ class CicilanController extends Controller
      * @param  \App\Http\Requests\StoreCicilanRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCicilanRequest $request)
+    public function store(Array $request)
     {
-        $cicilan = Cicilan::create($request->toArray());
+        $validator = Validator::make($request, [
+            ''
+        ])
 
         return response([
-            'cicilan' => new KPIMResource($cicilan),
+            'status' => true,
             'message' => 'Data berhasil ditambahkan!'
         ], MyConstant::OK);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -56,7 +55,7 @@ class UserController extends Controller
         $validated['status'] = true;
         $validated['keanggotaan'] = true;
 
-        $user = User::create($validated);
+        User::create($validated);
 
         $id_user = User::where('username', $validated['username'])->first();
         $validated['id_user'] = $id_user['id'];
@@ -113,13 +112,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function simpananWajib(Request $request)
+    public function simpananWajib(User $user)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|exists:users'
-        ]);
-
-        $user = User::where('username', $validated['username']);
         $simpananWajib = $user->simpanan_wajib;
         
         return response([
@@ -129,13 +123,8 @@ class UserController extends Controller
         ], MyConstant::OK);
     }
 
-    public function simpananPokok(Request $request)
+    public function simpananPokok(User $user)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|exists:users'
-        ]);
-
-        $user = User::where('username', $validated['username']);
         $simpananPokok = $user->simpanan_pokok;
         
         return response([
@@ -145,13 +134,8 @@ class UserController extends Controller
         ], MyConstant::OK);
     }
 
-    public function simpananSukarela(Request $request)
+    public function simpananSukarela(User $user)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|exists:users'
-        ]);
-
-        $user = User::where('username', $validated['username']);
         $simpananSukarela = $user->simpanan_sukarela;
         
         return response([
@@ -161,13 +145,8 @@ class UserController extends Controller
         ], MyConstant::OK);
     }
 
-    public function pinjaman(Request $request)
+    public function pinjaman(User $user)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|exists:users'
-        ]);
-
-        $user = User::where('username', $validated['username']);
         $pinjaman = $user->pinjaman;
 
         return response([

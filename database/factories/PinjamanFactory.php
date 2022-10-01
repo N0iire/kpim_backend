@@ -19,7 +19,7 @@ class PinjamanFactory extends Factory
             'total_pinjaman' => $this->faker->randomNumber(6),
             'nominal_cicilan' => $this->faker->randomNumber(4),
             'durasi_cicilan' => mt_rand(1, 12),
-            'jatuh_tempo' => $this->faker->date(),
+            'jatuh_tempo' => $this->faker->date(). " " .$this->faker->time(),
             'sisa_cicilan' => $this->faker->randomNumber(5),
             'status' => $this->faker->boolean(),
         ];
