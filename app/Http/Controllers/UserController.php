@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Enums\UserJabatan;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -19,6 +20,7 @@ class UserController extends Controller
     */
     public function index()
     {
+        $this->authorize('can-viewAny-user');
         $users = User::all();
 
         return response([
@@ -36,6 +38,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('can-view-user');
         return response([
             'status' => true,
             'user' => new KPIMResource($user),
@@ -86,6 +89,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('can-update-user');
         $validated = $request->validated();
 
         $user->update($validated);
@@ -104,6 +108,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('can-delete-user');
         $user->delete();
 
         return response([
@@ -115,7 +120,7 @@ class UserController extends Controller
     public function simpananWajib(User $user)
     {
         $simpananWajib = $user->simpanan_wajib;
-        
+
         return response([
             'status' => true,
             'simpananWajib' => new KPIMResource($simpananWajib),
@@ -126,7 +131,7 @@ class UserController extends Controller
     public function simpananPokok(User $user)
     {
         $simpananPokok = $user->simpanan_pokok;
-        
+
         return response([
             'status' => true,
             'simpananPokok' => new KPIMResource($simpananPokok),
@@ -137,7 +142,7 @@ class UserController extends Controller
     public function simpananSukarela(User $user)
     {
         $simpananSukarela = $user->simpanan_sukarela;
-        
+
         return response([
             'status' => true,
             'simpananSukarela' => new KPIMResource($simpananSukarela),

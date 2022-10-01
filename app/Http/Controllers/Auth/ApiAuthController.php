@@ -31,6 +31,8 @@ class ApiAuthController extends Controller
      */
     public function register(RegisterRequest $registerRequest)
     {
+        $this->authorize('can-create-user');
+
         $registerRequest['password'] = Hash::make($registerRequest['password']);
         $user = User::create($registerRequest->toArray());
         if ($user){
