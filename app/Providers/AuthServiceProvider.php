@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\SimpananWajib;
 use App\Models\User;
-use App\Policies\SimpananWajibPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;

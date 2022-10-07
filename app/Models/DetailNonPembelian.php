@@ -24,6 +24,23 @@ class DetailNonPembelian extends Model
         'ket'
     ];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['pengeluaran'] ?? false, function($query, $pengeluaran)
+        {
+            return $query->whereHas('pengeluaran', function($query) use($pengeluaran)
+            {
+                $query->where('id', $pengeluaran);
+            });
+        });
+
+        $query->when($filters['search'] ?? false, function($query, $search)
+        {
+            return $query->where('nama_transaksi', 'like', '%'.$search.'%')
+                         ->orWhere('tgl_transaksi', 'like', '%'.$search.'%');
+        });
+    }
+
     /**
      * Get the pengeluaran that owns the detail non pembelian
      */

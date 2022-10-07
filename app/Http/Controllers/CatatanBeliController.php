@@ -18,7 +18,7 @@ class CatatanBeliController extends Controller
      */
     public function index()
     {
-        $catatanBeli = CatatanBeli::all();
+        $catatanBeli = CatatanBeli::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
@@ -110,15 +110,6 @@ class CatatanBeliController extends Controller
         return response([
             'status' => true,
             'message' => 'Data catatan beli berhasil dihapus!'
-        ], MyConstant::OK);
-    }
-    
-    public function detailPembelian(CatatanBeli $catatanBeli)
-    {
-        return response([
-            'status' => true,
-            'detailPembelian' => new KPIMResource($catatanBeli->pembelian),
-            'message' => 'Data detail pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
 }

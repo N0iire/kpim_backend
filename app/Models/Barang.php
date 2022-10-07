@@ -11,6 +11,14 @@ class Barang extends Model
 
     protected $guarded = ['id'];
 
+    public function scopeFilter($query, $filter)
+    {
+        $query->when($filter ?? false, function($query, $search)
+        {
+            return $query->where('nama_barang', 'like', '%'.$search.'%');
+        });
+    }
+
     public function pembelian()
     {
         return $this->hasMany(Pembelian::class, 'id_barang');

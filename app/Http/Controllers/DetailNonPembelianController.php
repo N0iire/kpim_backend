@@ -17,10 +17,12 @@ class DetailNonPembelianController extends Controller
      */
     public function index()
     {
-        $nonPembelian = DetailNonPembelian::all();
+        $nonPembelian = DetailNonPembelian::filter(request(['pengeluaran', 'search']))->get();
 
         return response([
-            'detail_non_pembelian' => $nonPembelian,
+            'status' => true,
+            'detail_non_pembelian' => new KPIMResource($nonPembelian),
+            'message' => 'Data detail non pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
 
@@ -32,12 +34,14 @@ class DetailNonPembelianController extends Controller
      */
     public function store(StoreDetailNonPembelianRequest $request)
     {
-        $nonPembelian = DetailNonPembelian::create($request->toArray());
+        $validated = $request->validated();
+
+        DetailNonPembelian::create($validated);
 
         return response([
-            'detail_non_pembelian' => $nonPembelian,
-            'message' => 'Data berhasil ditambahkan'
-        ]);
+            'status' => true,
+            'message' => 'Data detail non pembelian berhasil ditambahkan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -49,10 +53,10 @@ class DetailNonPembelianController extends Controller
     public function show(DetailNonPembelian $detailNonPembelian)
     {
         return response([
+            'status' => true,
             'detail_non_pembelian' => new KPIMResource($detailNonPembelian),
-            'pengeluaran' => new KPIMResource($detailNonPembelian->pengeluaran),
-            'message' => 'Data berhasil ditemukan!'
-        ]);
+            'message' => 'Data detail non pembelian berhasil ditemukan!'
+        ], MyConstant::OK);
     }
 
     /**
@@ -64,12 +68,15 @@ class DetailNonPembelianController extends Controller
      */
     public function update(UpdateDetailNonPembelianRequest $request, DetailNonPembelian $detailNonPembelian)
     {
-        $detailNonPembelian->update($request->toArray());
+        $validated = $request->validated();
+
+        $detailNonPembelian->update($validated);
 
         return response([
+            'status' => true,
             'detail_non_pembelian' => $detailNonPembelian,
-            'message' => 'Data berhasil diperbaharui'
-        ]);
+            'message' => 'Data detail non pembelian berhasil diperbaharui'
+        ], MyConstant::OK);
     }
 
     /**
@@ -83,7 +90,8 @@ class DetailNonPembelianController extends Controller
         $detailNonPembelian->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus'
-        ]);
+            'status' => true,
+            'message' => 'Data detail non pembelian berhasil dihapus'
+        ], MyConstant::OK);
     }
 }

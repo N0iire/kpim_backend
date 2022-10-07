@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPinjaman;
-use App\Http\Requests\StoreDetailPinjamanRequest;
 use App\Http\Requests\UpdateDetailPinjamanRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\Barang;
 use App\MyConstant;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class DetailPinjamanController extends Controller
@@ -19,11 +18,11 @@ class DetailPinjamanController extends Controller
      */
     public function index()
     {
-        $detailPinjaman = DetailPinjaman::all();
+        $detailPinjaman = DetailPinjaman::filter(['pinjaman', 'barang', 'search'])->get();
 
         return response([
             'status' => true,
-            'detail_pinjaman' => KPIMResource::collection($detailPinjaman),
+            'detail_pinjaman' => new KPIMResource($detailPinjaman),
             'message' => 'Data detail pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -52,7 +51,7 @@ class DetailPinjamanController extends Controller
                 'id_pinjaman' => 'required|integer|exists:pinjamans,id',
                 'id_barang' => 'required|integer|exists:barangs,id',
                 'jumlah' => 'required|integer',
-                'sub_total' => 'required'
+                'sub_total' => 'required|numeric'
             ]);
     
             if($validator->fails())
@@ -81,10 +80,9 @@ class DetailPinjamanController extends Controller
     public function show(DetailPinjaman $detailPinjaman)
     {
         return response([
+            'status' => true,
             'detail_pinjaman' => new KPIMResource($detailPinjaman),
-            'pinjaman' => new KPIMResource($detailPinjaman->pinjaman),
-            'barang' => new KPIMResource($detailPinjaman->barang),
-            'message' => 'Data berhasil ditemukan'
+            'message' => 'Data pinjaman berhasil ditemukan!'
         ], MyConstant::OK);
     }
 
@@ -98,11 +96,22 @@ class DetailPinjamanController extends Controller
      */
     public function update(UpdateDetailPinjamanRequest $request, DetailPinjaman $detailPinjaman)
     {
-        $detailPinjaman->update($request->toArray());
+        $validated = $request->validated();
+
+        $barang = Barang::where('nama_barang', $validated['nama_barang'])
+                        ->where('berat', $validated['berat'])
+                        ->first();
+        $id_barang = $barang->id;
+
+        $validated['id_barang'] = $id_barang;
+        unset($validated['nama_barang']);
+        unset($validated['berat']);
+
+        $detailPinjaman->update($validated);
 
         return response([
-            'detail_pinjaman' => new KPIMResource($detailPinjaman),
-            'message' => 'Data berhasil diperbaharui'
+            'status' => true,
+            'message' => 'Data pinjaman berhasil diperbaharui!'
         ], MyConstant::OK);
     }
 
@@ -117,7 +126,8 @@ class DetailPinjamanController extends Controller
         $detailPinjaman->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus!'
-        ]);
+            'status' => true,
+            'message' => 'Data pinjaman berhasil dihapus!'
+        ], MyConstant::OK);
     }
 }

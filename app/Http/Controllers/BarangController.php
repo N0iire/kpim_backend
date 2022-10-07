@@ -17,7 +17,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $barang = Barang::all();
+        $barang = Barang::filter(request('search'))->get();
 
         return response([
             'status' => true,
@@ -92,11 +92,6 @@ class BarangController extends Controller
     public function update(UpdateBarangRequest $request, Barang $barang)
     {
         $validated = $request->validated();
-
-        if(!$validated['harga_jual'])
-        {
-            $validated['harga_jual'] = 0;
-        }
 
         $barang->update($validated);
 

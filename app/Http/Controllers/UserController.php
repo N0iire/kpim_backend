@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Enums\UserJabatan;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,12 +19,12 @@ class UserController extends Controller
     */
     public function index()
     {
-        $this->authorize('can-viewAny-user');
-        $users = User::all();
+        // $this->authorize('can-viewAny-user');
+        $users = User::filter(request('search'))->get();
 
         return response([
             'status' => true,
-            'users' => KPIMResource::collection($users),
+            'users' => new KPIMResource($users),
             'message' => 'Data anggota berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -55,6 +54,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
         $validated['status'] = true;
         $validated['keanggotaan'] = true;
 
@@ -115,49 +115,5 @@ class UserController extends Controller
             'status' => true,
             'message' => 'Data anggota berhasil dihapus!'
         ]);
-    }
-
-    public function simpananWajib(User $user)
-    {
-        $simpananWajib = $user->simpanan_wajib;
-
-        return response([
-            'status' => true,
-            'simpananWajib' => new KPIMResource($simpananWajib),
-            'message' => 'Data simpanan wajib berhasil diambil!'
-        ], MyConstant::OK);
-    }
-
-    public function simpananPokok(User $user)
-    {
-        $simpananPokok = $user->simpanan_pokok;
-
-        return response([
-            'status' => true,
-            'simpananPokok' => new KPIMResource($simpananPokok),
-            'message' => 'Data simpanan pokok berhasil diambil!'
-        ], MyConstant::OK);
-    }
-
-    public function simpananSukarela(User $user)
-    {
-        $simpananSukarela = $user->simpanan_sukarela;
-
-        return response([
-            'status' => true,
-            'simpananSukarela' => new KPIMResource($simpananSukarela),
-            'message' => 'Data simpanan sukarela berhasil diambil!'
-        ], MyConstant::OK);
-    }
-
-    public function pinjaman(User $user)
-    {
-        $pinjaman = $user->pinjaman;
-
-        return response([
-            'status' => true,
-            'pinjaman' => new KPIMResource($pinjaman),
-            'message' => 'Data pinjaman berhasil diambil!'
-        ], MyConstant::OK);
     }
 }

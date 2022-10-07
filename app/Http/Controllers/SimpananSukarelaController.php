@@ -17,11 +17,13 @@ class SimpananSukarelaController extends Controller
      */
     public function index()
     {
-        $this->authorize('can-viewAny-simpanan');
-        $simpananSukarela = SimpananSukarela::all();
+        // $this->authorize('can-viewAny-simpanan');
+        $simpananSukarela = SimpananSukarela::filter(request(['username', 'search']))->get();
 
         return response([
-            'simpanan_sukarela' => KPIMResource::collection($simpananSukarela)
+            'status' => true,
+            'simpanan_sukarela' => KPIMResource::collection($simpananSukarela),
+            'message' => 'Data simpanan sukarela berhasil diambil!'
         ], MyConstant::OK);
     }
 

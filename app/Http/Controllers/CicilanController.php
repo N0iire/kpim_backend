@@ -18,10 +18,12 @@ class CicilanController extends Controller
      */
     public function index()
     {
-        $cicilan = Cicilan::all();
+        $cicilan = Cicilan::filter(request(['pinjaman', 'search']))->get();
 
         return response([
+            'status' => true,
             'cicilan' => KPIMResource::collection($cicilan),
+            'message' => 'Data cicilan berhasil diambil!'
         ], MyConstant::OK);
     }
 
@@ -34,8 +36,22 @@ class CicilanController extends Controller
     public function store(Array $request)
     {
         $validator = Validator::make($request, [
-            ''
-        ])
+            'id_pinjaman' => 'required|integer|exists:pinjamans,id',
+            'tgl_bayar' => 'required|date',
+            'nominal_bayar' => 'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response([
+                'status' => false,
+                'message' => $validator->errors()
+            ], MyConstant::BAD_REQUEST);
+        }
+
+        $validated = $validator->validated();
+
+        Cicilan::create($validated);
 
         return response([
             'status' => true,
@@ -52,9 +68,9 @@ class CicilanController extends Controller
     public function show(Cicilan $cicilan)
     {
         return response([
+            'status' => true,
             'cicilan' => new KPIMResource($cicilan),
-            'pinjaman' => new KPIMResource($cicilan->pinjaman),
-            'message' => 'Data berhasil ditemukan!'
+            'message' => 'Data cicilan berhasil ditemukan!'
         ], MyConstant::OK);
     }
 
@@ -67,11 +83,14 @@ class CicilanController extends Controller
      */
     public function update(UpdateCicilanRequest $request, Cicilan $cicilan)
     {
-        $cicilan->update($request->toArray());
+        $validated = $request->validated();
+        
+        $cicilan->update($validated);
 
         return response([
+            'status' => true,
             'cicilan' => new KPIMResource($cicilan),
-            'message' => 'Data berhasil diperbaharui!'
+            'message' => 'Data cicilan berhasil diperbaharui!'
         ]);
     }
 
@@ -86,7 +105,8 @@ class CicilanController extends Controller
         $cicilan->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus!'
+            'status' => true,
+            'message' => 'Data cicilan berhasil dihapus!'
         ]);
     }
 }

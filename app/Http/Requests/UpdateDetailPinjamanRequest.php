@@ -24,7 +24,10 @@ class UpdateDetailPinjamanRequest extends FormRequest
     public function rules()
     {
         return [
-            'jumlah' => 'required|numeric'
+            'username' => 'required|string|exists:users,username',
+            'tgl_pinjaman' => 'required|date',
+            'total_pinjaman' => 'required|numeric',
+            'durasi_cicilan' => 'required|integer'
         ];
     }
 

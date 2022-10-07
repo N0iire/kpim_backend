@@ -17,7 +17,7 @@ class CatatanJualController extends Controller
      */
     public function index()
     {
-        $catatanJual = CatatanJual::all();
+        $catatanJual = CatatanJual::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
