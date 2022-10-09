@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCatatanJualRequest extends FormRequest
+class StoreCatatanJualRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class UpdateCatatanJualRequest extends FormRequest
     public function rules()
     {
         return [
-            'barang' => 'nullable',
+            'barang' => 'required',
             'username' => 'required|string|exists:users,username',
-            'nama_pembeli' => 'required|string|min:3',
+            'nama_pembeli' => 'required|string',
             'tgl_penjualan' => 'required|date',
             'total_penjualan' => 'required|numeric'
         ];

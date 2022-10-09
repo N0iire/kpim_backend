@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCatatanJualRequest;
 use App\Models\CatatanJual;
 use App\Http\Requests\UpdateCatatanJualRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\Barang;
+use App\Models\User;
 use App\MyConstant;
-use Illuminate\Support\Facades\Validator;
 
 class CatatanJualController extends Controller
 {
@@ -32,32 +34,39 @@ class CatatanJualController extends Controller
      * @param  \App\Http\Requests\StoreCatatanJualRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Array $request)
+    public function store(StoreCatatanJualRequest $request)
     {
-        $validator = Validator::make($request, [
-            'id_user' => 'required|integer|exists:users,id',
-            'nama_pembeli' => 'required|string|min:3',
-            'tgl_penjualan' => 'required|date',
-            'total_penjualan' => 'required'
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails())
-        {
-            return response([
-                'status' => false,
-                'message' => $validator->errors()
-            ], MyConstant::BAD_REQUEST);
-        }
-
-        $validated = $validator->validated();
+        $user = User::where('username', $validated['username'])->first();
+        $validated['id_user'] = $user->id;
 
         CatatanJual::create($validated);
 
         $catatanJual = CatatanJual::orderBy('id', 'desc')->first();
+        
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
+                            ->where('berat', $validated['barang'][$i]['berat'])
+                            ->first();
+
+            $validated['barang'][$i]['id_barang'] = $barang->id;
+            $validated['barang'][$i]['id_catatanJual'] = $catatanJual->id;
+        }
+
+        $penjualan = (new PenjualanController)->store($validated)->getOriginalContent();
+
+        if($penjualan['status'] == false)
+        {
+            return response([
+                'status' => false,
+                'message' => $penjualan['message']
+            ], MyConstant::BAD_REQUEST);
+        }
 
         return response([
             'status' => true,
-            'id_catatanJual' => $catatanJual->id,
             'message' => 'Data catatan jual berhasil ditambahkan!'
         ], MyConstant::OK);
     }
@@ -88,7 +97,37 @@ class CatatanJualController extends Controller
     {
         $validated = $request->validated();
 
+        $user = User::where('username', $validated['username'])->first();
+        $validated['id_user'] = $user->id;
+
         $catatanJual->update($validated);
+
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            if(!isset($validated['barang'][$i]['id_penjualan']))
+            {
+                $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
+                                ->where('berat', $validated['barang'][$i]['berat'])
+                                ->first();
+
+                $store['barang'][] = [
+                    'id_catatanJual' => $catatanJual->id,
+                    'id_barang' => $barang->id,
+                    'jumlah' => $validated['barang'][$i]['jumlah'],
+                    'sub_total' => $validated['barang'][$i]['sub_total']
+                ];
+            }
+        }
+
+        $penjualan = (new PenjualanController)->store($store)->getOriginalContent();
+
+        if($penjualan['status'] == false)
+        {
+            return response([
+                'status' => false,
+                'message' => $penjualan['message']
+            ], MyConstant::BAD_REQUEST);
+        }
 
         return response([
             'status' => true,
@@ -109,15 +148,6 @@ class CatatanJualController extends Controller
         return response([
             'status' => true,
             'message' => 'Data catatan jual berhasil dihapus!'
-        ], MyConstant::OK);
-    }
-
-    public function detailPenjualan(CatatanJual $catatanJual)
-    {
-        return response([
-            'status' => true,
-            'detailPenjualan' => new KPIMResource($catatanJual->penjualan),
-            'message' => 'Data detail penjualan berhasil diambil!'
         ], MyConstant::OK);
     }
 }

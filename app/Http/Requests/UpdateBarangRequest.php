@@ -29,9 +29,9 @@ class UpdateBarangRequest extends FormRequest
             'satuan' => 'nullable|string|min:2',
             'stok' => 'required|integer',
             'status' => 'required|boolean',
-            'berat' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-            'harga_beli' => 'required',
-            'harga_jual' => 'nullable',
+            'berat' => 'required|numeric',
+            'harga_beli' => 'required|numeric',
+            'harga_jual' => 'nullable|numeric',
         ];
     }
 }

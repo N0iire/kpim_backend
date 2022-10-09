@@ -24,10 +24,10 @@ class UpdatePenjualanRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_catatanJual' => 'required|integer|exists:catatan_juals,id',
-            'id_barang' => 'required|integer|exists:barangs,id',
+            'nama_barang' => 'required|string',
+            'berat' => 'required|numeric',
             'jumlah' => 'required|integer',
-            'sub_total' => 'required'
+            'sub_total' => 'required|numeric'
         ];
     }
 }

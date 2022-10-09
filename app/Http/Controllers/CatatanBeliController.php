@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CatatanBeli;
 use App\Http\Requests\UpdateCatatanBeliRequest;
 use App\Http\Resources\KPIMResource;
-use App\Models\Pembelian;
 use App\MyConstant;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,7 +21,7 @@ class CatatanBeliController extends Controller
 
         return response([
             'status' => true,
-            'catatanBeli' => KPIMResource::collection($catatanBeli),
+            'catatanBeli' => new KPIMResource($catatanBeli),
             'message' => 'Data catatan beli berhasil diambil!'
         ], MyConstant::OK);
     }

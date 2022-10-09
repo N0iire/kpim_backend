@@ -39,7 +39,7 @@ class DetailPinjamanController extends Controller
         for($i = 0; $i < count($request['barang']); $i++)
         {
             $detailPinjaman[] = [
-                'id_barang' => $request['barang'][$i]['id'],
+                'id_barang' => $request['barang'][$i]['id_barang'],
                 'id_pinjaman' => $request['barang'][$i]['id_pinjaman'],
                 'jumlah' => $request['barang'][$i]['jumlah'],
                 'sub_total' => $request['barang'][$i]['sub_total'],

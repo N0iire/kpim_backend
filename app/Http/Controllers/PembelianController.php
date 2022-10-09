@@ -19,11 +19,11 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $pembelian = Pembelian::all();
+        $pembelian = Pembelian::filter(request(['barang', 'catatan-beli', 'search']))->get();
 
         return response([
             'status' => true,
-            'pembelian' => KPIMResource::collection($pembelian),
+            'pembelian' => new KPIMResource($pembelian),
             'message' => 'Data pembelian berhasil diambil!'
         ], MyConstant::OK);
     }

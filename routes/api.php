@@ -38,9 +38,9 @@ Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api')
 Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
 Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
 Route::post('/bayar-cicilan/{pinjaman}', [PinjamanController::class, 'bayarCicilan']);
-Route::post('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminderCicilan']);
 
 // GET
+Route::get('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminderCicilan']);
 
 // RESOURCES
 Route::apiResources([

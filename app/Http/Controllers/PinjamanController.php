@@ -6,6 +6,7 @@ use App\Models\Pinjaman;
 use App\Http\Requests\StorePinjamanRequest;
 use App\Http\Requests\UpdatePinjamanRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\Barang;
 use App\Models\User;
 use App\MyConstant;
 use Carbon\Carbon;
@@ -52,6 +53,11 @@ class PinjamanController extends Controller
 
         for($i = 0; $i < count($validated['barang']); $i++)
         {
+            $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
+                            ->where('berat', $validated['barang'][$i]['berat'])
+                            ->first();
+
+            $validated['barang'][$i]['id_barang'] = $barang->id;
             $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
         }
 
@@ -98,6 +104,34 @@ class PinjamanController extends Controller
     {
         $validated = $request->validated();
 
+        $user = User::where('username', $validated['username'])->first();
+        $validated['id_user'] = $user->id;
+
+        if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan && $validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+
+            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
+            }else
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
+            }
+        }else if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+        }else if($validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
+            }else
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
+            }
+        }
+
         $pinjaman->update($validated);
 
         return response([
@@ -117,8 +151,9 @@ class PinjamanController extends Controller
         $pinjaman->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus'
-        ]);
+            'status' => true,
+            'message' => 'Data pinjaman berhasil dihapus'
+        ], MyConstant::OK);
     }
 
     public function bayarCicilan(Pinjaman $pinjaman)
@@ -140,6 +175,7 @@ class PinjamanController extends Controller
 
         $jatuhTempo = Carbon::createFromDate($pinjaman->jatuh_tempo);
         $overTempo = PinjamanController::overTempo($pinjaman, $jatuhTempo);
+        
         $update['sisa_cicilan'] = $pinjaman->sisa_cicilan - $pinjaman->nominal_cicilan;
 
         if($update['sisa_cicilan'] != 0 && $overTempo == false)

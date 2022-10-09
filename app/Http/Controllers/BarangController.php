@@ -36,9 +36,9 @@ class BarangController extends Controller
                 'satuan' => 'nullable|string|min:2',
                 'stok' => 'required|integer',
                 'status' => 'required|boolean',
-                'berat' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
-                'harga_beli' => 'required',
-                'harga_jual' => 'nullable',
+                'berat' => 'required|numeric',
+                'harga_beli' => 'required|numeric',
+                'harga_jual' => 'nullable|numeric',
             ]);
     
             if($validator->fails())
@@ -51,8 +51,6 @@ class BarangController extends Controller
 
             $request['barang'][$i]['created_at'] = now()->toDateTimeString();
             $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
-            unset($request['barang'][$i]['jumlah']);
-            unset($request['barang'][$i]['sub_total']);
         }
 
         $validated = $request['barang'];

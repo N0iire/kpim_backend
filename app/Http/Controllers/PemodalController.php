@@ -18,10 +18,12 @@ class PemodalController extends Controller
     public function index()
     {
         $this->authorize('can-viewAny-pemodal');
-        $pemodal = Pemodal::all();
+        $pemodal = Pemodal::filter(request(['username', 'search']))->get();
 
         return response([
-            'pemodal' => KPIMResource::collection($pemodal),
+            'status' => true,
+            'pemodal' => new KPIMResource($pemodal),
+            'message' => 'Data pemodal berhasil diambil!'
         ], MyConstant::OK);
     }
 
