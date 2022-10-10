@@ -34,8 +34,6 @@ class BarangController extends Controller
                 'nama_barang' => 'required|string|min:3',
                 'jenis_barang' => 'required|string|min:3',
                 'satuan' => 'nullable|string|min:2',
-                'stok' => 'required|integer',
-                'status' => 'required|boolean',
                 'berat' => 'required|numeric',
                 'harga_beli' => 'required|numeric',
                 'harga_jual' => 'nullable|numeric',
@@ -49,18 +47,35 @@ class BarangController extends Controller
                 ], MyConstant::BAD_REQUEST);
             }
 
-            $request['barang'][$i]['created_at'] = now()->toDateTimeString();
-            $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
+            $barang = Barang::where('nama_barang', $request['barang'][$i]['nama_barang'])
+                            ->where('berat', $request['barang'][$i]['berat'])
+                            ->first();
+
+            if($barang)
+            {
+                $request['barang'][$i]['stok'] = $request['barang'][$i]['jumlah'] + $barang->stok;
+
+                $barang->update($request['barang'][$i]);
+            }else
+            {
+                $validated[] = $validator->validated();
+
+                $key = count($validated) - 1;
+
+                $validated[$key]['stok'] = $request['barang'][$i]['jumlah'];
+                $validated[$key]['status'] = true;
+                $validated[$key]['created_at'] = now()->toDateTimeString();
+                $validated[$key]['updated_at'] = now()->toDateTimeString();
+            }
         }
-
-        $validated = $request['barang'];
-        $barang = Barang::orderBy('id', 'desc')->first();
-
-        Barang::insert($validated);
+        
+        if(isset($validated))
+        {
+            Barang::insert($validated);
+        }
 
         return response([
             'status' => true,
-            'id_barang' => $barang->id,
             'message' => 'Data barang berhasil ditambahkan!'
         ], MyConstant::OK);
     }

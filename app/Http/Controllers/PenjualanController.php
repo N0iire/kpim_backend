@@ -39,20 +39,16 @@ class PenjualanController extends Controller
     {
         for($i = 0; $i < count($request['barang']); $i++)
         {
-            $penjualan[] = [
-                'id_catatanJual' => $request['barang'][$i]['id_catatanJual'],
-                'id_barang' => $request['barang'][$i]['id_barang'],
-                'jumlah' => $request['barang'][$i]['jumlah'],
-                'sub_total' => $request['barang'][$i]['sub_total'],
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString()
-            ];
+            $request['barang'][$i]['created_at'] = now()->toDateTimeString();
+            $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
 
-            $validator = Validator::make($penjualan[$i], [
+            $validator = Validator::make($request['barang'][$i], [
                 'id_catatanJual' => 'required|integer|exists:catatan_juals,id',
                 'id_barang' => 'required|integer|exists:barangs,id',
                 'jumlah' => 'required|integer',
-                'sub_total' => 'required|numeric'
+                'sub_total' => 'required|numeric',
+                'created_at' => 'required',
+                'updated_at' => 'required'
             ]);
 
             if($validator->fails())
@@ -62,9 +58,11 @@ class PenjualanController extends Controller
                     'message' => $validator->errors()
                 ], MyConstant::BAD_REQUEST);
             }
+
+            $validated[] = $validator->validated();
         }
 
-        Penjualan::insert($penjualan);
+        Penjualan::insert($validated);
 
         return response([
             'status' => true,
@@ -97,11 +95,6 @@ class PenjualanController extends Controller
     public function update(UpdatePenjualanRequest $request, Penjualan $penjualan)
     {
         $validated = $request->validated();
-
-        $barang = Barang::where('nama_barang', $validated['nama_barang'])
-                        ->where('berat', $validated['berat'])
-                        ->first();
-        $validated['id_barang'] = $barang->id;
 
         $penjualan->update($validated);
 

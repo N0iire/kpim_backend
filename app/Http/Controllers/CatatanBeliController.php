@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCatatanBeliRequest;
 use App\Models\CatatanBeli;
 use App\Http\Requests\UpdateCatatanBeliRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\User;
 use App\MyConstant;
-use Illuminate\Support\Facades\Validator;
 
 class CatatanBeliController extends Controller
 {
@@ -32,32 +33,34 @@ class CatatanBeliController extends Controller
      * @param  \App\Http\Requests\StoreCatatanBeliRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Array $request)
+    public function store(StoreCatatanBeliRequest $request)
     {
-        $validator = Validator::make($request, [
-            'id_user' => 'required|integer|exists:users,id',
-            'supplier' => 'required|string|min:3',
-            'tgl_pembelian' => 'required|date',
-            'total_pembelian' => 'required'
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails())
-        {
-            return response([
-                'status' => false,
-                'message' => $validator->errors()
-            ], MyConstant::BAD_REQUEST);
-        }
-
-        $validated = $validator->validated();
+        $user = User::where('username', $validated['username'])->first();
+        $validated['id_user'] = $user->id;
 
         CatatanBeli::create($validated);
 
         $catatanBeli = CatatanBeli::orderBy('id', 'desc')->first();
+        
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            $validated['barang'][$i]['id_catatanBeli'] = $catatanBeli->id;
+        }
+
+        $pembelian = (new PembelianController)->store($validated)->getOriginalContent();
+
+        if($pembelian['status'] == false)
+        {
+            return response([
+                'status' => false,
+                'message' => $pembelian['message']
+            ], MyConstant::BAD_REQUEST);
+        }
 
         return response([
             'status' => true,
-            'id_catatanBeli' => $catatanBeli->id,
             'message' => 'Data catatan beli berhasil ditambahkan!'
         ], MyConstant::OK);
     }

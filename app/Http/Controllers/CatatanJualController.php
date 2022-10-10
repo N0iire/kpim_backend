@@ -23,7 +23,7 @@ class CatatanJualController extends Controller
 
         return response([
             'status' => true,
-            'catatanJual' => KPIMResource::collection($catatanJual),
+            'catatanJual' => new KPIMResource($catatanJual),
             'message' => 'Data catatan jual berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -47,11 +47,6 @@ class CatatanJualController extends Controller
         
         for($i = 0; $i < count($validated['barang']); $i++)
         {
-            $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
-                            ->where('berat', $validated['barang'][$i]['berat'])
-                            ->first();
-
-            $validated['barang'][$i]['id_barang'] = $barang->id;
             $validated['barang'][$i]['id_catatanJual'] = $catatanJual->id;
         }
 
@@ -106,13 +101,9 @@ class CatatanJualController extends Controller
         {
             if(!isset($validated['barang'][$i]['id_penjualan']))
             {
-                $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
-                                ->where('berat', $validated['barang'][$i]['berat'])
-                                ->first();
-
                 $store['barang'][] = [
                     'id_catatanJual' => $catatanJual->id,
-                    'id_barang' => $barang->id,
+                    'id_barang' => $validated['barang'][$i]['id_barang'],
                     'jumlah' => $validated['barang'][$i]['jumlah'],
                     'sub_total' => $validated['barang'][$i]['sub_total']
                 ];
