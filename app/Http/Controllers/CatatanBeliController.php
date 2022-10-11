@@ -93,6 +93,24 @@ class CatatanBeliController extends Controller
 
         $catatanBeli->update($validated);
 
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            if(!$validated['barang'][$i]['id_penjualan'])
+            {
+                $validated['barang'][$i]['id_catatanBeli'] = $catatanBeli->id;
+
+                $pembelian = (new PembelianController)->store($validated)->getOriginalContent();
+
+                if($pembelian['status'] == false)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => $pembelian['message']
+                    ], MyConstant::BAD_REQUEST);
+                }
+            }
+        }
+
         return response([
             'status' => true,
             'message' => 'Data catatan beli berhasil diubah!'

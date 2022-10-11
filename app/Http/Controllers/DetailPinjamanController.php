@@ -38,20 +38,16 @@ class DetailPinjamanController extends Controller
     {   
         for($i = 0; $i < count($request['barang']); $i++)
         {
-            $detailPinjaman[] = [
-                'id_barang' => $request['barang'][$i]['id_barang'],
-                'id_pinjaman' => $request['barang'][$i]['id_pinjaman'],
-                'jumlah' => $request['barang'][$i]['jumlah'],
-                'sub_total' => $request['barang'][$i]['sub_total'],
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString()
-            ];
+            $request['barang'][$i]['created_at'] = now()->toDateTimeString();
+            $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
 
-            $validator = Validator::make($detailPinjaman[$i], [
+            $validator = Validator::make($request['barang'][$i], [
                 'id_pinjaman' => 'required|integer|exists:pinjamans,id',
                 'id_barang' => 'required|integer|exists:barangs,id',
                 'jumlah' => 'required|integer',
-                'sub_total' => 'required|numeric'
+                'sub_total' => 'required|numeric',
+                'created_at' => 'required',
+                'updated_at' => 'required'
             ]);
     
             if($validator->fails())
@@ -61,9 +57,11 @@ class DetailPinjamanController extends Controller
                     'message' => $validator->errors()
                 ], MyConstant::BAD_REQUEST);
             }
+
+            $validated[] = $validator->validated();
         }
         
-        DetailPinjaman::insert($detailPinjaman);
+        DetailPinjaman::insert($validated);
 
         return response([
             'status' => true,
@@ -97,15 +95,6 @@ class DetailPinjamanController extends Controller
     public function update(UpdateDetailPinjamanRequest $request, DetailPinjaman $detailPinjaman)
     {
         $validated = $request->validated();
-
-        $barang = Barang::where('nama_barang', $validated['nama_barang'])
-                        ->where('berat', $validated['berat'])
-                        ->first();
-        $id_barang = $barang->id;
-
-        $validated['id_barang'] = $id_barang;
-        unset($validated['nama_barang']);
-        unset($validated['berat']);
 
         $detailPinjaman->update($validated);
 

@@ -99,25 +99,20 @@ class CatatanJualController extends Controller
 
         for($i = 0; $i < count($validated['barang']); $i++)
         {
-            if(!isset($validated['barang'][$i]['id_penjualan']))
+            if(!$validated['barang'][$i]['id_penjualan'])
             {
-                $store['barang'][] = [
-                    'id_catatanJual' => $catatanJual->id,
-                    'id_barang' => $validated['barang'][$i]['id_barang'],
-                    'jumlah' => $validated['barang'][$i]['jumlah'],
-                    'sub_total' => $validated['barang'][$i]['sub_total']
-                ];
+                $validated['barang'][$i]['id_catatanJual'] = $catatanJual->id;
+
+                $penjualan = (new PenjualanController)->store($validated)->getOriginalContent();
+
+                if($penjualan['status'] == false)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => $penjualan['message']
+                    ], MyConstant::BAD_REQUEST);
+                }
             }
-        }
-
-        $penjualan = (new PenjualanController)->store($store)->getOriginalContent();
-
-        if($penjualan['status'] == false)
-        {
-            return response([
-                'status' => false,
-                'message' => $penjualan['message']
-            ], MyConstant::BAD_REQUEST);
         }
 
         return response([

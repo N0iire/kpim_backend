@@ -39,6 +39,20 @@ class PenjualanController extends Controller
     {
         for($i = 0; $i < count($request['barang']); $i++)
         {
+            $barang = Barang::where('id', $request['barang'][$i]['id_barang'])->first();
+
+            if($request['barang'][$i]['jumlah'] > $barang->stok)
+            {
+                return response([
+                    'status' => false,
+                    'message' => 'Stok tidak cukup!'
+                ], MyConstant::BAD_REQUEST);
+            }
+
+            $update['stok'] = $barang->stok - $request['barang'][$i]['jumlah'];
+
+            $barang->update($update);
+
             $request['barang'][$i]['created_at'] = now()->toDateTimeString();
             $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
 

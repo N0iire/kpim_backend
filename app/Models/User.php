@@ -150,4 +150,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CatatanBeli::class, 'id_user');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
 }

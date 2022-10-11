@@ -24,7 +24,7 @@ class UpdateCatatanJualRequest extends FormRequest
     public function rules()
     {
         return [
-            'barang' => 'nullable',
+            'barang' => 'required',
             'username' => 'required|string|exists:users,username',
             'nama_pembeli' => 'required|string|min:3',
             'tgl_penjualan' => 'required|date',

@@ -24,7 +24,7 @@ class PinjamanController extends Controller
 
         return response([
             'status' => true,
-            'pinjaman' => KPIMResource::collection($pinjaman),
+            'pinjaman' => new KPIMResource($pinjaman),
             'message' => 'Data pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -53,11 +53,6 @@ class PinjamanController extends Controller
 
         for($i = 0; $i < count($validated['barang']); $i++)
         {
-            $barang = Barang::where('nama_barang', $validated['barang'][$i]['nama_barang'])
-                            ->where('berat', $validated['barang'][$i]['berat'])
-                            ->first();
-
-            $validated['barang'][$i]['id_barang'] = $barang->id;
             $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
         }
 
@@ -133,6 +128,24 @@ class PinjamanController extends Controller
         }
 
         $pinjaman->update($validated);
+
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            if(!$validated['barang'][$i]['id_detailPinjaman'])
+            {
+                $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
+
+                $detailPinjaman = (new DetailPinjamanController)->store($validated)->getOriginalContent();
+
+                if($detailPinjaman['status'] == false)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => $detailPinjaman['message']
+                    ], MyConstant::BAD_REQUEST);
+                }
+            }
+        }
 
         return response([
             'status' => true,

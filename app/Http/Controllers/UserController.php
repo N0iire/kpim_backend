@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('can-view-user');
+        // $this->authorize('can-view-user');
         return response([
             'status' => true,
             'user' => new KPIMResource($user),
