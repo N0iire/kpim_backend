@@ -16,6 +16,7 @@ class CreateCatatanBelisTable extends Migration
         Schema::create('catatan_belis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user');
+            $table->string('no_transaksi')->nullable();
             $table->string('supplier');
             $table->date('tgl_pembelian');
             $table->double('total_pembelian');

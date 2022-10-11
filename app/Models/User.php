@@ -54,6 +54,15 @@ class User extends Authenticatable implements JWTSubject
         'jabatan' => UserJabatan::class
     ];
 
+    public function scopeFilter($query, $filter)
+    {
+        $query->when($filter ?? false, function($query, $search)
+        {
+            return $query->where('nama_anggota', 'like', '%'.$search.'%')
+                         ->orWhere('username', 'like', '%'.$search.'%');
+        });
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -141,4 +150,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CatatanBeli::class, 'id_user');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
 }

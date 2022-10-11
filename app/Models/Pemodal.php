@@ -23,6 +23,23 @@ class Pemodal extends Model
         'nominal_modal'
     ];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['username'] ?? false, function($query, $user)
+        {
+            return $query->whereHas('user', function($query) use($user)
+            {
+                $query->where('username', $user);
+            });
+        });
+
+        $query->when($filters['search'] ?? false, function($query, $search)
+        {
+            return $query->where('nama_pemodal', 'like', '%'.$search.'%')
+                         ->orWhere('tgl_bayar', 'like', '%'.$search.'%');
+        });
+    }
+
     /**
      * Get the user that owns the pemodal
      */

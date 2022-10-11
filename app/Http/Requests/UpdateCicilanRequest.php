@@ -24,7 +24,9 @@ class UpdateCicilanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nominal_bayar' => 'required|numeric'
+            'id_pinjaman' => 'required|integer|exists:pinjamans,id',
+            'tgl_bayar' => 'required|date',
+            'nominal_bayar' => 'required'
         ];
     }
 

@@ -20,6 +20,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/users', [UserController::class, 'index']);
-
-Route::resource('/detail-pinjaman', DetailPinjamanController::class);
+Route::view('/login', 'test');

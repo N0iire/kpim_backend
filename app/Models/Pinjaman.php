@@ -28,6 +28,22 @@ class Pinjaman extends Model
         'status'
     ];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['username'] ?? false, function($query, $user)
+        {
+            return $query->whereHas('user', function($query) use($user)
+            {
+                $query->where('username', $user);
+            });
+        });
+
+        $query->when($filters['search'] ?? false, function($query, $search)
+        {
+            return $query->where('tgl_pinjaman', 'like', '%'.$search.'%');
+        });
+    }
+
     /**
      * Get the user that owns the pinjaman
      */

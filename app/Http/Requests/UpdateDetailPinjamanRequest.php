@@ -24,7 +24,9 @@ class UpdateDetailPinjamanRequest extends FormRequest
     public function rules()
     {
         return [
-            'jumlah' => 'required|numeric'
+            'id_barang' => 'required|integer|exists:barangs,id',
+            'jumlah' => 'required|integer',
+            'sub_total' => 'required|numeric'
         ];
     }
 

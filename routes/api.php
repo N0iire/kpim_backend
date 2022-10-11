@@ -30,43 +30,34 @@ use App\Http\Controllers\PinjamanController;
 |
 */
 
-Route::group(['middleware' => ['cors', 'json.response']], function () {
 
-    // POST
-    Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
-    Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
-    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
-    Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
-    Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
-    Route::post('/simpanan-wajib/me', [UserController::class, 'simpananWajib']);
-    Route::post('/simpanan-pokok/me', [UserController::class, 'simpananPokok']);
-    Route::post('/simpanan-sukarela/me', [UserController::class, 'simpananSukarela']);
-    Route::post('/pinjaman/me', [UserController::class, 'pinjaman']);
+// POST
+Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
+Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
+Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
+Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
+Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
+Route::post('/bayar-cicilan/{pinjaman}', [PinjamanController::class, 'bayarCicilan']);
 
-    // GET
-    Route::get('/pinjaman/details/{pinjaman}', [PinjamanController::class, 'detailPinjaman']);
-    Route::get('/cicilan/{pinjaman}', [PinjamanController::class, 'cicilan']);
-    Route::get('/pembelian/details/{catatanBeli}', [CatatanBeliController::class, 'detailPembelian']);
-    Route::get('/penjualan/details/{catatanJual}', [CatatanJualController::class, 'detailPenjualan']);
-    Route::get('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminderCicilan']);
+// GET
+Route::get('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminderCicilan']);
 
-    // RESOURCES
-    Route::apiResources([
-        'barang' => BarangController::class,
-        'cicilan' => CicilanController::class,
-        'catatan-beli' => CatatanBeliController::class,
-        'catatan-jual' => CatatanJualController::class,
-        'detail-pinjaman' => DetailPinjamanController::class,
-        'detail-non-pembelian' => DetailNonPembelianController::class,
-        'simpanan-pokok' => SimpananPokokController::class,
-        'simpanan-sukarela' => SimpananSukarelaController::class,
-        'simpanan-wajib' => SimpananWajibController::class,
-        'pengeluaran' => PengeluaranController::class,
-        'penjualan' => PenjualanController::class,
-        'pemasukan' => PemasukanController::class,
-        'pembelian' => PembelianController::class,
-        'pemodal' => PemodalController::class,
-        'pinjaman' => PinjamanController::class,
-        'user' => UserController::class,
-    ]);
-});
+// RESOURCES
+Route::apiResources([
+    'barang' => BarangController::class,
+    'cicilan' => CicilanController::class,
+    'catatan-beli' => CatatanBeliController::class,
+    'catatan-jual' => CatatanJualController::class,
+    'detail-pinjaman' => DetailPinjamanController::class,
+    'detail-non-pembelian' => DetailNonPembelianController::class,
+    'simpanan-pokok' => SimpananPokokController::class,
+    'simpanan-sukarela' => SimpananSukarelaController::class,
+    'simpanan-wajib' => SimpananWajibController::class,
+    'pengeluaran' => PengeluaranController::class,
+    'penjualan' => PenjualanController::class,
+    'pemasukan' => PemasukanController::class,
+    'pembelian' => PembelianController::class,
+    'pemodal' => PemodalController::class,
+    'pinjaman' => PinjamanController::class,
+    'user' => UserController::class,
+]);

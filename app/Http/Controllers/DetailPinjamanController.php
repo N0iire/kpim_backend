@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPinjaman;
-use App\Http\Requests\StoreDetailPinjamanRequest;
 use App\Http\Requests\UpdateDetailPinjamanRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\Barang;
 use App\MyConstant;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class DetailPinjamanController extends Controller
@@ -19,11 +18,11 @@ class DetailPinjamanController extends Controller
      */
     public function index()
     {
-        $detailPinjaman = DetailPinjaman::all();
+        $detailPinjaman = DetailPinjaman::filter(['pinjaman', 'barang', 'search'])->get();
 
         return response([
             'status' => true,
-            'detail_pinjaman' => KPIMResource::collection($detailPinjaman),
+            'detail_pinjaman' => new KPIMResource($detailPinjaman),
             'message' => 'Data detail pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -39,20 +38,16 @@ class DetailPinjamanController extends Controller
     {   
         for($i = 0; $i < count($request['barang']); $i++)
         {
-            $detailPinjaman[] = [
-                'id_barang' => $request['barang'][$i]['id'],
-                'id_pinjaman' => $request['barang'][$i]['id_pinjaman'],
-                'jumlah' => $request['barang'][$i]['jumlah'],
-                'sub_total' => $request['barang'][$i]['sub_total'],
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString()
-            ];
+            $request['barang'][$i]['created_at'] = now()->toDateTimeString();
+            $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
 
-            $validator = Validator::make($detailPinjaman[$i], [
+            $validator = Validator::make($request['barang'][$i], [
                 'id_pinjaman' => 'required|integer|exists:pinjamans,id',
                 'id_barang' => 'required|integer|exists:barangs,id',
                 'jumlah' => 'required|integer',
-                'sub_total' => 'required'
+                'sub_total' => 'required|numeric',
+                'created_at' => 'required',
+                'updated_at' => 'required'
             ]);
     
             if($validator->fails())
@@ -62,9 +57,11 @@ class DetailPinjamanController extends Controller
                     'message' => $validator->errors()
                 ], MyConstant::BAD_REQUEST);
             }
+
+            $validated[] = $validator->validated();
         }
         
-        DetailPinjaman::insert($detailPinjaman);
+        DetailPinjaman::insert($validated);
 
         return response([
             'status' => true,
@@ -81,10 +78,9 @@ class DetailPinjamanController extends Controller
     public function show(DetailPinjaman $detailPinjaman)
     {
         return response([
+            'status' => true,
             'detail_pinjaman' => new KPIMResource($detailPinjaman),
-            'pinjaman' => new KPIMResource($detailPinjaman->pinjaman),
-            'barang' => new KPIMResource($detailPinjaman->barang),
-            'message' => 'Data berhasil ditemukan'
+            'message' => 'Data pinjaman berhasil ditemukan!'
         ], MyConstant::OK);
     }
 
@@ -98,11 +94,13 @@ class DetailPinjamanController extends Controller
      */
     public function update(UpdateDetailPinjamanRequest $request, DetailPinjaman $detailPinjaman)
     {
-        $detailPinjaman->update($request->toArray());
+        $validated = $request->validated();
+
+        $detailPinjaman->update($validated);
 
         return response([
-            'detail_pinjaman' => new KPIMResource($detailPinjaman),
-            'message' => 'Data berhasil diperbaharui'
+            'status' => true,
+            'message' => 'Data pinjaman berhasil diperbaharui!'
         ], MyConstant::OK);
     }
 
@@ -117,7 +115,8 @@ class DetailPinjamanController extends Controller
         $detailPinjaman->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus!'
-        ]);
+            'status' => true,
+            'message' => 'Data pinjaman berhasil dihapus!'
+        ], MyConstant::OK);
     }
 }

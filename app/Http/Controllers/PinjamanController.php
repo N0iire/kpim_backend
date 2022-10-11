@@ -6,6 +6,7 @@ use App\Models\Pinjaman;
 use App\Http\Requests\StorePinjamanRequest;
 use App\Http\Requests\UpdatePinjamanRequest;
 use App\Http\Resources\KPIMResource;
+use App\Models\Barang;
 use App\Models\User;
 use App\MyConstant;
 use Carbon\Carbon;
@@ -19,11 +20,11 @@ class PinjamanController extends Controller
      */
     public function index()
     {
-        $pinjaman = Pinjaman::all();
+        $pinjaman = Pinjaman::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'pinjaman' => KPIMResource::collection($pinjaman),
+            'pinjaman' => new KPIMResource($pinjaman),
             'message' => 'Data pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -96,12 +97,59 @@ class PinjamanController extends Controller
      */
     public function update(UpdatePinjamanRequest $request, Pinjaman $pinjaman)
     {
-        $pinjaman->update($request->toArray());
+        $validated = $request->validated();
+
+        $user = User::where('username', $validated['username'])->first();
+        $validated['id_user'] = $user->id;
+
+        if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan && $validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+
+            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
+            }else
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
+            }
+        }else if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+        }else if($validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
+            }else
+            {
+                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
+            }
+        }
+
+        $pinjaman->update($validated);
+
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            if(!$validated['barang'][$i]['id_detailPinjaman'])
+            {
+                $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
+
+                $detailPinjaman = (new DetailPinjamanController)->store($validated)->getOriginalContent();
+
+                if($detailPinjaman['status'] == false)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => $detailPinjaman['message']
+                    ], MyConstant::BAD_REQUEST);
+                }
+            }
+        }
 
         return response([
             'status' => true,
-            'pinjaman' => new KPIMResource($pinjaman),
-            'message' => 'Data berhasil diperbaharui'
+            'message' => 'Data pinjaman berhasil diperbaharui'
         ]);
     }
 
@@ -116,48 +164,81 @@ class PinjamanController extends Controller
         $pinjaman->delete();
 
         return response([
-            'message' => 'Data berhasil dihapus'
-        ]);
-    }
-
-    public function detailPinjaman(Pinjaman $pinjaman)
-    {
-        $detailPinjaman = $pinjaman->detail_pinjaman;
-        
-        return response([
             'status' => true,
-            'detailPinjaman' => new KPIMResource($detailPinjaman),
-            'message' => 'Data detail pinjaman berhasil diambil!'
+            'message' => 'Data pinjaman berhasil dihapus'
         ], MyConstant::OK);
     }
 
-    public function cicilan(Pinjaman $pinjaman)
+    public function bayarCicilan(Pinjaman $pinjaman)
     {
-        $cicilan = $pinjaman->cicilan;
+        $dataCicilan = [
+            'id_pinjaman' => $pinjaman->id,
+            'tgl_bayar' => now()->toDateTimeString(),
+            'nominal_bayar' => $pinjaman->nominal_cicilan
+        ];
+        $cicilan = (new CicilanController)->store($dataCicilan)->getOriginalContent();
+
+        if($cicilan['status'] == false)
+        {
+            return response([
+                'status' => false,
+                'message' => $cicilan['message']
+            ], MyConstant::BAD_REQUEST);
+        }
+
+        $jatuhTempo = Carbon::createFromDate($pinjaman->jatuh_tempo);
+        $overTempo = PinjamanController::overTempo($pinjaman, $jatuhTempo);
+        
+        $update['sisa_cicilan'] = $pinjaman->sisa_cicilan - $pinjaman->nominal_cicilan;
+
+        if($update['sisa_cicilan'] != 0 && $overTempo == false)
+        {
+            $update['jatuh_tempo'] = $jatuhTempo->addDays(30);
+        }
+        if($update['sisa_cicilan'] == 0 || $update['sisa_cicilan'] < 0)
+        {
+            $update['status'] = true;
+        }
+
+        $pinjaman->update($update);
 
         return response([
             'status' => true,
-            'cicilan' => new KPIMResource($cicilan),
-            'message' => 'Data cicilan berhasil diambil!'
+            'message' => 'Cicilan berhasil dibayar!'
         ], MyConstant::OK);
     }
 
     public function reminderCicilan(Pinjaman $pinjaman)
     {
-        $jatuhTempo = Carbon::createFromTimestamp($pinjaman->jatuh_tempo);
-        $now = Carbon::createFromTimestamp(Carbon::now()->toDateTimeString());
+        $jatuhTempo = Carbon::createFromDate($pinjaman->jatuh_tempo);
+        $now = now()->toDateTimeString();
 
-        $result = $now->eq($jatuhTempo);
+        if($jatuhTempo->lt($now))
+        {
+            return response([
+                'status' => false,
+                'jatuhTempo' => $jatuhTempo,
+                'message' => 'Jatuh tempo sudah terlewat!'
+            ], MyConstant::OK);
+        }
 
         return response([
             'status' => true,
             'jatuhTempo' => $jatuhTempo,
-            'message' => 'Data jatuh tempo berhasil dibuat!'
+            'message' => 'Jatuh tempo belum terlewat!'
         ], MyConstant::OK);
     }
 
-    public function bayarCicilan()
+    public function overTempo(Pinjaman $pinjaman, Carbon $jatuhTempo)
     {
-        
+        $maxDays = $pinjaman->durasi_cicilan * 30;
+        $tgl_akhir = Carbon::createFromDate($pinjaman->tgl_pinjaman)->addDays($maxDays);
+
+        if($jatuhTempo->gt($tgl_akhir))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

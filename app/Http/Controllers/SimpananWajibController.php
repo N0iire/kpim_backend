@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Auth;
 class SimpananWajibController extends Controller
 {
 
-    /**
-     * Create a new ApiAuthController instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('auth:api');
-    }
+    // /**
+    //  * Create a new ApiAuthController instance.
+    //  *
+    //  * @return void
+    //  */
+    // public function __construct() {
+    //     $this->middleware('auth:api');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -28,11 +28,13 @@ class SimpananWajibController extends Controller
      */
     public function index()
     {
-        $this->authorize('can-viewAny-simpanan');
-        $simpananWajib = SimpananWajib::all();
+        // $this->authorize('can-viewAny-simpanan');
+        $simpananWajib = SimpananWajib::filter(request(['username', 'search']))->get();
 
         return response([
+            'status' => true,
             'simpanan_wajib' => KPIMResource::collection($simpananWajib),
+            'message' => 'Data simpanan wajib berhasil diambil!'
         ], MyConstant::OK);
     }
 

@@ -24,9 +24,11 @@ class UpdatePinjamanRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_user' => 'required',
-            'nominal_cicilan' => 'required|numeric',
-            'jatuh_tempo' => 'required|date',
+            'barang' => 'required',
+            'username' => 'required|string|exists:users,username',
+            'tgl_pinjaman' => 'required|date',
+            'total_pinjaman' => 'required|numeric',
+            'durasi_cicilan' => 'required|integer'
         ];
     }
 

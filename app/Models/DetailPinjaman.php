@@ -24,6 +24,30 @@ class DetailPinjaman extends Model
         'sub_total'
     ];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['pinjaman'] ?? false, function($query, $pinjaman)
+        {
+            return $query->whereHas('pinjaman', function($query) use($pinjaman)
+            {
+                $query->where('id', $pinjaman);
+            });
+        });
+
+        $query->when($filters['barang'] ?? false, function($query, $barang)
+        {
+            return $query->whereHas('barang', function($query) use($barang)
+            {
+                $query->where('id', $barang);
+            });
+        });
+
+        $query->when($filters['search'] ?? false, function($query, $search)
+        {
+            return $query->where('id', $search);
+        });
+    }
+
     /**
      * Get the barang that owns the detail pinjaman
      */

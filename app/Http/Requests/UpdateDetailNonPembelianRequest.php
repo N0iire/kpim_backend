@@ -24,8 +24,10 @@ class UpdateDetailNonPembelianRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_transaksi' => 'required',
-            'nominal_transaksi' => 'required|numeric'
+            'nama_transaksi' => 'required|string',
+            'tgl_transaksi' => 'required|date',
+            'nominal_transaksi' => 'required|numeric',
+            'keterangan' => 'nullable|text'
         ];
     }
 

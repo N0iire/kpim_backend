@@ -24,10 +24,10 @@ class UpdatePembelianRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_catatanBeli' => 'required|integer|exists:catatan_belis,id',
-            'id_barang' => 'required|integer|exists:barangs,id',
+            'nama_barang' => 'required|string',
+            'berat' => 'required|numeric',
             'jumlah' => 'required|integer',
-            'sub_total' => 'required'
+            'sub_total' => 'required|numeric'
         ];
     }
 }

@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pembelian;
 use App\Http\Requests\UpdatePembelianRequest;
 use App\Http\Resources\KPIMResource;
-use App\Models\User;
+use App\Models\Barang;
 use App\MyConstant;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PembelianController extends Controller
@@ -19,11 +18,11 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $pembelian = Pembelian::all();
+        $pembelian = Pembelian::filter(request(['barang', 'catatan-beli', 'search']))->get();
 
         return response([
             'status' => true,
-            'pembelian' => KPIMResource::collection($pembelian),
+            'pembelian' => new KPIMResource($pembelian),
             'message' => 'Data pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -31,75 +30,51 @@ class PembelianController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePembelianRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Array $request)
     {
-        $all = $request->all();
+        $barang = (new BarangController)->store($request)->getOriginalContent();
 
-        $user = User::where('username', $all['username'])->first();
-        $all['id_user'] = $user->id;
-
-        $catatanBeli = (new CatatanBeliController)->store($all)->getOriginalContent();
-        
-        if($catatanBeli['status'] == true)
-        {
-            $barang = (new BarangController)->store($all)->getOriginalContent();
-
-            if($barang['status'] == true)
-            {
-                $id_barang = 1;
-
-                if($barang['id_barang'])
-                {
-                    $id_barang = $barang['id_barang'] + 1;
-                }
-
-                for($i = 0; $i < count($all['barang']); $i++)
-                {
-                    $pembelian[] = [
-                        'id_catatanBeli' => $catatanBeli['id_catatanBeli'],
-                        'id_barang' => $id_barang,
-                        'jumlah' => $all['barang'][$i]['jumlah'],
-                        'sub_total' => $all['barang'][$i]['sub_total'],
-                        'created_at' => now()->toDateTimeString(),
-                        'updated_at' => now()->toDateTimeString(),
-                    ];
-
-                    $validator = Validator::make($pembelian[$i], [
-                        'id_catatanBeli' => 'required|integer|exists:catatan_belis,id',
-                        'id_barang' => 'required|integer|exists:barangs,id',
-                        'jumlah' => 'required|integer',
-                        'sub_total' => 'required',
-                    ]);
-
-                    if($validator->fails())
-                    {
-                        return response([
-                            'status' => false,
-                            'message' => $validator->errors()
-                        ], MyConstant::BAD_REQUEST);
-                    }
-
-                    $id_barang++;
-                }
-            }else
-            {
-                return response([
-                    'status' => false,
-                    'message' => $barang['message']
-                ], MyConstant::BAD_REQUEST);
-            }
-        }else
+        if($barang['status'] == false)
         {
             return response([
                 'status' => false,
-                'message' => $catatanBeli['message']
+                'message' => $barang['message']
             ], MyConstant::BAD_REQUEST);
         }
 
-        Pembelian::insert($pembelian);
+        for($i = 0; $i < count($request['barang']); $i++)
+        {
+            $barang = Barang::where('nama_barang', $request['barang'][$i]['nama_barang'])
+                            ->where('berat', $request['barang'][$i]['berat'])
+                            ->first();
+
+            $request['barang'][$i]['id_barang'] = $barang->id;
+            $request['barang'][$i]['created_at'] = now()->toDateTimeString();
+            $request['barang'][$i]['updated_at'] = now()->toDateTimeString();
+
+            $validator = Validator::make($request['barang'][$i], [
+                'id_catatanBeli' => 'required|integer|exists:catatan_belis,id',
+                'id_barang' => 'required|integer|exists:barangs,id',
+                'jumlah' => 'required|integer',
+                'sub_total' => 'required',
+                'created_at' => 'required',
+                'updated_at' => 'required'
+            ]);
+
+            if($validator->fails())
+            {
+                return response([
+                    'status' => false,
+                    'message' => $validator->errors()
+                ], MyConstant::BAD_REQUEST);
+            }
+
+            $validated[] = $validator->validated();
+        }
+        
+        Pembelian::insert($validated);
 
         return response([
             'status' => true,

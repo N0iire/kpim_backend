@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserJabatan;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreUserRequest extends FormRequest
 {
@@ -34,7 +36,7 @@ class StoreUserRequest extends FormRequest
             'ttl' => 'required|string',
             'pekerjaan' => 'required|string',
             'tgl_daftar' => 'required|date',
-            'jabatan' => 'required|string',
+            'jabatan' => [new Enum(UserJabatan::class)],
             'nominal_pokok' => 'required',
             'ket' => 'nullable|string'
         ];

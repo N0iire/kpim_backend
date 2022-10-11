@@ -24,10 +24,11 @@ class UpdateCatatanBeliRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_user' => 'required|integer|exists:users,id',
-            'supplier' => 'required|string|min:3',
+            'barang' => 'required',
+            'username' => 'required|string|exists:users,username',
+            'supplier' => 'required|string',
             'tgl_pembelian' => 'required|date',
-            'total_pembelian' => 'required'
+            'total_pembelian' => 'required|numeric'
         ];
     }
 }
