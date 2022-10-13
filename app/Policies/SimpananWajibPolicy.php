@@ -5,11 +5,17 @@ namespace App\Policies;
 use App\Models\SimpananWajib;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
 
 class SimpananWajibPolicy
 {
     use HandlesAuthorization;
+
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -19,6 +25,11 @@ class SimpananWajibPolicy
      */
     public function viewAny(User $user)
     {
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+
         return true;
 
     }
@@ -32,7 +43,15 @@ class SimpananWajibPolicy
      */
     public function view(User $user, SimpananWajib $simpananWajib)
     {
-        $jabatan = $user->jabatan->value;
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+        else if($this->jabatan == 'anggota' && $user->username == auth()->user()->username)
+        {
+            return true;
+        }
+
         return true;
     }
 
@@ -44,14 +63,12 @@ class SimpananWajibPolicy
      */
     public function create(User $user)
     {
-        $jabatan = $user->jabatan->value;
-        if($jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
         {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -63,14 +80,12 @@ class SimpananWajibPolicy
      */
     public function update(User $user, SimpananWajib $simpananWajib)
     {
-        $jabatan = $user->jabatan->value;
-        if($user->id = $simpananWajib->user->id || $jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
         {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -82,14 +97,12 @@ class SimpananWajibPolicy
      */
     public function delete(User $user, SimpananWajib $simpananWajib)
     {
-        $jabatan = $user->jabatan->value;
-        if($jabatan == 'sekretaris' || $jabatan == 'bendahara' || $jabatan == 'pegawai-keuangan')
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
         {
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     /**
@@ -101,7 +114,7 @@ class SimpananWajibPolicy
      */
     public function restore(User $user, SimpananWajib $simpananWajib)
     {
-        //
+        return false;
     }
 
     /**
@@ -113,6 +126,6 @@ class SimpananWajibPolicy
      */
     public function forceDelete(User $user, SimpananWajib $simpananWajib)
     {
-        //
+        return false;
     }
 }

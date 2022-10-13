@@ -10,5 +10,5 @@ enum UserJabatan: string
     case Bendahara  = 'bendahara';
     case PegawaiSekretariat = 'pegawai-sekretariat';
     case PegawaiKeuangan = 'pegawai-keuangan';
-    case PegawaiBarangJasa = 'pegawai-barangjasa';
+    case PegawaiBarangJasa = 'pegawai-barang-jasa';
 }

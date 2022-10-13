@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DetailPinjaman;
 use App\Http\Requests\UpdateDetailPinjamanRequest;
 use App\Http\Resources\KPIMResource;
-use App\Models\Barang;
 use App\MyConstant;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,11 +17,13 @@ class DetailPinjamanController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', DetailPinjaman::class);
+
         $detailPinjaman = DetailPinjaman::filter(['pinjaman', 'barang', 'search'])->get();
 
         return response([
             'status' => true,
-            'detail_pinjaman' => new KPIMResource($detailPinjaman),
+            'detail_pinjaman' => KPIMResource::collection($detailPinjaman),
             'message' => 'Data detail pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -35,7 +36,7 @@ class DetailPinjamanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Array $request)
-    {   
+    {
         for($i = 0; $i < count($request['barang']); $i++)
         {
             $request['barang'][$i]['created_at'] = now()->toDateTimeString();
@@ -77,6 +78,8 @@ class DetailPinjamanController extends Controller
      */
     public function show(DetailPinjaman $detailPinjaman)
     {
+        $this->authorize('view', $detailPinjaman);
+
         return response([
             'status' => true,
             'detail_pinjaman' => new KPIMResource($detailPinjaman),
@@ -94,6 +97,8 @@ class DetailPinjamanController extends Controller
      */
     public function update(UpdateDetailPinjamanRequest $request, DetailPinjaman $detailPinjaman)
     {
+        $this->authorize('update', $detailPinjaman);
+
         $validated = $request->validated();
 
         $detailPinjaman->update($validated);
@@ -112,6 +117,8 @@ class DetailPinjamanController extends Controller
      */
     public function destroy(DetailPinjaman $detailPinjaman)
     {
+        $this->authorize('delete', $detailPinjaman);
+
         $detailPinjaman->delete();
 
         return response([

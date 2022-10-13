@@ -10,6 +10,13 @@ class DetailNonPembelianPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class DetailNonPembelianPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -30,7 +42,12 @@ class DetailNonPembelianPolicy
      */
     public function view(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -41,7 +58,12 @@ class DetailNonPembelianPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +75,12 @@ class DetailNonPembelianPolicy
      */
     public function update(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +92,12 @@ class DetailNonPembelianPolicy
      */
     public function delete(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +109,7 @@ class DetailNonPembelianPolicy
      */
     public function restore(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +121,6 @@ class DetailNonPembelianPolicy
      */
     public function forceDelete(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        //
+        return false;
     }
 }

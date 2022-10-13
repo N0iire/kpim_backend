@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use App\MyConstant;
 
 class ApiAuthController extends Controller
@@ -31,7 +29,7 @@ class ApiAuthController extends Controller
      */
     public function register(RegisterRequest $registerRequest)
     {
-        $this->authorize('can-create-user');
+        $this->authorize('create', User::class);
 
         $registerRequest['password'] = Hash::make($registerRequest['password']);
         $user = User::create($registerRequest->toArray());

@@ -18,11 +18,13 @@ class CatatanBeliController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', CatatanBeli::class);
+
         $catatanBeli = CatatanBeli::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'catatanBeli' => new KPIMResource($catatanBeli),
+            'catatanBeli' => KPIMResource::collection($catatanBeli),
             'message' => 'Data catatan beli berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -35,6 +37,8 @@ class CatatanBeliController extends Controller
      */
     public function store(StoreCatatanBeliRequest $request)
     {
+        $this->authorize('create', CatatanBeli::class);
+
         $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
@@ -73,6 +77,8 @@ class CatatanBeliController extends Controller
      */
     public function show(CatatanBeli $catatanBeli)
     {
+        $this->authorize('view', $catatanBeli);
+
         return response([
             'status' => true,
             'catatanBeli' => new KPIMResource($catatanBeli),
@@ -89,6 +95,8 @@ class CatatanBeliController extends Controller
      */
     public function update(UpdateCatatanBeliRequest $request, CatatanBeli $catatanBeli)
     {
+        $this->authorize('update', $catatanBeli);
+
         $validated = $request->validated();
 
         $catatanBeli->update($validated);
@@ -125,6 +133,8 @@ class CatatanBeliController extends Controller
      */
     public function destroy(CatatanBeli $catatanBeli)
     {
+        $this->authorize('delete', $catatanBeli);
+
         $catatanBeli->delete();
 
         return response([

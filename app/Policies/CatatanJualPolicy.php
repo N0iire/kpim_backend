@@ -10,6 +10,13 @@ class CatatanJualPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;   
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class CatatanJualPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -30,7 +42,12 @@ class CatatanJualPolicy
      */
     public function view(User $user, CatatanJual $catatanJual)
     {
-        //
+        if($this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -41,7 +58,12 @@ class CatatanJualPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +75,12 @@ class CatatanJualPolicy
      */
     public function update(User $user, CatatanJual $catatanJual)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +92,12 @@ class CatatanJualPolicy
      */
     public function delete(User $user, CatatanJual $catatanJual)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +109,7 @@ class CatatanJualPolicy
      */
     public function restore(User $user, CatatanJual $catatanJual)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +121,6 @@ class CatatanJualPolicy
      */
     public function forceDelete(User $user, CatatanJual $catatanJual)
     {
-        //
+        return false;
     }
 }

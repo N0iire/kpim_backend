@@ -18,6 +18,8 @@ class CicilanController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Cicilan::class);
+        
         $cicilan = Cicilan::filter(request(['pinjaman', 'search']))->get();
 
         return response([
@@ -67,6 +69,8 @@ class CicilanController extends Controller
      */
     public function show(Cicilan $cicilan)
     {
+        $this->authorize('view', $cicilan);
+
         return response([
             'status' => true,
             'cicilan' => new KPIMResource($cicilan),
@@ -83,6 +87,8 @@ class CicilanController extends Controller
      */
     public function update(UpdateCicilanRequest $request, Cicilan $cicilan)
     {
+        $this->authorize('update', $cicilan);
+
         $validated = $request->validated();
         
         $cicilan->update($validated);
@@ -102,6 +108,8 @@ class CicilanController extends Controller
      */
     public function destroy(Cicilan $cicilan)
     {
+        $this->authorize('delete', $cicilan);
+
         $cicilan->delete();
 
         return response([

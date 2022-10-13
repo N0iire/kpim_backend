@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengeluaran;
 use App\Http\Requests\StorePengeluaranRequest;
-use App\Http\Requests\UpdatePengeluaranRequest;
 use App\Http\Resources\KPIMResource;
 use App\Models\CatatanBeli;
 use App\Models\DetailNonPembelian;
@@ -22,7 +21,8 @@ class PengeluaranController extends Controller
      */
     public function index()
     {
-        $this->authorize('can-viewAny-laporan');
+        $this->authorize('viewAny', Pengeluaran::class);
+
         $pengeluaran = Pengeluaran::all();
 
         return response([
@@ -39,7 +39,7 @@ class PengeluaranController extends Controller
      */
     public function store(StorePengeluaranRequest $request)
     {
-        $this->authorize('can-create-laporan');
+        $this->authorize('create', Pengeluaran::class);
 
         $pengeluaran = Pengeluaran::create($request->toArray());
 
@@ -55,9 +55,9 @@ class PengeluaranController extends Controller
      * @param \Illuminate\Http\Request;
      * @return\Illuminate\Http\Response
      */
-    public function find(Request $request)
+    public function show(Request $request)
     {
-        $this->authorize('can-find-laporan');
+        $this->authorize('view', Pengeluaran::class);
 
         $tahun = $request->tgl_awal; // Tahun dari input
         $pengeluaran_perbulan = new Collection();

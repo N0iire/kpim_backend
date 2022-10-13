@@ -24,8 +24,10 @@ class StoreSimpananPokokRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_user' => 'required',
-            'nominal_pokok' => 'required|numeric'
+            'id_user' => 'required|integer|exists:users,id',
+            'tgl_bayar' => 'required|date',
+            'nominal_pokok' => 'required',
+            'ket' => 'nullable|string'
         ];
     }
 

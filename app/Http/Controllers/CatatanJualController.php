@@ -6,7 +6,6 @@ use App\Http\Requests\StoreCatatanJualRequest;
 use App\Models\CatatanJual;
 use App\Http\Requests\UpdateCatatanJualRequest;
 use App\Http\Resources\KPIMResource;
-use App\Models\Barang;
 use App\Models\User;
 use App\MyConstant;
 
@@ -19,11 +18,13 @@ class CatatanJualController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', CatatanJual::class);
+
         $catatanJual = CatatanJual::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'catatanJual' => new KPIMResource($catatanJual),
+            'catatanJual' => KPIMResource::collection($catatanJual),
             'message' => 'Data catatan jual berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -36,6 +37,8 @@ class CatatanJualController extends Controller
      */
     public function store(StoreCatatanJualRequest $request)
     {
+        $this->authorize('create', CatatanJual::class);
+
         $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
@@ -74,6 +77,8 @@ class CatatanJualController extends Controller
      */
     public function show(CatatanJual $catatanJual)
     {
+        $this->authorize('view', $catatanJual);
+
         return response([
             'status' => true,
             'catatanJual' => $catatanJual,
@@ -90,6 +95,8 @@ class CatatanJualController extends Controller
      */
     public function update(UpdateCatatanJualRequest $request, CatatanJual $catatanJual)
     {
+        $this->authorize('update', $catatanJual);
+
         $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
@@ -129,6 +136,8 @@ class CatatanJualController extends Controller
      */
     public function destroy(CatatanJual $catatanJual)
     {
+        $this->authorize('delete', $catatanJual);
+
         $catatanJual->delete();
 
         return response([

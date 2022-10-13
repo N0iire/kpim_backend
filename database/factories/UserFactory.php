@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'tgl_daftar' => $this->faker->date(),
             'status' => $this->faker->boolean(),
             'jabatan' => collect(['anggota', 'ketua', 'sekretaris', 'bendahara', 'pegawai-sekretariat', 'pegawai-keuangan',
-            'pegawai-barangjasa'])->random(),
+            'pegawai-barang-jasa'])->random(),
             'keanggotaan' => $this->faker->boolean(),
         ];
     }

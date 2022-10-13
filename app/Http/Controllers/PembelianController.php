@@ -18,11 +18,13 @@ class PembelianController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Pembelian::class);
+
         $pembelian = Pembelian::filter(request(['barang', 'catatan-beli', 'search']))->get();
 
         return response([
             'status' => true,
-            'pembelian' => new KPIMResource($pembelian),
+            'pembelian' => KPIMResource::collection($pembelian),
             'message' => 'Data pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -90,6 +92,8 @@ class PembelianController extends Controller
      */
     public function show(Pembelian $pembelian)
     {
+        $this->authorize('view', $pembelian);
+
         return response([
             'status' => true,
             'pembelian' => $pembelian,
@@ -106,6 +110,8 @@ class PembelianController extends Controller
      */
     public function update(UpdatePembelianRequest $request, Pembelian $pembelian)
     {
+        $this->authorize('update', $pembelian);
+
         $validated = $request->validated();
 
         $pembelian->update($validated);
@@ -124,6 +130,8 @@ class PembelianController extends Controller
      */
     public function destroy(Pembelian $pembelian)
     {
+        $this->authorize('delete', $pembelian);
+
         $pembelian->delete();
 
         return response([

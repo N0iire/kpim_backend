@@ -6,7 +6,6 @@ use App\Models\Pinjaman;
 use App\Http\Requests\StorePinjamanRequest;
 use App\Http\Requests\UpdatePinjamanRequest;
 use App\Http\Resources\KPIMResource;
-use App\Models\Barang;
 use App\Models\User;
 use App\MyConstant;
 use Carbon\Carbon;
@@ -20,11 +19,13 @@ class PinjamanController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Pinjaman::class);
+
         $pinjaman = Pinjaman::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'pinjaman' => new KPIMResource($pinjaman),
+            'pinjaman' => KPIMResource::collection($pinjaman),
             'message' => 'Data pinjaman berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -37,6 +38,8 @@ class PinjamanController extends Controller
      */
     public function store(StorePinjamanRequest $request)
     {
+        $this->authorize('create', Pinjaman::class);
+
         $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
@@ -80,6 +83,8 @@ class PinjamanController extends Controller
      */
     public function show(Pinjaman $pinjaman)
     {
+        $this->authorize('view', $pinjaman);
+
         return response([
             'status' => true,
             'pinjaman' => new KPIMResource($pinjaman),
@@ -97,6 +102,8 @@ class PinjamanController extends Controller
      */
     public function update(UpdatePinjamanRequest $request, Pinjaman $pinjaman)
     {
+        $this->authorize('update', $pinjaman);
+
         $validated = $request->validated();
 
         $user = User::where('username', $validated['username'])->first();
@@ -161,6 +168,8 @@ class PinjamanController extends Controller
      */
     public function destroy(Pinjaman $pinjaman)
     {
+        $this->authorize('delete', $pinjaman);
+
         $pinjaman->delete();
 
         return response([
@@ -171,6 +180,8 @@ class PinjamanController extends Controller
 
     public function bayarCicilan(Pinjaman $pinjaman)
     {
+        $this->authorize('create', $pinjaman);
+
         $dataCicilan = [
             'id_pinjaman' => $pinjaman->id,
             'tgl_bayar' => now()->toDateTimeString(),

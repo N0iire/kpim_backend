@@ -17,11 +17,13 @@ class DetailNonPembelianController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', DetailNonPembelian::class);
+
         $nonPembelian = DetailNonPembelian::filter(request(['pengeluaran', 'search']))->get();
 
         return response([
             'status' => true,
-            'detail_non_pembelian' => new KPIMResource($nonPembelian),
+            'detail_non_pembelian' => KPIMResource::collection($nonPembelian),
             'message' => 'Data detail non pembelian berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -34,6 +36,8 @@ class DetailNonPembelianController extends Controller
      */
     public function store(StoreDetailNonPembelianRequest $request)
     {
+        $this->authorize('create', DetailNonPembelian::class);
+
         $validated = $request->validated();
 
         DetailNonPembelian::create($validated);
@@ -52,6 +56,8 @@ class DetailNonPembelianController extends Controller
      */
     public function show(DetailNonPembelian $detailNonPembelian)
     {
+        $this->authorize('view', $detailNonPembelian);
+
         return response([
             'status' => true,
             'detail_non_pembelian' => new KPIMResource($detailNonPembelian),
@@ -68,6 +74,8 @@ class DetailNonPembelianController extends Controller
      */
     public function update(UpdateDetailNonPembelianRequest $request, DetailNonPembelian $detailNonPembelian)
     {
+        $this->authorize('update', $detailNonPembelian);
+
         $validated = $request->validated();
 
         $detailNonPembelian->update($validated);
@@ -87,6 +95,8 @@ class DetailNonPembelianController extends Controller
      */
     public function destroy(DetailNonPembelian $detailNonPembelian)
     {
+        $this->authorize('delete', $detailNonPembelian);
+
         $detailNonPembelian->delete();
 
         return response([
