@@ -10,6 +10,13 @@ class PembelianPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class PembelianPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -30,7 +42,12 @@ class PembelianPolicy
      */
     public function view(User $user, Pembelian $pembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -41,7 +58,12 @@ class PembelianPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +75,12 @@ class PembelianPolicy
      */
     public function update(User $user, Pembelian $pembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +92,12 @@ class PembelianPolicy
      */
     public function delete(User $user, Pembelian $pembelian)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +109,7 @@ class PembelianPolicy
      */
     public function restore(User $user, Pembelian $pembelian)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +121,6 @@ class PembelianPolicy
      */
     public function forceDelete(User $user, Pembelian $pembelian)
     {
-        //
+        return false;
     }
 }

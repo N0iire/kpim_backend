@@ -20,11 +20,13 @@ class PenjualanController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Penjualan::class);
+
         $penjualan = Penjualan::filter(request(['barang', 'catatan-jual', 'search']))->get();
 
         return response([
             'status' => true,
-            'penjualan' => new KPIMResource($penjualan),
+            'penjualan' => KPIMResource::collection($penjualan),
             'message' => 'Data penjualan berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -92,6 +94,8 @@ class PenjualanController extends Controller
      */
     public function show(Penjualan $penjualan)
     {
+        $this->authorize('view', $penjualan);
+
         return response([
             'status' => true,
             'penjualan' => new KPIMResource($penjualan),
@@ -108,6 +112,8 @@ class PenjualanController extends Controller
      */
     public function update(UpdatePenjualanRequest $request, Penjualan $penjualan)
     {
+        $this->authorize('update', $penjualan);
+
         $validated = $request->validated();
 
         $penjualan->update($validated);
@@ -126,6 +132,8 @@ class PenjualanController extends Controller
      */
     public function destroy(Penjualan $penjualan)
     {
+        $this->authorize('delete', $penjualan);
+
         $penjualan->delete();
 
         return response([

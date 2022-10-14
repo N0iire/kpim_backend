@@ -7,20 +7,9 @@ use App\Http\Requests\StoreSimpananWajibRequest;
 use App\Http\Requests\UpdateSimpananWajibRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
-use Illuminate\Support\Facades\Auth;
 
 class SimpananWajibController extends Controller
 {
-
-    // /**
-    //  * Create a new ApiAuthController instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct() {
-    //     $this->middleware('auth:api');
-    // }
-
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +17,8 @@ class SimpananWajibController extends Controller
      */
     public function index()
     {
-        // $this->authorize('can-viewAny-simpanan');
+        $this->authorize('viewAny', SimpananWajib::class);
+
         $simpananWajib = SimpananWajib::filter(request(['username', 'search']))->get();
 
         return response([
@@ -48,7 +38,8 @@ class SimpananWajibController extends Controller
      */
     public function store(StoreSimpananWajibRequest $request)
     {
-        $this->authorize('can-created-simpanan');
+        $this->authorize('create', SimpananWajib::class);
+
         $simpananWajib = SimpananWajib::create($request->toArray());
 
         return response([
@@ -65,7 +56,8 @@ class SimpananWajibController extends Controller
      */
     public function show(SimpananWajib $simpananWajib)
     {
-        $this->authorize('can-view-simpanan');
+        $this->authorize('view', $simpananWajib);
+
         return response([
             'simpanan_wajib' => new KPIMResource($simpananWajib),
             'user' => new KPIMResource($simpananWajib->user),
@@ -82,7 +74,8 @@ class SimpananWajibController extends Controller
      */
     public function update(UpdateSimpananWajibRequest $request, SimpananWajib $simpananWajib)
     {
-        $this->authorize('can-update-simpanan');
+        $this->authorize('update', $simpananWajib);
+
         $simpananWajib->update($request->toArray());
 
         return response([
@@ -99,7 +92,8 @@ class SimpananWajibController extends Controller
      */
     public function destroy(SimpananWajib $simpananWajib)
     {
-        $this->authorize('can-delete-simpanan');
+        $this->authorize('delete', $simpananWajib);
+
         $simpananWajib->delete();
 
         return response([

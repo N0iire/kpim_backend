@@ -18,6 +18,7 @@ use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Middleware\Restricted;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,19 +46,27 @@ Route::get('/reminder-cicilan/{pinjaman}', [PinjamanController::class, 'reminder
 // RESOURCES
 Route::apiResources([
     'barang' => BarangController::class,
-    'cicilan' => CicilanController::class,
     'catatan-beli' => CatatanBeliController::class,
     'catatan-jual' => CatatanJualController::class,
-    'detail-pinjaman' => DetailPinjamanController::class,
+    'cicilan' => CicilanController::class,
     'detail-non-pembelian' => DetailNonPembelianController::class,
+    'detail-pinjaman' => DetailPinjamanController::class,
+    'pengeluaran' => PengeluaranController::class,
+    'pemasukan' => PemasukanController::class,
+    'pemodal' => PemodalController::class,
+    'pembelian' => PembelianController::class,
+    'penjualan' => PenjualanController::class,
+    'pinjaman' => PinjamanController::class,
     'simpanan-pokok' => SimpananPokokController::class,
     'simpanan-sukarela' => SimpananSukarelaController::class,
     'simpanan-wajib' => SimpananWajibController::class,
-    'pengeluaran' => PengeluaranController::class,
-    'penjualan' => PenjualanController::class,
-    'pemasukan' => PemasukanController::class,
-    'pembelian' => PembelianController::class,
-    'pemodal' => PemodalController::class,
-    'pinjaman' => PinjamanController::class,
     'user' => UserController::class,
 ]);
+
+// RESTRICTED
+Route::middleware(Restricted::class)->group(function () {
+    Route::post('/barang', [BarangController::class, 'store']);
+    Route::post('/detail-pinjaman', [DetailPinjamanController::class, 'store']);
+    Route::post('/pembelian', [PembelianController::class, 'store']);
+    Route::post('/penjualan', [PenjualanController::class, 'store']);
+});

@@ -9,6 +9,13 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class BarangPolicy
 {
     use HandlesAuthorization;
+    
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -18,7 +25,12 @@ class BarangPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'anggota')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -30,7 +42,13 @@ class BarangPolicy
      */
     public function view(User $user, Barang $barang)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa'
+        || $this->jabatan == 'ketua')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -41,7 +59,12 @@ class BarangPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +76,12 @@ class BarangPolicy
      */
     public function update(User $user, Barang $barang)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +93,12 @@ class BarangPolicy
      */
     public function delete(User $user, Barang $barang)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     /**
@@ -77,7 +110,7 @@ class BarangPolicy
      */
     public function restore(User $user, Barang $barang)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +122,6 @@ class BarangPolicy
      */
     public function forceDelete(User $user, Barang $barang)
     {
-        //
+        return false;
     }
 }

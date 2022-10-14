@@ -10,6 +10,13 @@ class PinjamanPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class PinjamanPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -30,7 +42,16 @@ class PinjamanPolicy
      */
     public function view(User $user, Pinjaman $pinjaman)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        {
+            return true;
+        }
+        else if($this->jabatan == 'anggota' && $user->username == auth()->user()->username)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -41,7 +62,12 @@ class PinjamanPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +79,12 @@ class PinjamanPolicy
      */
     public function update(User $user, Pinjaman $pinjaman)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +96,12 @@ class PinjamanPolicy
      */
     public function delete(User $user, Pinjaman $pinjaman)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +113,7 @@ class PinjamanPolicy
      */
     public function restore(User $user, Pinjaman $pinjaman)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +125,6 @@ class PinjamanPolicy
      */
     public function forceDelete(User $user, Pinjaman $pinjaman)
     {
-        //
+        return false;
     }
 }

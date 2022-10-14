@@ -17,7 +17,8 @@ class SimpananSukarelaController extends Controller
      */
     public function index()
     {
-        // $this->authorize('can-viewAny-simpanan');
+        $this->authorize('viewAny', SimpananSukarela::class);
+
         $simpananSukarela = SimpananSukarela::filter(request(['username', 'search']))->get();
 
         return response([
@@ -36,7 +37,8 @@ class SimpananSukarelaController extends Controller
      */
     public function store(StoreSimpananSukarelaRequest $request)
     {
-        $this->authorize('can-create-simpanan');
+        $this->authorize('create', SimpananSukarela::class);
+
         $simpananSukarela = SimpananSukarela::create($request->toArray());
 
         return response([
@@ -53,10 +55,10 @@ class SimpananSukarelaController extends Controller
      */
     public function show(SimpananSukarela $simpananSukarela)
     {
-        $this->authorize('can-view-simpanan');
+        $this->authorize('view', $simpananSukarela);
+
         return response([
             'simpanan_sukarela' => new KPIMResource($simpananSukarela),
-            'user' => new KPIMResource($simpananSukarela->user),
             'message' => 'Data berhasil ditemukan!'
         ], MyConstant::OK);
     }
@@ -70,7 +72,7 @@ class SimpananSukarelaController extends Controller
      */
     public function update(UpdateSimpananSukarelaRequest $request, SimpananSukarela $simpananSukarela)
     {
-        $this->authorize('can-update-simpanan');
+        $this->authorize('update', $simpananSukarela);
 
         $simpananSukarela->update($request->toArray());
 
@@ -88,7 +90,7 @@ class SimpananSukarelaController extends Controller
      */
     public function destroy(SimpananSukarela $simpananSukarela)
     {
-        $this->authorize('can-delete-simpanan');
+        $this->authorize('delete', $simpananSukarela);
 
         $simpananSukarela->delete();
 

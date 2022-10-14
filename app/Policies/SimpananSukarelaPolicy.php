@@ -10,6 +10,13 @@ class SimpananSukarelaPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class SimpananSukarelaPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -30,7 +42,16 @@ class SimpananSukarelaPolicy
      */
     public function view(User $user, SimpananSukarela $simpananSukarela)
     {
-        //
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+        else if($this->jabatan == 'anggota' && $user->username == auth()->user()->username)
+        {
+            return true;
+        }
+
+        return true;
     }
 
     /**
@@ -41,7 +62,12 @@ class SimpananSukarelaPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +79,12 @@ class SimpananSukarelaPolicy
      */
     public function update(User $user, SimpananSukarela $simpananSukarela)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +96,12 @@ class SimpananSukarelaPolicy
      */
     public function delete(User $user, SimpananSukarela $simpananSukarela)
     {
-        //
+        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +113,7 @@ class SimpananSukarelaPolicy
      */
     public function restore(User $user, SimpananSukarela $simpananSukarela)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +125,6 @@ class SimpananSukarelaPolicy
      */
     public function forceDelete(User $user, SimpananSukarela $simpananSukarela)
     {
-        //
+        return false;
     }
 }
