@@ -88,6 +88,7 @@ class PinjamanController extends Controller
         return response([
             'status' => true,
             'pinjaman' => new KPIMResource($pinjaman),
+            'user' => new KPIMResource($pinjaman->user),
             'message' => 'Data berhasil ditemukan'
         ]);
     }
