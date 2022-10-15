@@ -37,10 +37,7 @@ class PemodalController extends Controller
      */
     public function store(StorePemodalRequest $request)
     {
-<<<<<<< HEAD
-=======
         $this->authorize('create', Pemodal::class);
->>>>>>> 0b1dd4f2eeaa538c035eb11330cba2e5e0742023
 
         $pemodal = Pemodal::create($request->toArray());
 
