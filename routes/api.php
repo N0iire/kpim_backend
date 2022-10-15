@@ -66,6 +66,7 @@ Route::apiResources([
 // RESTRICTED
 Route::middleware(Restricted::class)->group(function () {
     Route::post('/barang', [BarangController::class, 'store']);
+    Route::post('/cicilan', [CicilanController::class, 'store']);
     Route::post('/detail-pinjaman', [DetailPinjamanController::class, 'store']);
     Route::post('/pembelian', [PembelianController::class, 'store']);
     Route::post('/penjualan', [PenjualanController::class, 'store']);
