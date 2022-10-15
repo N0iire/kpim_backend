@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemodal;
+
 use App\Http\Requests\StorePemodalRequest;
 use App\Http\Requests\UpdatePemodalRequest;
 use App\Http\Resources\KPIMResource;
@@ -35,7 +36,6 @@ class PemodalController extends Controller
      */
     public function store(StorePemodalRequest $request)
     {
-        $this->authorize('can-create-pemodal');
 
         $pemodal = Pemodal::create($request->toArray());
 
