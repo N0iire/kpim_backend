@@ -16,6 +16,7 @@ class CreatePemodalsTable extends Migration
         Schema::create('pemodals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user');
+            $table->string('no_transaksi')->nullable()->unique();
             $table->string('nama_pemodal');
             $table->date('tgl_bayar');
             $table->double('nominal_modal');
