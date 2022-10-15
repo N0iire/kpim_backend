@@ -18,12 +18,13 @@ class PemodalController extends Controller
      */
     public function index()
     {
-        $this->authorize('can-viewAny-pemodal');
+        $this->authorize('viewAny', Pemodal::class);
+
         $pemodal = Pemodal::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'pemodal' => new KPIMResource($pemodal),
+            'pemodal' => KPIMResource::collection($pemodal),
             'message' => 'Data pemodal berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -36,6 +37,10 @@ class PemodalController extends Controller
      */
     public function store(StorePemodalRequest $request)
     {
+<<<<<<< HEAD
+=======
+        $this->authorize('create', Pemodal::class);
+>>>>>>> 0b1dd4f2eeaa538c035eb11330cba2e5e0742023
 
         $pemodal = Pemodal::create($request->toArray());
 
@@ -53,7 +58,7 @@ class PemodalController extends Controller
      */
     public function show(Pemodal $pemodal)
     {
-        $this->authorize('can-view-pemodal');
+        $this->authorize('view', $pemodal);
 
         return response([
             'pemodal' => new KPIMResource($pemodal->toArray()),
@@ -70,7 +75,7 @@ class PemodalController extends Controller
      */
     public function update(UpdatePemodalRequest $request, Pemodal $pemodal)
     {
-        $this->authorize('can-update-pemodal');
+        $this->authorize('update', $pemodal);
 
         $pemodal->update($request->toArray());
 
@@ -88,7 +93,7 @@ class PemodalController extends Controller
      */
     public function destroy(Pemodal $pemodal)
     {
-        $this->authorize('can-delete-pemodal');
+        $this->authorize('delete', $pemodal);
 
         $pemodal->delete();
 

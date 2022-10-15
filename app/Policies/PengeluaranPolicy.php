@@ -10,6 +10,13 @@ class PengeluaranPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +25,12 @@ class PengeluaranPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -30,7 +42,12 @@ class PengeluaranPolicy
      */
     public function view(User $user, Pengeluaran $pengeluaran)
     {
-        //
+        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -41,7 +58,12 @@ class PengeluaranPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +75,12 @@ class PengeluaranPolicy
      */
     public function update(User $user, Pengeluaran $pengeluaran)
     {
-        //
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +92,12 @@ class PengeluaranPolicy
      */
     public function delete(User $user, Pengeluaran $pengeluaran)
     {
-        //
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -77,7 +109,7 @@ class PengeluaranPolicy
      */
     public function restore(User $user, Pengeluaran $pengeluaran)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +121,6 @@ class PengeluaranPolicy
      */
     public function forceDelete(User $user, Pengeluaran $pengeluaran)
     {
-        //
+        return false;
     }
 }

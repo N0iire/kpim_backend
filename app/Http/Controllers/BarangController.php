@@ -17,6 +17,8 @@ class BarangController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Barang::class);
+
         $barang = Barang::filter(request('search'))->get();
 
         return response([
@@ -88,6 +90,8 @@ class BarangController extends Controller
      */
     public function show(Barang $barang)
     {
+        $this->authorize('view', $barang);
+
         return response([
             'status' => true,
             'barang' => new KPIMResource($barang),
@@ -104,6 +108,8 @@ class BarangController extends Controller
      */
     public function update(UpdateBarangRequest $request, Barang $barang)
     {
+        $this->authorize('update', $barang);
+
         $validated = $request->validated();
 
         $barang->update($validated);
@@ -122,6 +128,8 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
+        $this->authorize('delete', $barang);
+
         $barang->delete();
 
         return response([

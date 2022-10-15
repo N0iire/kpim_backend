@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SimpananPokok;
 use App\Http\Requests\StoreSimpananPokokRequest;
+use App\Models\SimpananPokok;
 use App\Http\Requests\UpdateSimpananPokokRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
@@ -11,14 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SimpananPokokController extends Controller
 {
-    // /**
-    //  * Create a new ApiAuthController instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct() {
-    //     $this->middleware('auth:api');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -26,13 +18,13 @@ class SimpananPokokController extends Controller
      */
     public function index()
     {
-        // $this->authorize('can-viewAny-simpanan');
+        $this->authorize('viewAny', SimpananPokok::class);
 
         $simpanan_pokok = SimpananPokok::filter(request(['username', 'search']))->get();
 
         return response([
             'status' => true,
-            'simpanan_wajib' => KPIMResource::collection($simpanan_pokok),
+            'simpanan_pokok' => KPIMResource::collection($simpanan_pokok),
             'message' => 'Data simpanan pokok berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -46,8 +38,6 @@ class SimpananPokokController extends Controller
      */
     public function store(Array $request)
     {
-        $this->authorize('can-create-simpanan');
-
         $validator = Validator::make($request, [
             'id_user' => 'required|integer|exists:users,id',
             'tgl_bayar' => 'required|date',
@@ -81,7 +71,7 @@ class SimpananPokokController extends Controller
      */
     public function show(SimpananPokok $simpananPokok)
     {
-        $this->authorize('can-view-simpanan');
+        $this->authorize('view', $simpananPokok);
 
         return response([
             'status' => true,
@@ -100,7 +90,7 @@ class SimpananPokokController extends Controller
      */
     public function update(UpdateSimpananPokokRequest $request, SimpananPokok $simpananPokok)
     {
-        $this->authorize('can-update-simpanan');
+        $this->authorize('update', $simpananPokok);
 
         $simpananPokok->update($request->toArray());
 
@@ -119,7 +109,7 @@ class SimpananPokokController extends Controller
      */
     public function destroy(SimpananPokok $simpananPokok)
     {
-        $this->authorize('can-delete-simpanan');
+        $this->authorize('delete', $simpananPokok);
 
         $simpananPokok->delete();
 

@@ -10,6 +10,13 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    private $jabatan;
+
+    public function __construct(User $user)
+    {
+        $this->jabatan = $user->jabatan;
+    }
+    
     /**
      * Determine whether the user can view any models.
      *
@@ -18,14 +25,12 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-
-        $jabatan = $user->jabatan->value;
-        if($jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretriat')
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat' || $this->jabatan == 'ketua')
         {
             return true;
-        }else{
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -36,13 +41,16 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        $jabatan = $user->jabatan->value;
-        if(Auth::user()->id = $user->id || $jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretriatan')
+        if($this->jabatan == 'sekretaris')
         {
             return true;
-        }else{
-            return false;
         }
+        else if($this->jabatan == 'anggota' && $user->id == auth()->user()->id)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -53,7 +61,12 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -64,7 +77,16 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        return Auth::user()->id = $user->id;
+        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        {
+            return true;
+        }
+        else if($this->jabatan == 'anggota' && $user->id == auth()->user()->id)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -75,12 +97,11 @@ class UserPolicy
      */
     public function delete(User $user)
     {
-        $jabatan = $user->jabatan->value;
-
-        if($jabatan == 'sekretaris' || $jabatan == 'pegawai-sekretariat' || $jabatan == 'ketua')
+        if($this->jabatan == 'sekretaris')
         {
             return true;
         }
+
         return false;
     }
 
@@ -92,7 +113,7 @@ class UserPolicy
      */
     public function restore(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -103,6 +124,6 @@ class UserPolicy
      */
     public function forceDelete(User $user)
     {
-        //
+        return false;
     }
 }

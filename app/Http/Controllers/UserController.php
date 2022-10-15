@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -19,12 +20,13 @@ class UserController extends Controller
     */
     public function index()
     {
-        // $this->authorize('can-viewAny-user');
+        $this->authorize('viewAny', User::class);
+
         $users = User::filter(request('search'))->get();
 
         return response([
             'status' => true,
-            'users' => new KPIMResource($users),
+            'users' => KPIMResource::collection($users),
             'message' => 'Data anggota berhasil diambil!'
         ], MyConstant::OK);
     }
@@ -37,7 +39,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        // $this->authorize('can-view-user');
+        $this->authorize('view', $user);
+
         return response([
             'status' => true,
             'user' => new KPIMResource($user),
@@ -53,6 +56,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', User::class);
+
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
         $validated['status'] = true;
@@ -61,7 +66,7 @@ class UserController extends Controller
         User::create($validated);
 
         $id_user = User::where('username', $validated['username'])->first();
-        $validated['id_user'] = $id_user['id'];
+        $validated['id_user'] = $id_user->id;
         $validated['tgl_bayar'] = $validated['tgl_daftar'];
 
         $simpananPokok = (new SimpananPokokController)->store($validated)->getOriginalContent();
@@ -89,7 +94,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('can-update-user');
+        $this->authorize('update', $user);
+
         $validated = $request->validated();
 
         $user->update($validated);
@@ -108,7 +114,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('can-delete-user');
+        $this->authorize('delete', $user);
+
         $user->delete();
 
         return response([

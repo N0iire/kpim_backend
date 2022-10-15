@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemasukan;
 use App\Http\Requests\StorePemasukanRequest;
-use App\Http\Requests\StorePemodalRequest;
-use App\Http\Requests\UpdatePemasukanRequest;
 use App\Http\Resources\KPIMResource;
 use App\Models\CatatanJual;
 use App\Models\Pemodal;
@@ -14,11 +12,8 @@ use App\Models\SimpananPokok;
 use App\Models\SimpananSukarela;
 use App\Models\SimpananWajib;
 use App\MyConstant;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection as SupportCollection;
-use Illuminate\Support\Facades\DB;
 
 class PemasukanController extends Controller
 {
@@ -29,7 +24,7 @@ class PemasukanController extends Controller
      */
     public function index()
     {
-        $this->authorize('can-viewAny-laporan');
+        $this->authorize('viewAny', Pemasukan::class);
 
         $pemasukan = Pemasukan::all();
 
@@ -46,7 +41,7 @@ class PemasukanController extends Controller
      */
 public function store(StorePemasukanRequest $request)
     {
-        $this->authorize('can-create-laporan');
+        $this->authorize('create', Pemasukan::class);
 
         $pemasukan = Pemasukan::create($request->toArray());
 
@@ -56,48 +51,14 @@ public function store(StorePemasukanRequest $request)
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pemasukan  $pemasukan
-     * @return \Illuminate\Http\Response
-     */
-    public function show($string)
-    {
-        $this->authorize('can-view-laporan');
-
-        $tanggal = explode('-', $string);
-        $bulan = array_pop($tanggal);
-        $tahun = implode(' ', $tanggal);
-
-        $simpanan_pokok = SimpananPokok::whereYear('tgl_bayar', $tahun)
-                                            ->whereMonth('tgl_bayar', $bulan)
-                                            ->sum('nominal_pokok');
-
-        $simpanan_wajib = SimpananWajib::whereYear('tgl_bayar', $tahun)
-                                            ->whereMonth('tgl_bayar', $bulan)
-                                            ->sum('nominal_bayar');
-
-        $simpanan_sukarela = SimpananSukarela::whereYear('tgl_bayar', $tahun)
-                                                ->whereMonth('tgl_bayar', $bulan)
-                                                ->sum('nominal_sukarela');
-
-        $detail_pemasukan = new SupportCollection();
-        $detail_pemasukan->put('simpanan_pokok', $simpanan_pokok);
-        $detail_pemasukan->put('simpanan_wajib', $simpanan_wajib);
-        $detail_pemasukan->put('simpanan_sukarela', $simpanan_sukarela);
-
-        return response($detail_pemasukan, MyConstant::OK);
-    }
-
-    /**
      * Finding pemasukan as years
      *
      * @param \Illuminate\Http\Request;
      * @return\Illuminate\Http\Response
      */
-    public function find(Request $request)
+    public function show(Request $request)
     {
-        $this->authorize('can-find-laporan');
+        $this->authorize('view', Pemasukan::class);
 
         $tahun = $request->tgl_awal; // Tahun dari input
         $pemasukan_perbulan = new SupportCollection(); // Array
