@@ -11,6 +11,10 @@ class Barang extends Model
 
     protected $guarded = ['id'];
 
+    protected $attributes = [
+        'status' => true,
+    ];
+
     public function scopeFilter($query, $filter)
     {
         $query->when($filter ?? false, function($query, $search)

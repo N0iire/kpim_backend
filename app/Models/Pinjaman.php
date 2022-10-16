@@ -28,6 +28,10 @@ class Pinjaman extends Model
         'status'
     ];
 
+    protected $attributes = [
+        'status' => false,
+    ];
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['username'] ?? false, function($query, $user)
