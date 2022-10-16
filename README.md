@@ -12,7 +12,7 @@ API ini dibangun untuk dipergunakan secara khusus oleh Koperasi Pekerja Indonesi
 ## Petunjuk Penggunaan
 
 Format URL utama adalah : `https://kpim_backend.test/api/<parameter>`
-<p>Berikut adalah petunjuk penggunaan API KPIM berdasarkan format URL beserta parameter dan data yang dibutuhkan :</p>
+<p>Berikut adalah petunjuk penggunaan API KPIM berdasarkan format URL beserta parameter dan data - data yang dibutuhkan :</p>
 
 ### Index
 Metode : `GET`
@@ -38,7 +38,7 @@ Metode : `GET`
 #### Parameter Tambahan
 Permintaan `index` dapat diberikan parameter tambahan untuk memudahkan pengambilan data.
 Parameter tambahan dapat digunakan dengan cara menambahkan parameter baru setelah simbol `?`. Contoh :
-` https://kpim_backend.test/api/catatan-beli?username=asep123 `
+` https://kpim_backend.test/api/catatan-beli?username=asep123 `.
 Berikut adalah daftar parameter tambahan untuk setiap tabel :
 | Nama Tabel           | Parameter                                          |
 |----------------------|----------------------------------------------------|
