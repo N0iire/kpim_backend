@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,19 @@ class CatatanJual extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->no_transaksi = IdGenerator::generate([
+                                                'table' => 'catatan_juals',
+                                                'length' => 8, 
+                                                'prefix' => date('ym'),
+                                                'reset_on_prefix_change' => true
+                                            ]);
+        });
+    }
 
     public function scopeFilter($query, array $filters)
     {

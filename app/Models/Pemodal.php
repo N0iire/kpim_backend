@@ -11,8 +11,6 @@ class Pemodal extends Model
 {
     use HasFactory;
 
-    public $incrementing = false;
-
     protected $guarded = ['id'];
 
     /**
@@ -32,8 +30,12 @@ class Pemodal extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->id = IdGenerator::generate(['table' => 'pemodals',
-                                        'length' => 8, 'prefix' =>date('ym')]);
+            $model->no_transaksi = IdGenerator::generate([
+                                                'table' => 'pemodals',
+                                                'length' => 8, 
+                                                'prefix' => date('ym'),
+                                                'reset_on_prefix_change' => true
+                                            ]);
         });
     }
 
