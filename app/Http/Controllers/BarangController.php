@@ -65,7 +65,6 @@ class BarangController extends Controller
                 $key = count($validated) - 1;
 
                 $validated[$key]['stok'] = $request['barang'][$i]['jumlah'];
-                $validated[$key]['status'] = true;
                 $validated[$key]['created_at'] = now()->toDateTimeString();
                 $validated[$key]['updated_at'] = now()->toDateTimeString();
             }

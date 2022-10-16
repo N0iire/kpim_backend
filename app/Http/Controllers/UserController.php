@@ -7,7 +7,6 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -60,8 +59,6 @@ class UserController extends Controller
 
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
-        $validated['status'] = true;
-        $validated['keanggotaan'] = true;
 
         User::create($validated);
 

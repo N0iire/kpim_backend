@@ -54,6 +54,11 @@ class User extends Authenticatable implements JWTSubject
         'jabatan' => UserJabatan::class
     ];
 
+    protected $attributes = [
+        'status' => true,
+        'keanggotaan' => true,
+    ];
+
     public function scopeFilter($query, $filter)
     {
         $query->when($filter ?? false, function($query, $search)

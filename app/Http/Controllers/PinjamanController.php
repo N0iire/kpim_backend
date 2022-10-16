@@ -47,7 +47,6 @@ class PinjamanController extends Controller
         $validated['id_user'] = $user->id;
         $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
         $validated['jatuh_tempo'] = Carbon::createFromDate($validated['tgl_pinjaman'])->addDays(30);
-        $validated['status'] = false;
         $validated['sisa_cicilan'] = $validated['total_pinjaman'];
 
         Pinjaman::create($validated);
