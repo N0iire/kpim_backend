@@ -36,7 +36,7 @@ Metode : `GET`
 | User                 | /user                 |
 
 #### Parameter Tambahan
-Permintaan `index` dapat diberikan parameter tambahan untuk memudahkan pengambilan data.
+Permintaan `index` dapat diberikan parameter tambahan untuk pengambilan data yang spesifik.
 Parameter tambahan dapat digunakan dengan cara menambahkan parameter baru setelah simbol `?`. Contoh :
 ` https://kpim_backend.test/api/catatan-beli?username=asep123 `.
 Berikut adalah daftar parameter tambahan untuk setiap tabel :
@@ -55,4 +55,25 @@ Berikut adalah daftar parameter tambahan untuk setiap tabel :
 | Simpanan Sukarela    | username=(username)                                |
 | Simpanan Wajib       | username=(username)                                |
 
-#### 
+#### Search
+Permintaan `search` dapat dilakukan dengan menambahkan parameter `search` setelah simbol `?`. Contoh :
+`https://kpim_backend.test/api/user?search=asep123`.
+Berikut adalah daftar nilai yang dapat diberikan pada parameter `search` untuk setiap tabel :
+| Nama Tabel           | Parameter                           |
+|----------------------|-------------------------------------|
+| Barang               | search=(nama_barang)                |
+| Catatan Beli         | search=(tgl_pembelian/supplier)     |
+| Catatan Jual         | search=(tgl_penjualan/nama_pembeli) |
+| Cicilan              | /cicilan                        |
+| Detail Non Pembelian | /detail-non-pembelian           |
+| Detail Pinjaman      | /detail-pinjaman                |
+| Pengeluaran          | /pengeluaran                    |
+| Penjualan            | /penjualan                      |
+| Pemasukan            | /pemasukan            |
+| Pembelian            | /pembelian            |
+| Pemodal              | /pemodal              |
+| Pinjaman             | /pinjaman             |
+| Simpanan Pokok       | /simpanan-pokok       |
+| Simpanan Sukarela    | /simpanan-sukarela    |
+| Simpanan Wajib       | /simpanan-wajib       |
+| User                 | search=(username/nama_anggota)  |
