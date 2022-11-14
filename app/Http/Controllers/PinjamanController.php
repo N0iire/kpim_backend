@@ -180,8 +180,6 @@ class PinjamanController extends Controller
 
     public function bayarCicilan(Pinjaman $pinjaman)
     {
-        $this->authorize('create', $pinjaman);
-
         $dataCicilan = [
             'id_pinjaman' => $pinjaman->id,
             'tgl_bayar' => now()->toDateTimeString(),
