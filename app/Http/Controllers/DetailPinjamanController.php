@@ -19,7 +19,7 @@ class DetailPinjamanController extends Controller
     {
         $this->authorize('viewAny', DetailPinjaman::class);
 
-        $detailPinjaman = DetailPinjaman::filter(['pinjaman', 'barang', 'search'])->get();
+        $detailPinjaman = DetailPinjaman::filter(request(['pinjaman', 'barang', 'search']))->get();
 
         return response([
             'status' => true,
