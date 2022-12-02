@@ -121,6 +121,8 @@ class UserController extends Controller
             $validated = $request->validated();
         }
 
+        $validated['password'] = Hash::make($validated['password']);
+
         $user->update($validated);
 
         return response([
