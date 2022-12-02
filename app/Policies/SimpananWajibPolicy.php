@@ -10,13 +10,6 @@ class SimpananWajibPolicy
 {
     use HandlesAuthorization;
 
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
-
     /**
      * Determine whether the user can view any models.
      *
@@ -25,7 +18,7 @@ class SimpananWajibPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'anggota' || $user->jabatan->value == 'ketua')
         {
             return false;
         }
@@ -43,11 +36,11 @@ class SimpananWajibPolicy
      */
     public function view(User $user, SimpananWajib $simpananWajib)
     {
-        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'ketua')
         {
             return false;
         }
-        else if($this->jabatan == 'anggota' && $user->username == auth()->user()->username)
+        else if($user->jabatan->value == 'anggota' && $user->username == auth()->user()->username)
         {
             return true;
         }
@@ -63,7 +56,7 @@ class SimpananWajibPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -80,7 +73,7 @@ class SimpananWajibPolicy
      */
     public function update(User $user, SimpananWajib $simpananWajib)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -97,7 +90,7 @@ class SimpananWajibPolicy
      */
     public function delete(User $user, SimpananWajib $simpananWajib)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }

@@ -9,14 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class PemasukanPolicy
 {
     use HandlesAuthorization;
-
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
-
+    
     /**
      * Determine whether the user can view any models.
      *
@@ -25,7 +18,7 @@ class PemasukanPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota')
+        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'anggota')
         {
             return false;
         }
@@ -42,7 +35,7 @@ class PemasukanPolicy
      */
     public function view(User $user, Pemasukan $pemasukan)
     {
-        if($this->jabatan == 'pegawai-barang-jasa' || $this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'anggota' || $user->jabatan->value == 'ketua')
         {
             return false;
         }
@@ -58,7 +51,7 @@ class PemasukanPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat')
         {
             return true;
         }
@@ -75,7 +68,7 @@ class PemasukanPolicy
      */
     public function update(User $user, Pemasukan $pemasukan)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat')
         {
             return true;
         }
@@ -92,7 +85,7 @@ class PemasukanPolicy
      */
     public function delete(User $user, Pemasukan $pemasukan)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat')
         {
             return true;
         }

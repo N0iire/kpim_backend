@@ -10,13 +10,6 @@ class CatatanJualPolicy
 {
     use HandlesAuthorization;
 
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;   
-    }
-
     /**
      * Determine whether the user can view any models.
      *
@@ -25,7 +18,7 @@ class CatatanJualPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'anggota' || $user->jabatan->value == 'ketua')
         {
             return false;
         }
@@ -42,7 +35,7 @@ class CatatanJualPolicy
      */
     public function view(User $user, CatatanJual $catatanJual)
     {
-        if($this->jabatan == 'anggota' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'anggota' || $user->jabatan->value == 'ketua')
         {
             return false;
         }
@@ -58,7 +51,7 @@ class CatatanJualPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -75,7 +68,7 @@ class CatatanJualPolicy
      */
     public function update(User $user, CatatanJual $catatanJual)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -92,7 +85,7 @@ class CatatanJualPolicy
      */
     public function delete(User $user, CatatanJual $catatanJual)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }

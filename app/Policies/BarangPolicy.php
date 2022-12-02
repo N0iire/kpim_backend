@@ -9,13 +9,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class BarangPolicy
 {
     use HandlesAuthorization;
-    
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
 
     /**
      * Determine whether the user can view any models.
@@ -25,7 +18,7 @@ class BarangPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'anggota')
+        if($user->jabatan->value == 'anggota')
         {
             return false;
         }
@@ -42,8 +35,8 @@ class BarangPolicy
      */
     public function view(User $user, Barang $barang)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa'
-        || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa'
+        || $user->jabatan->value == 'ketua')
         {
             return true;
         }
@@ -59,7 +52,7 @@ class BarangPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -76,7 +69,7 @@ class BarangPolicy
      */
     public function update(User $user, Barang $barang)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -93,7 +86,7 @@ class BarangPolicy
      */
     public function delete(User $user, Barang $barang)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }

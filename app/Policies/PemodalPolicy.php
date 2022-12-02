@@ -10,13 +10,6 @@ class PemodalPolicy
 {
     use HandlesAuthorization;
 
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
-
     /**
      * Determine whether the user can view any models.
      *
@@ -25,7 +18,7 @@ class PemodalPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -42,7 +35,7 @@ class PemodalPolicy
      */
     public function view(User $user, Pemodal $pemodal)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -58,7 +51,7 @@ class PemodalPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -75,7 +68,7 @@ class PemodalPolicy
      */
     public function update(User $user, Pemodal $pemodal)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }
@@ -92,7 +85,7 @@ class PemodalPolicy
      */
     public function delete(User $user, Pemodal $pemodal)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
         {
             return true;
         }

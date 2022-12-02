@@ -4,18 +4,10 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
     use HandlesAuthorization;
-
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
     
     /**
      * Determine whether the user can view any models.
@@ -25,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat' || $this->jabatan == 'ketua')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat' || $user->jabatan->value == 'ketua')
         {
             return true;
         }
@@ -41,11 +33,11 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        if($this->jabatan == 'sekretaris')
+        if($user->jabatan->value == 'sekretaris')
         {
             return true;
         }
-        else if($this->jabatan == 'anggota' && $user->id == auth()->user()->id)
+        else if($user->jabatan->value == 'anggota' && $user->id == auth()->user()->id)
         {
             return true;
         }
@@ -61,7 +53,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat')
         {
             return true;
         }
@@ -77,11 +69,11 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        if($this->jabatan == 'sekretaris' || $this->jabatan == 'pegawai-sekretariat')
+        if($user->jabatan->value == 'sekretaris' || $user->jabatan->value == 'pegawai-sekretariat')
         {
             return true;
         }
-        else if($this->jabatan == 'anggota' && $user->id == auth()->user()->id)
+        else if($user->jabatan->value == 'anggota' && $user->id == auth()->user()->id)
         {
             return true;
         }
@@ -97,7 +89,7 @@ class UserPolicy
      */
     public function delete(User $user)
     {
-        if($this->jabatan == 'sekretaris')
+        if($user->jabatan->value == 'sekretaris')
         {
             return true;
         }

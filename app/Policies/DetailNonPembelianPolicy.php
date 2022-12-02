@@ -10,13 +10,6 @@ class DetailNonPembelianPolicy
 {
     use HandlesAuthorization;
 
-    private $jabatan;
-
-    public function __construct(User $user)
-    {
-        $this->jabatan = $user->jabatan;
-    }
-
     /**
      * Determine whether the user can view any models.
      *
@@ -25,7 +18,7 @@ class DetailNonPembelianPolicy
      */
     public function viewAny(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -42,7 +35,7 @@ class DetailNonPembelianPolicy
      */
     public function view(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -58,7 +51,7 @@ class DetailNonPembelianPolicy
      */
     public function create(User $user)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -75,7 +68,7 @@ class DetailNonPembelianPolicy
      */
     public function update(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
@@ -92,7 +85,7 @@ class DetailNonPembelianPolicy
      */
     public function delete(User $user, DetailNonPembelian $detailNonPembelian)
     {
-        if($this->jabatan == 'bendahara' || $this->jabatan == 'pegawai-keuangan' || $this->jabatan == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
         {
             return true;
         }
