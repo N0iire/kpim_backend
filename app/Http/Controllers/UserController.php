@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -93,7 +94,32 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $validated = $request->validated();
+        if($request->nik != $user->nik)
+        {
+            $validator = Validator::make($request, [
+                'username' => 'required|string|max:30',
+                'password' => 'required|confirmed',
+                'nik' => 'required|unique:users,nik|string',
+                'nama_anggota' => 'required|string',
+                'alamat' => 'required|string',
+                'ttl' => 'required',
+                'pekerjaan' => 'required|string',
+                'status' => 'required'
+            ]);
+
+            if($validator->fails())
+            {
+                return response([
+                    'status' => false,
+                    'message' => $validator->errors()
+                ]);
+            }
+
+            $validated = $validator->validated();
+        }else
+        {
+            $validated = $request->validated();
+        }
 
         $user->update($validated);
 
