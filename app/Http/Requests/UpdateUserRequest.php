@@ -31,7 +31,6 @@ class UpdateUserRequest extends FormRequest
             'alamat' => 'required|string',
             'ttl' => 'required',
             'pekerjaan' => 'required|string',
-            'status' => 'required'
         ];
     }
 

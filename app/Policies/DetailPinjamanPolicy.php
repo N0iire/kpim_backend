@@ -18,7 +18,8 @@ class DetailPinjamanPolicy
      */
     public function viewAny(User $user)
     {
-        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || 
+            $user->jabatan->value == 'pegawai-barang-jasa' || $user->username == auth()->user()->username)
         {
             return true;
         }
@@ -35,11 +36,8 @@ class DetailPinjamanPolicy
      */
     public function view(User $user, DetailPinjaman $detailPinjaman)
     {
-        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
-        {
-            return true;
-        }
-        else if($user->jabatan->value == 'anggota' && $user->username == auth()->user()->username)
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || 
+            $user->jabatan->value == 'pegawai-barang-jasa' || $user->username == auth()->user()->username)
         {
             return true;
         }

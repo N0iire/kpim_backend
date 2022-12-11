@@ -18,7 +18,8 @@ class PinjamanPolicy
      */
     public function viewAny(User $user)
     {
-        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || 
+            $user->jabatan->value == 'pegawai-barang-jasa' || $user->username == auth()->user()->username)
         {
             return true;
         }
@@ -39,7 +40,7 @@ class PinjamanPolicy
         {
             return true;
         }
-        else if($user->jabatan->value == 'anggota' && $user->username == auth()->user()->username)
+        else if($user->username == auth()->user()->username && $user->id == $pinjaman->id_user)
         {
             return true;
         }

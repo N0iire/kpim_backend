@@ -18,9 +18,13 @@ class SimpananWajibPolicy
      */
     public function viewAny(User $user)
     {
-        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'anggota' || $user->jabatan->value == 'ketua')
+        if($user->jabatan->value == 'pegawai-barang-jasa' || $user->jabatan->value == 'ketua')
         {
             return false;
+        }
+        else if($user->username == auth()->user()->username)
+        {
+            return true;
         }
 
         return true;
@@ -40,7 +44,7 @@ class SimpananWajibPolicy
         {
             return false;
         }
-        else if($user->jabatan->value == 'anggota' && $user->username == auth()->user()->username)
+        else if($user->username == auth()->user()->username && auth()->user()->id == $simpananWajib->id_user)
         {
             return true;
         }

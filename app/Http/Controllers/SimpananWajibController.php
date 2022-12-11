@@ -21,6 +21,22 @@ class SimpananWajibController extends Controller
 
         $simpananWajib = SimpananWajib::filter(request(['username', 'search']))->get();
 
+        if(auth()->user()->jabatan->value == 'anggota')
+        {
+            $check = $simpananWajib->toArray();
+
+            for($i = 0; $i < count($check); $i++)
+            {
+                if($check[$i]['id_user'] != auth()->user()->id)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => 'This action is unathorized!'
+                    ], MyConstant::FORBIDDEN);
+                }
+            }
+        }
+
         return response([
             'status' => true,
             'simpanan_wajib' => KPIMResource::collection($simpananWajib),

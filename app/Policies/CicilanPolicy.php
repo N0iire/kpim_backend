@@ -18,7 +18,7 @@ class CicilanPolicy
      */
     public function viewAny(User $user)
     {
-        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->username == auth()->user()->username)
         {
             return true;
         }
@@ -35,11 +35,7 @@ class CicilanPolicy
      */
     public function view(User $user, Cicilan $cicilan)
     {
-        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan')
-        {
-            return true;
-        }
-        else if($user->jabatan->value == 'anggota' && $user->username == auth()->user()->username)
+        if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->username == auth()->user()->username)
         {
             return true;
         }
