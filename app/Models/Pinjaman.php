@@ -46,6 +46,15 @@ class Pinjaman extends Model
         {
             return $query->where('tgl_pinjaman', 'like', '%'.$search.'%');
         });
+
+        $query->when($filters['username'] ?? false && $filters['reminder'] == 'true', function($query, $user)
+        {
+            return $query->whereHas('user', function($query) use($user)
+            {
+                $query->where('username', $user);
+            })
+            ->where('status', 0);
+        });
     }
 
     /**

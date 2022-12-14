@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSimpananWajibRequest;
 use App\Http\Requests\UpdateSimpananWajibRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Carbon\Carbon;
 
 class SimpananWajibController extends Controller
 {
@@ -19,7 +20,7 @@ class SimpananWajibController extends Controller
     {
         $this->authorize('viewAny', SimpananWajib::class);
 
-        $simpananWajib = SimpananWajib::filter(request(['username', 'search']))->get();
+        $simpananWajib = SimpananWajib::filter(request(['username', 'search', 'reminder']))->get();
 
         if(auth()->user()->jabatan->value == 'anggota')
         {

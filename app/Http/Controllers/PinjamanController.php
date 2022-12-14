@@ -21,7 +21,7 @@ class PinjamanController extends Controller
     {
         $this->authorize('viewAny', Pinjaman::class);
 
-        $pinjaman = Pinjaman::filter(request(['username', 'search']))->get();
+        $pinjaman = Pinjaman::filter(request(['username', 'search', 'reminder']))->get();
         
         if(auth()->user()->jabatan->value == 'anggota')
         {
@@ -230,27 +230,6 @@ class PinjamanController extends Controller
         return response([
             'status' => true,
             'message' => 'Cicilan berhasil dibayar!'
-        ], MyConstant::OK);
-    }
-
-    public function reminderCicilan(Pinjaman $pinjaman)
-    {
-        $jatuhTempo = Carbon::createFromDate($pinjaman->jatuh_tempo);
-        $now = now()->toDateTimeString();
-
-        if($jatuhTempo->lt($now))
-        {
-            return response([
-                'status' => false,
-                'jatuhTempo' => $jatuhTempo,
-                'message' => 'Jatuh tempo sudah terlewat!'
-            ], MyConstant::OK);
-        }
-
-        return response([
-            'status' => true,
-            'jatuhTempo' => $jatuhTempo,
-            'message' => 'Jatuh tempo belum terlewat!'
         ], MyConstant::OK);
     }
 
