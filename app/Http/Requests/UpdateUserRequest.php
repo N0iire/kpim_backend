@@ -25,12 +25,14 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:30',
-            'password' => 'required|string|min:5',
-            'nik' => 'required|string',
-            'nama_anggota' => 'required|string',
-            'alamat' => 'required|string',
-            'ttl' => 'required',
-            'pekerjaan' => 'required|string',
+            'password' => 'nullable|string|min:5',
+            'confirm_password' => 'required_with:password|same:password',
+            'avatar' => 'nullable|string',
+            'nik' => 'nullable|string',
+            'nama_anggota' => 'nullable|string',
+            'alamat' => 'nullable|string',
+            'ttl' => 'nullable|date',
+            'pekerjaan' => 'nullable|string',
         ];
     }
 

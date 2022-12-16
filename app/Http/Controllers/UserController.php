@@ -98,13 +98,14 @@ class UserController extends Controller
         {
             $validator = Validator::make($request, [
                 'username' => 'required|string|max:30',
-                'password' => 'required|confirmed',
-                'nik' => 'required|unique:users,nik|string',
+                'password' => 'nullable|string|min:5',
+                'confirm_password' => 'required_with:password|same:password',
+                'avatar' => 'nullable|string',
+                'nik' => 'required|string',
                 'nama_anggota' => 'required|string',
                 'alamat' => 'required|string',
-                'ttl' => 'required',
+                'ttl' => 'required|date',
                 'pekerjaan' => 'required|string',
-                'status' => 'required'
             ]);
 
             if($validator->fails())
@@ -121,7 +122,10 @@ class UserController extends Controller
             $validated = $request->validated();
         }
 
-        $validated['password'] = Hash::make($validated['password']);
+        if($validated['password'])
+        {
+            $validated['password'] = Hash::make($validated['password']);
+        }
 
         $user->update($validated);
 
