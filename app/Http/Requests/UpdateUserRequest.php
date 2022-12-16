@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
             'nik' => 'nullable|string',
             'nama_anggota' => 'nullable|string',
             'alamat' => 'nullable|string',
-            'ttl' => 'nullable|date',
+            'ttl' => 'nullable|string',
             'pekerjaan' => 'nullable|string',
         ];
     }

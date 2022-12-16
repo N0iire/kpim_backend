@@ -104,7 +104,7 @@ class UserController extends Controller
                 'nik' => 'required|string',
                 'nama_anggota' => 'required|string',
                 'alamat' => 'required|string',
-                'ttl' => 'required|date',
+                'ttl' => 'required|string',
                 'pekerjaan' => 'required|string',
             ]);
 
@@ -122,7 +122,7 @@ class UserController extends Controller
             $validated = $request->validated();
         }
 
-        if($validated['password'])
+        if($validated['password'] ?? false)
         {
             $validated['password'] = Hash::make($validated['password']);
         }
