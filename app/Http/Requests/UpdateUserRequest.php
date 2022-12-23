@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
             'username' => 'required|string|max:30',
             'password' => 'nullable|string|min:5',
             'confirm_password' => 'required_with:password|same:password',
+            'old_password' => 'required_with:password',
             'avatar' => 'nullable|string',
             'nik' => 'nullable|string',
             'nama_anggota' => 'nullable|string',

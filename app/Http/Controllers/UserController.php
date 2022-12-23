@@ -94,12 +94,23 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        if($request->nik != $user->nik)
+        if(auth()->user()->username != $user->username)
         {
-            $validator = Validator::make($request, [
+            return response([
+                'status' => false,
+                'message' => 'This action is unathorized!'
+            ], MyConstant::FORBIDDEN);
+        }
+
+        if($request->nik ?? false && $request->nik != $user->nik)
+        {
+            $update = $request->toArray();
+
+            $validator = Validator::make($update, [
                 'username' => 'required|string|max:30',
                 'password' => 'nullable|string|min:5',
                 'confirm_password' => 'required_with:password|same:password',
+                'old_password' => 'required_with:password',
                 'avatar' => 'nullable|string',
                 'nik' => 'required|string',
                 'nama_anggota' => 'required|string',
@@ -113,7 +124,7 @@ class UserController extends Controller
                 return response([
                     'status' => false,
                     'message' => $validator->errors()
-                ]);
+                ], MyConstant::BAD_REQUEST);
             }
 
             $validated = $validator->validated();
@@ -122,8 +133,18 @@ class UserController extends Controller
             $validated = $request->validated();
         }
 
-        if($validated['password'] ?? false)
+        if($validated['old_password'] ?? false)
         {
+            $old_password = Hash::check($validated['old_password'], $user->password);
+            
+            if($old_password == false)
+            {
+                return response([
+                    'status' => false,
+                    'message' => 'Invalid old password!'
+                ], MyConstant::BAD_REQUEST);
+            }
+
             $validated['password'] = Hash::make($validated['password']);
         }
 
@@ -132,7 +153,7 @@ class UserController extends Controller
         return response([
             'status' => true,
             'message' => 'Data anggota berhasil diperbarui!'
-        ]);
+        ], MyConstant::OK);
     }
 
     /**
