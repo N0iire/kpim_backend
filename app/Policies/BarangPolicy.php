@@ -36,7 +36,7 @@ class BarangPolicy
     public function view(User $user, Barang $barang)
     {
         if($user->jabatan->value == 'bendahara' || $user->jabatan->value == 'pegawai-keuangan' || $user->jabatan->value == 'pegawai-barang-jasa'
-        || $user->jabatan->value == 'ketua')
+        || $user->jabatan->value == 'ketua' || $user->username == auth()->user()->username)
         {
             return true;
         }
