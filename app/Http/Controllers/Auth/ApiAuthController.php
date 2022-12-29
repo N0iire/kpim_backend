@@ -60,9 +60,19 @@ class ApiAuthController extends Controller
             'password' => $loginRequest->password])) {
                 return $this->createNewToken($token);
         } else {
-            $response = ['message' => 'User does not exist'];
-
-            return response($response, MyConstant::BAD_REQUEST);
+            if(!User::where('username', $loginRequest->username)->first())
+            {
+                return response([
+                    'status' => false,
+                    'message' => 'User does not exists!'
+                ], MyConstant::BAD_REQUEST);
+            }else
+            {
+                return response([
+                    'status' => false,
+                    'message' => 'Wrong username or password!'
+                ], MyConstant::BAD_REQUEST);
+            }
         }
     }
 
