@@ -39,6 +39,7 @@ Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api')
 Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
 Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
 Route::post('/bayar-cicilan/{pinjaman}', [PinjamanController::class, 'bayarCicilan']);
+Route::post('/snap-token/{pinjaman}', [PinjamanController::class, 'snapToken']);
 
 // RESOURCES
 Route::apiResources([

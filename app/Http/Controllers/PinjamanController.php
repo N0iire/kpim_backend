@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePinjamanRequest;
 use App\Http\Resources\KPIMResource;
 use App\Models\User;
 use App\MyConstant;
+use App\Services\Midtrans\CreateSnapTokenService;
 use Carbon\Carbon;
 
 class PinjamanController extends Controller
@@ -192,6 +193,19 @@ class PinjamanController extends Controller
             'status' => true,
             'message' => 'Data pinjaman berhasil dihapus'
         ], MyConstant::OK);
+    }
+
+    public function snapToken(Pinjaman $pinjaman)
+    {
+        $order = [
+            'id' => $pinjaman->id,
+            'nominal' => $pinjaman->nominal_cicilan
+        ];
+
+        $midtrans = new CreateSnapTokenService($order);
+        $snapToken = $midtrans->getSnapToken();
+
+        return $snapToken;
     }
 
     public function bayarCicilan(Pinjaman $pinjaman)
