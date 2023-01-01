@@ -195,20 +195,7 @@ class PinjamanController extends Controller
         ], MyConstant::OK);
     }
 
-    public function snapToken(Pinjaman $pinjaman)
-    {
-        $order = [
-            'id' => $pinjaman->id,
-            'nominal' => $pinjaman->nominal_cicilan
-        ];
-
-        $midtrans = new CreateSnapTokenService($order);
-        $snapToken = $midtrans->getSnapToken();
-
-        return $snapToken;
-    }
-
-    public function bayarCicilan(Pinjaman $pinjaman)
+    public function paymentSuccess(Pinjaman $pinjaman)
     {
         $dataCicilan = [
             'id_pinjaman' => $pinjaman->id,

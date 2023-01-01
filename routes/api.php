@@ -18,6 +18,7 @@ use App\Http\Controllers\PemodalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\SnapController;
 use App\Http\Middleware\Restricted;
 
 /*
@@ -35,11 +36,20 @@ use App\Http\Middleware\Restricted;
 // POST
 Route::post('/login', [ApiAuthController::class, 'login'])->name('login.api');
 Route::post('/register', [ApiAuthController::class, 'register'])->name('register.api');
-Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
-Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
-Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
-Route::post('/bayar-cicilan/{pinjaman}', [PinjamanController::class, 'bayarCicilan']);
-Route::post('/snap-token/{pinjaman}', [PinjamanController::class, 'snapToken']);
+
+// AUTH ONLY
+Route::middleware('auth')->group(function () {
+    //POST
+    Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
+    Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
+    Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
+    Route::post('/payment/wajib/{simpananwajib}', [SimpananWajibController::class, 'paymentSuccess']);
+    Route::post('/payment/sukarela/{simpanansukarela}', [SimpananSukarelaController::class, 'paymentSuccess']);
+    Route::post('/payment/pinjaman/{pinjaman}', [PinjamanController::class, 'paymentSuccess']);
+
+    //GET
+    Route::get('/snap', [SnapController::class, 'snapToken']);
+});
 
 // RESOURCES
 Route::apiResources([
