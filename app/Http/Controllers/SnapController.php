@@ -10,9 +10,8 @@ use App\Services\Midtrans\CreateSnapTokenService;
 
 class SnapController extends Controller
 {
-    public function snapToken()
-    {
-        if(request(['type']) == 'wajib'){
+    public function snapToken(){
+        if(request('type') == 'wajib'){
             $data = SimpananWajib::where('id', request(['id']))->first();
 
             $order = [
@@ -23,8 +22,12 @@ class SnapController extends Controller
             $midtrans = new CreateSnapTokenService($order);
             $snapToken = $midtrans->getSnapToken();
     
-            return $snapToken;
-        }elseif(request(['type']) == 'sukarela'){
+            return response([
+                'status' => true,
+                'snapToken' => $snapToken,
+                'message' => 'Snap token received!'
+            ], MyConstant::OK);
+        }elseif(request('type') == 'sukarela'){
             $data = SimpananSukarela::where('id', request(['id']))->first();
 
             $order = [
@@ -35,8 +38,12 @@ class SnapController extends Controller
             $midtrans = new CreateSnapTokenService($order);
             $snapToken = $midtrans->getSnapToken();
     
-            return $snapToken;
-        }elseif(request(['type']) == 'pinjaman'){
+            return response([
+                'status' => true,
+                'snapToken' => $snapToken,
+                'message' => 'Snap token received!'
+            ], MyConstant::OK);
+        }elseif(request('type') == 'pinjaman'){
             $data = Pinjaman::where('id', request(['id']))->first();
 
             $order = [
@@ -47,10 +54,15 @@ class SnapController extends Controller
             $midtrans = new CreateSnapTokenService($order);
             $snapToken = $midtrans->getSnapToken();
     
-            return $snapToken;
+            return response([
+                'status' => true,
+                'snapToken' => $snapToken,
+                'message' => 'Snap token received!'
+            ], MyConstant::OK);
         }else{
             return response([
-                'status' => false
+                'status' => false,
+                'message' => 'Error request'
             ], MyConstant::BAD_REQUEST);
         }
     }
