@@ -43,9 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');
     Route::post('/laporan/pemasukan', [PemasukanController::class, 'find']);
     Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
-    Route::post('/payment/wajib/{simpananwajib}', [SimpananWajibController::class, 'paymentSuccess']);
-    Route::post('/payment/sukarela/{simpanansukarela}', [SimpananSukarelaController::class, 'paymentSuccess']);
-    Route::post('/payment/pinjaman/{pinjaman}', [PinjamanController::class, 'paymentSuccess']);
+    Route::post('/payment/wajib', [SimpananWajibController::class, 'paymentSuccess']);
+    Route::post('/payment/sukarela', [SimpananSukarelaController::class, 'paymentSuccess']);
+    Route::post('/payment/pinjaman', [PinjamanController::class, 'paymentSuccess']);
 
     //GET
     Route::get('/snap', [SnapController::class, 'snapToken']);

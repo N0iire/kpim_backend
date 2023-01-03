@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,10 @@ class SimpananWajib extends Model
         'nominal_bayar',
         'status',
         'ket'
+    ];
+
+    protected $attributes = [
+        'status' => false,
     ];
 
     public function scopeFilter($query, array $filters)

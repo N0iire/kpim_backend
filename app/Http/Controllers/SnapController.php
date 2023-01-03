@@ -12,11 +12,32 @@ class SnapController extends Controller
 {
     public function snapToken(){
         if(request('type') == 'wajib'){
-            $data = SimpananWajib::where('id', request(['id']))->first();
+            if(request('id')){
+                $data = SimpananWajib::where('id', request('id'))->first();
+                $id = $data->id;
+                $nominal = $data->nominal_bayar;
+            }else{
+                $data = SimpananWajib::latest()->first();
+                $id = $data->id + 1;
+            }
         }elseif(request('type') == 'sukarela'){
-            $data = SimpananSukarela::where('id', request(['id']))->first();
+            if(request('id')){
+                $data = SimpananSukarela::where('id', request('id'))->first();
+                $id = $data->id;
+                $nominal = $data->nominal_bayar;
+            }else{
+                $data = SimpananSukarela::latest()->first();
+                $id = $data->id + 1;
+            }
         }elseif(request('type') == 'pinjaman'){
-            $data = Pinjaman::where('id', request(['id']))->first();
+            if(request('id')){
+                $data = Pinjaman::where('id', request('id'))->first();
+                $id = $data->id;
+                $nominal = $data->nominal_bayar;
+            }else{
+                $data = Pinjaman::latest()->first();
+                $id = $data->id + 1;
+            }
         }elseif(!request('type')){
             return response([
                 'status' => false,
@@ -24,9 +45,13 @@ class SnapController extends Controller
             ], MyConstant::BAD_REQUEST);
         }
 
+        if(request('nominal')){
+            $nominal = request('nominal');
+        }
+
         $order = [
-            'id' => $data->id,
-            'nominal' => $data->nominal_cicilan
+            'id' => $id,
+            'nominal' => $nominal
         ];
 
         $midtrans = new CreateSnapTokenService($order);

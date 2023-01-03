@@ -7,7 +7,7 @@ use App\Http\Requests\StoreSimpananWajibRequest;
 use App\Http\Requests\UpdateSimpananWajibRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class SimpananWajibController extends Controller
 {
@@ -116,5 +116,36 @@ class SimpananWajibController extends Controller
         return response([
             'message' => 'Data berhasil dihapus!'
         ]);
+    }
+
+    public function paymentSuccess(Request $request){
+        if($request['id']){
+            $data = SimpananWajib::where('id', $request['id'])->first();
+
+            $update = [
+                'status' => true
+            ];
+
+            $data->update($update);
+
+            return response([
+                'status' => true,
+                'message' => 'Payment successful'
+            ], MyConstant::OK);
+        }else{
+            $store = [
+                'id_user' => auth()->user()->id,
+                'nominal_bayar' => $request['nominal_bayar'],
+                'tgl_bayar'=> now(),
+                'status' => true,
+            ];
+
+            SimpananWajib::create($store);
+
+            return response([
+                'status' => true,
+                'message' => 'Payment successful'
+            ], MyConstant::OK);
+        }
     }
 }
