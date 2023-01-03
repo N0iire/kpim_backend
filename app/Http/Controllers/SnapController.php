@@ -21,14 +21,8 @@ class SnapController extends Controller
                 $id = $data->id + 1;
             }
         }elseif(request('type') == 'sukarela'){
-            if(request('id')){
-                $data = SimpananSukarela::where('id', request('id'))->first();
-                $id = $data->id;
-                $nominal = $data->nominal_bayar;
-            }else{
-                $data = SimpananSukarela::latest()->first();
-                $id = $data->id + 1;
-            }
+            $data = SimpananSukarela::latest()->first();
+            $id = $data->id + 1;
         }elseif(request('type') == 'pinjaman'){
             $data = Pinjaman::where('id', request('id'))->first();
             $id = $data->id;
