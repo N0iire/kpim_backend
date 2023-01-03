@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/laporan/pengeluaran', [PengeluaranController::class, 'find']);
     Route::post('/payment/wajib', [SimpananWajibController::class, 'paymentSuccess']);
     Route::post('/payment/sukarela', [SimpananSukarelaController::class, 'paymentSuccess']);
-    Route::post('/payment/pinjaman', [PinjamanController::class, 'paymentSuccess']);
+    Route::post('/payment/pinjaman/{pinjaman}', [PinjamanController::class, 'paymentSuccess']);
 
     //GET
     Route::get('/snap', [SnapController::class, 'snapToken']);
