@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSimpananSukarelaRequest;
 use App\Http\Requests\UpdateSimpananSukarelaRequest;
 use App\Http\Resources\KPIMResource;
 use App\MyConstant;
+use Illuminate\Http\Request;
 
 class SimpananSukarelaController extends Controller
 {
@@ -113,5 +114,20 @@ class SimpananSukarelaController extends Controller
         return response([
             'message' => 'Data berhasil dihapus'
         ]);
+    }
+
+    public function paymentSuccess(Request $request){
+        $store = [
+            'id_user' => auth()->user()->id,
+            'nominal_sukarela' => $request['nominal_sukarela'],
+            'tgl_bayar'=> now(),
+        ];
+
+        SimpananSukarela::create($store);
+
+        return response([
+            'status' => true,
+            'message' => 'Payment successful'
+        ], MyConstant::OK);
     }
 }
