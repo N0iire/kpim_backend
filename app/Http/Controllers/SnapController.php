@@ -26,7 +26,7 @@ class SnapController extends Controller
         }elseif(request('type') == 'pinjaman'){
             $data = Pinjaman::where('id', request('id'))->first();
             $id = $data->id;
-            $nominal = $data->nominal_bayar;
+            $nominal = $data->nominal_cicilan;
         }elseif(!request('type')){
             return response([
                 'status' => false,
