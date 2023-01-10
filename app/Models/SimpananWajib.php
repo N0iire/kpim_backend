@@ -44,7 +44,7 @@ class SimpananWajib extends Model
             return $query->where('tgl_bayar', 'like', '%'.$search.'%');
         });
 
-        $query->when($filters['username'] ?? false && $filters['reminder'] == 'true', function($query, $user)
+        $query->when(isset($filters['reminder']) ? $filters['username'] : false, function($query, $user)
         {
             return $query->whereHas('user', function($query) use($user)
             {
