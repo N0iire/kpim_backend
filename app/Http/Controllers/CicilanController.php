@@ -22,6 +22,10 @@ class CicilanController extends Controller
         
         $cicilan = Cicilan::filter(request(['pinjaman', 'search']))->get();
 
+        for($i=0; $i < count($cicilan); $i++){
+            $cicilan[$i]['cicilan_ke'] = $i+1;
+        }
+
         return response([
             'status' => true,
             'cicilan' => KPIMResource::collection($cicilan),
