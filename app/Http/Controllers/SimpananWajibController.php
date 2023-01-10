@@ -135,7 +135,7 @@ class SimpananWajibController extends Controller
         }else{
             $store = [
                 'id_user' => auth()->user()->id,
-                'nominal_bayar' => $request['nominal_bayar'],
+                'nominal_bayar' => $request['nominal'],
                 'tgl_bayar'=> now(),
                 'status' => true,
             ];

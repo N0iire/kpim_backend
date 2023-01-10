@@ -119,7 +119,7 @@ class SimpananSukarelaController extends Controller
     public function paymentSuccess(Request $request){
         $store = [
             'id_user' => auth()->user()->id,
-            'nominal_sukarela' => $request['nominal_sukarela'],
+            'nominal_sukarela' => $request['nominal'],
             'tgl_bayar'=> now(),
         ];
 

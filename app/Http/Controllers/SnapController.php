@@ -12,20 +12,10 @@ class SnapController extends Controller
 {
     public function snapToken(){
         if(request('type') == 'wajib'){
-            if(request('id')){
-                $data = SimpananWajib::where('id', request('id'))->first();
-                $id = $data->id;
-                $nominal = $data->nominal_bayar;
-            }else{
-                $data = SimpananWajib::latest()->first();
-                $id = $data->id + 1;
-            }
-        }elseif(request('type') == 'sukarela'){
-            $data = SimpananSukarela::latest()->first();
-            $id = $data->id + 1;
+            $data = SimpananWajib::where('id', request('id'))->first();
+            $nominal = $data->nominal_bayar;
         }elseif(request('type') == 'pinjaman'){
             $data = Pinjaman::where('id', request('id'))->first();
-            $id = $data->id;
             $nominal = $data->nominal_cicilan;
         }elseif(!request('type')){
             return response([
@@ -39,7 +29,7 @@ class SnapController extends Controller
         }
 
         $order = [
-            'id' => $id,
+            'id' => random_int(1, 999999),
             'nominal' => $nominal
         ];
 
