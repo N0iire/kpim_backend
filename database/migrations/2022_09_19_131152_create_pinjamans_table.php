@@ -15,7 +15,7 @@ class CreatePinjamansTable extends Migration
     {
         Schema::create('pinjamans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user');
+            $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->date('tgl_pinjaman');
             $table->double('total_pinjaman');
             $table->double('nominal_cicilan');

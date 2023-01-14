@@ -15,8 +15,8 @@ class CreatePenjualansTable extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_catatanJual');
-            $table->foreignId('id_barang');
+            $table->foreignId('id_catatanJual')->constrained('catatan_juals')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('id_barang')->constrained('barangs')->onUpdate('cascade')->onDelete('cascade');
             $table->double('jumlah');
             $table->double('sub_total');
             $table->timestamps();

@@ -15,7 +15,7 @@ class CreatePemodalsTable extends Migration
     {
         Schema::create('pemodals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user');
+            $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_transaksi');
             $table->string('nama_pemodal');
             $table->date('tgl_bayar');

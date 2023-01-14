@@ -15,7 +15,7 @@ class CreateCicilansTable extends Migration
     {
         Schema::create('cicilans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_pinjaman');
+            $table->foreignId('id_pinjaman')->constrained('pinjamans')->onUpdate('cascade')->onDelete('cascade');
             $table->date('tgl_bayar');
             $table->double('nominal_bayar');
             $table->timestamps();

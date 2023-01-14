@@ -15,7 +15,7 @@ class CreateCatatanJualsTable extends Migration
     {
         Schema::create('catatan_juals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user');
+            $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_transaksi');
             $table->string('nama_pembeli');
             $table->date('tgl_penjualan');
