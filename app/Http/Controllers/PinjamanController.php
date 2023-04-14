@@ -126,50 +126,11 @@ class PinjamanController extends Controller
         $user = User::where('username', $validated['username'])->first();
         $validated['id_user'] = $user->id;
 
-        if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan && $validated['total_pinjaman'] != $pinjaman->total_pinjaman)
-        {
-            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
-
-            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
-            {
-                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
-            }else
-            {
-                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
-            }
-        }else if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan)
-        {
-            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
-        }else if($validated['total_pinjaman'] != $pinjaman->total_pinjaman)
-        {
-            if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
-            {
-                $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
-            }else
-            {
-                $validated['sisa_cicilan'] = $validated['total_pinjaman'];
-            }
-        }
+        $validated = $this->checkDurasiCicilanAndTotalPinjaman($validated, $pinjaman);
 
         $pinjaman->update($validated);
 
-        for($i = 0; $i < count($validated['barang']); $i++)
-        {
-            if(!$validated['barang'][$i]['id_detailPinjaman'])
-            {
-                $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
-
-                $detailPinjaman = (new DetailPinjamanController)->store($validated)->getOriginalContent();
-
-                if($detailPinjaman['status'] == false)
-                {
-                    return response([
-                        'status' => false,
-                        'message' => $detailPinjaman['message']
-                    ], MyConstant::BAD_REQUEST);
-                }
-            }
-        }
+        $this->storeBarangToDetailPinjaman($validated, $pinjaman);
 
         return response([
             'status' => true,
@@ -197,11 +158,7 @@ class PinjamanController extends Controller
 
     public function paymentSuccess(Pinjaman $pinjaman)
     {
-        $dataCicilan = [
-            'id_pinjaman' => $pinjaman->id,
-            'tgl_bayar' => now()->toDateTimeString(),
-            'nominal_bayar' => $pinjaman->nominal_cicilan
-        ];
+        $dataCicilan = $this->assignDataCicilan($pinjaman);
         $cicilan = (new CicilanController)->store($dataCicilan)->getOriginalContent();
 
         if($cicilan['status'] == false)
@@ -212,9 +169,30 @@ class PinjamanController extends Controller
             ], MyConstant::BAD_REQUEST);
         }
 
+        $update = $this->isSisaCicilanExists($pinjaman);
+
+        $pinjaman->update($update);
+
+        return response([
+            'status' => true,
+            'message' => 'Cicilan berhasil dibayar!'
+        ], MyConstant::OK);
+    }
+
+    public function assignDataCicilan(Pinjaman $pinjaman){
+        $dataCicilan = [
+            'id_pinjaman' => $pinjaman->id,
+            'tgl_bayar' => now()->toDateTimeString(),
+            'nominal_bayar' => $pinjaman->nominal_cicilan
+        ];
+
+        return $dataCicilan;
+    }
+
+    public function isSisaCicilanExists(Pinjaman $pinjaman){
         $jatuhTempo = Carbon::createFromDate($pinjaman->jatuh_tempo);
-        $overTempo = PinjamanController::overTempo($pinjaman, $jatuhTempo);
-        
+        $overTempo = $this->isOverTempo($pinjaman, $jatuhTempo);
+
         $update['sisa_cicilan'] = $pinjaman->sisa_cicilan - $pinjaman->nominal_cicilan;
 
         if($update['sisa_cicilan'] != 0 && $overTempo == false)
@@ -226,15 +204,10 @@ class PinjamanController extends Controller
             $update['status'] = true;
         }
 
-        $pinjaman->update($update);
-
-        return response([
-            'status' => true,
-            'message' => 'Cicilan berhasil dibayar!'
-        ], MyConstant::OK);
+        return $update;
     }
 
-    public function overTempo(Pinjaman $pinjaman, Carbon $jatuhTempo)
+    public function isOverTempo(Pinjaman $pinjaman, Carbon $jatuhTempo)
     {
         $maxDays = $pinjaman->durasi_cicilan * 30;
         $tgl_akhir = Carbon::createFromDate($pinjaman->tgl_pinjaman)->addDays($maxDays);
@@ -245,5 +218,55 @@ class PinjamanController extends Controller
         }
 
         return false;
+    }
+
+    public function checkDurasiCicilanAndTotalPinjaman(array $validated, Pinjaman $pinjaman)
+    {
+        if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan && $validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+
+            $validated = $this->checkSisaCicilan($validated, $pinjaman);
+        }else if($validated['durasi_cicilan'] != $pinjaman->durasi_cicilan)
+        {
+            $validated['nominal_cicilan'] = $validated['total_pinjaman'] / $validated['durasi_cicilan'];
+        }else if($validated['total_pinjaman'] != $pinjaman->total_pinjaman)
+        {
+            $validated = $this->checkSisaCicilan($validated, $pinjaman);
+        }
+
+        return $validated;
+    }
+
+    public function storeBarangToDetailPinjaman(array $validated, Pinjaman $pinjaman){
+        for($i = 0; $i < count($validated['barang']); $i++)
+        {
+            if(!$validated['barang'][$i]['id_detailPinjaman'])
+            {
+                $validated['barang'][$i]['id_pinjaman'] = $pinjaman->id;
+
+                $detailPinjaman = (new DetailPinjamanController)->store($validated)->getOriginalContent();
+
+                if($detailPinjaman['status'] == false)
+                {
+                    return response([
+                        'status' => false,
+                        'message' => $detailPinjaman['message']
+                    ], MyConstant::BAD_REQUEST);
+                }
+            }
+        }
+    }
+
+    public function checkSisaCicilan(array $validated, Pinjaman $pinjaman){
+        if($pinjaman->sisa_cicilan != $pinjaman->total_pinjaman)
+        {
+            $validated['sisa_cicilan'] = $validated['total_pinjaman'] - ($pinjaman->total_pinjaman - $pinjaman->sisa_cicilan);
+        }else
+        {
+            $validated['sisa_cicilan'] = $validated['total_pinjaman'];
+        }
+
+        return $validated;
     }
 }
